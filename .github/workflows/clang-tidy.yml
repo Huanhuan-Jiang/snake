@@ -23,6 +23,4 @@ jobs:
       - name: Run Clang-Tidy
         run: |
           find . -type f \( -path "./tests/*.cpp" -o -path "./snakesrc/*.cpp" -o -path "./snakesrc/*.h" \) -exec clang-tidy {} +
-        shell: bash -c
-        env:
-          ACTIONS_STEP_DEBUG: true
+          
