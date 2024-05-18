@@ -10,7 +10,8 @@ cmake_policy(SET CMP0135 NEW)
 set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 
 #Add the subdirectory
-add_subdirectory(snakesrc) add_subdirectory(thirdparty/googletest)
+add_subdirectory(snakesrc) 
+add_subdirectory(thirdparty/googletest)
 
 #Add the executable for your test
 add_executable(snaketest tests/test_snake.cpp)
