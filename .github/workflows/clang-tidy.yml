@@ -29,4 +29,8 @@ jobs:
 
       - name: Run Clang-Tidy
         run: |
+          mkdir build
+          cd build
+          cmake ..
+          cd ..
           find . -type f \( -path "./tests/*.cpp" -o -path "./snakesrc/*.cpp" -o -path "./snakesrc/*.h" \) -exec clang-tidy {} +
