@@ -16,18 +16,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+            submodules: recursive
       
+      - name: Initialize and update submodules
+        run: |
+            git submodule update --init --recursive
+            git submodule update --remote
+
       - name: Print current directory
         run: pwd
       
       - name: List files in current directory
         run: ls -la
+    
+      - name: List files in submodule directory
+        run: ls -la thirdparty/googletest
 
       - name: Print contents of CMakeLists.txt
         run: cat CMakeLists.txt
-
-      - name: List files in submodule directory
-        run: ls -la thirdparty/googletest
 
       - name: Install dependencies
         run: sudo apt-get install cmake
