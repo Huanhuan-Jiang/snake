@@ -21,4 +21,12 @@ jobs:
         run: sudo apt-get install -y clang-format
       
       - name: Check code formatting
-        run: clang-format -style=file -output-replacements-xml src/*.cpp include/*.h | grep "<replacement " && exit 1 || exit 0
+        run: clang-format -i **/*.cpp **/*.h **/CMakeLists.txt
+      
+      - name: Commit changes
+        run: |
+          git config --global user.name "Huanhuan Jiang"
+          git config --global user.email "jhuanhustc@gmail.com"
+          git add .
+          git commit -m "Automatically format code using Clang-Format"
+          git push
