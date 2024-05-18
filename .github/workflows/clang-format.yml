@@ -21,7 +21,7 @@ jobs:
         run: sudo apt-get install -y clang-format
       
       - name: Check code formatting
-        run: clang-format -i **/*.cpp **/*.h **/CMakeLists.txt
+        run: clang-format -i -style=file **/*.cpp **/*.h **/CMakeLists.txt
       
       - name: Commit changes
         run: |
