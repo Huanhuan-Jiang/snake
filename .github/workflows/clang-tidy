@@ -1,0 +1,24 @@
+name: check format
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format_check:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      
+      - name: Install dependencies
+        run: sudo apt-get install -y clang-format
+      
+      - name: Check code formatting
+        run: clang-format -style=file -output-replacements-xml src/*.cpp include/*.h | grep "<replacement " && exit 1 || exit 0
