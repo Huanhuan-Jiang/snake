@@ -26,6 +26,9 @@ jobs:
       - name: Print contents of CMakeLists.txt
         run: cat CMakeLists.txt
 
+      - name: List files in submodule directory
+        run: ls -la thirdparty/googletest
+
       - name: Install dependencies
         run: sudo apt-get install cmake
 
