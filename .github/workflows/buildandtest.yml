@@ -61,7 +61,4 @@ jobs:
         run: |
           cd build
           find ../tests ../snakesrc -type f \( -name "*.cpp" -o -name "*.h" \) \
-            -exec clang-tidy {} + \
-            -isystem /Library/Developer/CommandLineTools/usr/include/c++/v1/ \
-            -I ../snakesrc \
-            -I ../tests
+            -exec clang-tidy {} + 
