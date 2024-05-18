@@ -1,4 +1,4 @@
-name: build and test
+name: build_test_clang-tidy
 
 on:
   push:
@@ -46,3 +46,7 @@ jobs:
           cmake ..
           make
           ctest --output-on-failure
+          
+      - name: Run clang-tidy
+        run: |
+          find . -type f \( -path "./tests/*.cpp" -o -path "./snakesrc/*.cpp" -o -path "./snakesrc/*.h" \) -exec clang-tidy {} +
