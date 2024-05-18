@@ -1,4 +1,4 @@
-name: check format
+name: clang format
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Clang-Tidy on Push
+name: Clang-Tidy
 
 on:
   push:
@@ -21,9 +21,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
 
       - name: Run Clang-Tidy
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
-          clang-tidy ../**/*.cpp ../**/*.h
+        run: clang-tidy ../**/*.cpp ../**/*.h
+        shell: bash -c
+        env:
+          ACTIONS_STEP_DEBUG: true
