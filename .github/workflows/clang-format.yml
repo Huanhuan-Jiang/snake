@@ -1,4 +1,4 @@
-name: Clang-Tidy on Push
+name: check format
 
 on:
   push:
@@ -9,21 +9,16 @@ on:
       - main
 
 jobs:
-  clang_tidy:
-    name: Run Clang-Tidy
+  format_check:
+    name: Check Code Formatting
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
-
-      - name: Install Clang-Tidy
-        run: sudo apt-get update && sudo apt-get install -y clang-tidy
-
-      - name: Run Clang-Tidy
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
-          clang-tidy ../**/*.cpp ../**/*.h
+      
+      - name: Install dependencies
+        run: sudo apt-get install -y clang-format
+      
+      - name: Check code formatting
+        run: clang-format -style=file -output-replacements-xml src/*.cpp include/*.h | grep "<replacement " && exit 1 || exit 0
