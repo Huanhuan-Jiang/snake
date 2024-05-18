@@ -16,6 +16,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          submodules: recursive
+    
+      - name: Initialize and update submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule update --remote
 
       - name: Install Clang-Tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
@@ -23,4 +30,3 @@ jobs:
       - name: Run Clang-Tidy
         run: |
           find . -type f \( -path "./tests/*.cpp" -o -path "./snakesrc/*.cpp" -o -path "./snakesrc/*.h" \) -exec clang-tidy {} +
-          
