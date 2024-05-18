@@ -13,4 +13,4 @@ Snake::Snake(std::vector<std::pair<int, int>> initialBody,
 
 // Get the size of snake body
 int Snake::size() { return snakeBody.size(); }
-}  // namespace snakestatus
+} // namespace snakestatus

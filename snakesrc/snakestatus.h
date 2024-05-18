@@ -8,13 +8,13 @@ namespace snakestatus {
 enum class Direction { UP, DOWN, RIGHT, LEFT };
 // definition of class Snake
 class Snake {
- private:
+private:
   std::vector<std::pair<int, int>> snakeBody;
   int head_X;
   int head_Y;
   Direction headDir;
 
- public:
+public:
   // Constructor
   Snake();
   Snake(std::vector<std::pair<int, int>> initialBody, Direction headDirection);
@@ -28,4 +28,4 @@ class Snake {
   void eatFood(std::pair<int, int>);
   Direction getDirection();
 };
-}  // namespace snakestatus
+} // namespace snakestatus
