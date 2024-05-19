@@ -1,0 +1,29 @@
+name: build_test_clang-tidy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Build and Run Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      
+      - name: Install Clang-Tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+
+      - name: Build and run tests
+        run: |
+          mkdir build
+          cd build
+          clang++ -MJ helloworld.o.json -std=c++23 -o helloworld.o -c ../helloworld.cpp
+          sed -e '1s/^/[\n/' -e '$s/,$/\n]/' *.o.json > compile_commands.json
+          clang-tidy ../helloworld.cpp
