@@ -18,26 +18,12 @@ jobs:
         uses: actions/checkout@v4.1.1
         with:
             submodules: recursive
+
+      - name: Update cmake
+        run: sudo apt-get update cmake
       
-      - name: Initialize and update submodules
-        run: |
-            git submodule update --init --recursive
-            git submodule update --remote
-
-      - name: Print current directory
-        run: pwd
-      
-      - name: List files in current directory
-        run: ls -la
-    
-      - name: List files in submodule directory
-        run: ls -la thirdparty/googletest
-
-      - name: Print contents of CMakeLists.txt
-        run: cat CMakeLists.txt
-
-      - name: Install dependencies
-        run: sudo apt-get install cmake
+      - name: Install Clang-Tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
 
       - name: Build and run tests
         run: |
@@ -46,12 +32,10 @@ jobs:
           cmake ..
           make
           ctest --output-on-failure
-      
-      - name: Install Clang-Tidy
-        run: sudo apt-get update && sudo apt-get install -y clang-tidy
 
-      - name: Generate compilation database with CMake
-        run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -S . -B build
+
+#      - name: Generate compilation database with CMake
+#        run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -S . -B build
 
       - name: Run clang-tidy
         run: |
