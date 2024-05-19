@@ -26,4 +26,4 @@ jobs:
           cd build
           clang++ -MJ helloworld.o.json -std=c++23 -o helloworld.o -c ../helloworld.cpp
           sed -e '1s/^/[\n/' -e '$s/,$/\n]/' *.o.json > compile_commands.json
-          clang-tidy ../helloworld.cpp
+          clang-tidy ../helloworld.cpp | grep -q "warning" && exit 1 || exit 0
