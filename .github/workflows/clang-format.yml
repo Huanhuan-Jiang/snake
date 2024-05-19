@@ -17,5 +17,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
       
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install clang-format
+      
       - name: Check code formatting
         run:  clang-format -style=Google helloworld.cpp
