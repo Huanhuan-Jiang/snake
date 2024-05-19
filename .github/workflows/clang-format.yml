@@ -21,7 +21,4 @@ jobs:
         run: sudo apt-get update && sudo apt-get install clang-format
       
       - name: Check code formatting
-        run: |
-          clang-format -style=google -output-replacements-xml helloworld.cpp > clang-format-report.xml
-          cat clang-format-report.xml
-          grep "<replacement " clang-format-report.xml && exit 1
+        run: clang-format -style=Google -output-replacements-xml helloworld.cpp | grep "<replacement " && exit 1 || exit 0
