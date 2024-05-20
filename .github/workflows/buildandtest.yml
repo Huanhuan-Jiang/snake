@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          submodules: recursive
       
       - name: Install Clang-Tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
