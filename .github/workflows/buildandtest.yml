@@ -27,6 +27,9 @@ jobs:
         run: |
           cd thirdparty/googletest
           ls -la
+          cd ..
+          cd ..
+          pwd
 
       - name: Build and run tests
         run: |
