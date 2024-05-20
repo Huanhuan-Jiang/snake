@@ -21,18 +21,6 @@ jobs:
       
       - name: Install Clang-Tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
-      
-      - name: Print current directory
-        run: pwd
-      
-      - name: List files in submodule directories
-        run: |
-          git submodule update --init --recursive
-          cd thirdparty/googletest
-          ls -la
-          cd ..
-          cd ..
-          pwd
 
       - name: Build and run tests
         run: |
