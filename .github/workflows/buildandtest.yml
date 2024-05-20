@@ -23,7 +23,7 @@ jobs:
         - name: Print current directory
         run: pwd
       
-      - name: List files in submodule directory
+      - name: List files in submodule directories
         run: |
           cd thirdparty/googletest
           ls -la
