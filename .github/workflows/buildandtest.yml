@@ -25,6 +25,7 @@ jobs:
       
       - name: List files in submodule directories
         run: |
+          git submodule update --init --recursive
           cd thirdparty/googletest
           ls -la
           cd ..
