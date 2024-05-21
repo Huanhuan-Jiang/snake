@@ -1,7 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <utility>
 #include <vector>
 
