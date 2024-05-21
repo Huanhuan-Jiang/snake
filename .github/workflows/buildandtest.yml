@@ -28,4 +28,5 @@ jobs:
           cd build
           cmake ..
           make
+          ctest --output-on-failure
           find ../ \( -name '*.cpp' -o -name '*.h' \) -not \( -path '*/build/*' -o -path '*/thirdparty/*' \) -exec clang-tidy -header-filter='^(?!.*(build|thirdparty)).*/?.*\.(cpp|h)$' -checks='warnings' -config='' {} + -print | grep "warning" && exit 1 || exit 0
