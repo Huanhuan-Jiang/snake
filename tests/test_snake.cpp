@@ -1,7 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <utility>
 #include <vector>
 
 #include "snakestatus.h"

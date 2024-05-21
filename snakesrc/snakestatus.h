@@ -1,7 +1,5 @@
-// This is the declaration of namespace snakestatus
 #pragma once
-#include <cmath>
-#include <utility>
+
 #include <vector>
 
 namespace snakestatus {
@@ -20,12 +18,12 @@ class Snake {
   Snake(std::vector<std::pair<int, int>> initialBody, Direction headDirection);
 
   // Get the size of snake body
-  int Snake::size() { return snakeBody.size(); }
+  int size() { return snakeBody.size(); }
 
   // Get the body of snake
-  std::vector<std::pair<int, int>> getBody();
+  std::vector<std::pair<int, int>> getBody() { return snakeBody; };
 
-  void Snake::eatFood(std::pair<int, int> food) {
+  void eatFood(std::pair<int, int> food) {
     snakeBody.insert(snakeBody.begin(), food);
   };
 
