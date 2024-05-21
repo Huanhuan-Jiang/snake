@@ -16,13 +16,6 @@ add_subdirectory(thirdparty/googletest)
 # Add the executable for your test
 add_executable(snaketest tests/test_snake.cpp)
 
-# Include directories for executables
-#target_include_directories(snaketest PRIVATE snakesrc)
-#target_include_directories(snaketest PRIVATE
-#    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/googletest/googletest/include/gtest
-#    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/googletest/googlemock/include/gmock
-#) 
-
 # Link test executables with Google Test
 target_link_libraries(snaketest PRIVATE 
     GTest::gtest_main 
