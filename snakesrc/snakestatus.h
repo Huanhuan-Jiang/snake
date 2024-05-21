@@ -20,7 +20,7 @@ class Snake {
   Snake(std::vector<std::pair<int, int>> initialBody, Direction headDirection);
 
   // Get the size of snake body
-  int size();
+  int Snake::size() { return snakeBody.size();
   // Get the body of snake
   std::vector<std::pair<int, int>> getBody();
   // Move the snake one step further based on its head's direction
