@@ -20,20 +20,19 @@ class Snake {
   Snake(std::vector<std::pair<int, int>> initialBody, Direction headDirection);
 
   // Get the size of snake body
-  int Snake::size() {
-    return snakeBody.size();
+  int Snake::size() { return snakeBody.size(); }
 
-    // Get the body of snake
-    std::vector<std::pair<int, int>> getBody();
+  // Get the body of snake
+  std::vector<std::pair<int, int>> getBody();
 
-    // Move the snake one step further based on its head's direction
-    void move();
+  // Move the snake one step further based on its head's direction
+  void move();
 
-    void Snake::eatFood(std::pair<int, int> food) {
-      snakeBody.insert(snakeBody.begin(), food);
-      };
-
-    Direction getDirection();
+  void Snake::eatFood(std::pair<int, int> food) {
+    snakeBody.insert(snakeBody.begin(), food);
   };
+
+  Direction getDirection();
+};
 
 }  // namespace snakestatus
