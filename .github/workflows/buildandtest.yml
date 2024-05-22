@@ -29,4 +29,8 @@ jobs:
           cmake ..
           make
           ctest --output-on-failure
-          find ../ \( -name '*.cpp' -o -name '*.h' \) -not \( -path '*/build/*' -o -path '*/thirdparty/*' \) -exec clang-tidy -header-filter='^(?!.*(build|thirdparty)).*/?.*\.(cpp|h)$' --config-file=../.clang-tidy + -print | grep "warning" && exit 1 || exit 0
+          find ../ \( -name '*.cpp' -o -name '*.h' \) \
+          -not \( -path '*/build/*' -o -path '*/thirdparty/*' \) \
+          -exec clang-tidy -header-filter='^(?!.*(build|thirdparty)).*/?.*\.(cpp|h)$' --config-file=../.clang-tidy {} + \
+          -print | grep "warning" && exit 1 || exit 0
+
