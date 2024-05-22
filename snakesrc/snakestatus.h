@@ -18,7 +18,7 @@ class Snake {
 
   std::size_t size() const noexcept { return snake_body_.size(); }
 
-  std::vector<std::pair<int, int>> getBody() const { return snake_body_; };
+  const std::vector<std::pair<int, int>>& getBody() const { return snake_body_; }
 
   void eatFood(std::pair<int, int> food) {
     snake_body_.insert(snake_body_.begin(), food);
