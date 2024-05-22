@@ -9,7 +9,7 @@
 // define test fixutre
 class SnakeTest : public ::testing::Test {
  protected:
-  // initialize the snake bodies
+  
   void SetUp() override {
     body1_0 = {{20, 30}};  // one unit long
     body9_4 = {{20, 30}, {19, 30}, {19, 29}, {18, 29}, {17, 29},

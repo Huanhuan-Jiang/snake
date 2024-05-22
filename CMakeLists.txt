@@ -6,23 +6,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 cmake_policy(SET CMP0135 NEW)
 
-# Define the version of Google Test being used
 set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 
-# Add the subdirectory
 add_subdirectory(snakesrc)
 add_subdirectory(thirdparty/googletest)
-
-# Add the executable for your test
+t
 add_executable(snaketest tests/test_snake.cpp)
 
-# Link test executables with Google Test
 target_link_libraries(snaketest PRIVATE 
     GTest::gtest_main 
     GTest::gmock_main
 )
 
-# Link test executables with corresponding libraries
 target_link_libraries(snaketest PRIVATE snakestatus)
 
 enable_testing()
