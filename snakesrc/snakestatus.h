@@ -20,11 +20,11 @@ class Snake {
 
   const std::vector<std::pair<int, int>>& getBody() const { return snake_body_; }
 
-  void eatFood(std::pair<int, int> food) {
+  void eatFood(std::pair<int, int>& food) {
     snake_body_.insert(snake_body_.begin(), food);
   };
 
-  Direction getDirection() const { return head_dir_; };
+  const Direction& getDirection() const { return head_dir_; };
 
   inline void move();
   
