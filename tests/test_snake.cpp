@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <list>
 #include <utility>
-#include <vector>
 
 #include "snakestatus.h"
 
@@ -15,8 +15,8 @@ class SnakeTest : public ::testing::Test {
                                                          // 4 turns
   }
 
-  std::vector<std::pair<int, int>> body1_0;
-  std::vector<std::pair<int, int>> body9_4;
+  std::list<std::pair<int, int>> body1_0;
+  std::list<std::pair<int, int>> body9_4;
 };
 
 TEST_F(SnakeTest, SnakeSize) {
@@ -36,14 +36,12 @@ TEST_F(SnakeTest, GetBody) {
 }
 
 TEST_F(SnakeTest, GetDirection) {
-  std::vector<std::pair<int, int>> expected1 = {{21, 30}, {20, 30}};
+  std::list<std::pair<int, int>> expected1 = {{21, 30}, {20, 30}};
   char a;  // Unused variable
 
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
 
-  EXPECT_EQ(snake1_0.getDirection(), snakestatus::Direction::RIGHT)
-      << "GetDirection with snake1_0 failed";
-  EXPECT_EQ(snake9_4.getDirection(), snakestatus::Direction::RIGHT)
-      << "GetDirection with snake9_4 failed";
+  EXPECT_EQ(snake1_0.getDirection(), snakestatus::Direction::RIGHT);
+  EXPECT_EQ(snake9_4.getDirection(), snakestatus::Direction::RIGHT);
 }
