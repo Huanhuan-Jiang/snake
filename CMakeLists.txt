@@ -10,7 +10,7 @@ set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 
 add_subdirectory(snakesrc)
 add_subdirectory(thirdparty/googletest)
-t
+
 add_executable(snaketest tests/test_snake.cpp)
 
 target_link_libraries(snaketest PRIVATE 

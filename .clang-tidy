@@ -1,0 +1,10 @@
+---
+Checks: '
+  -*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+'
+WarningsAsErrors: '*'
+HeaderFilterRegex: '^.*\/tests\/.*\.(cpp|h)$'
+ExtraArgs:
+  - -Wunused-variable

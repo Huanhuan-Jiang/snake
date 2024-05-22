@@ -37,6 +37,9 @@ TEST_F(SnakeTest, GetBody) {
 }
 
 TEST_F(SnakeTest, GetDirection) {
+  std::vector<std::pair<int, int>> expected1 = {{21, 30}, {20, 30}};
+  char a; // Unused variable
+
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
 
