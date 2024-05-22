@@ -26,9 +26,9 @@ class Snake {
 
   // The length of the snake's body increases by one unit after consuming the
   // food.
-  void eatFood(std::pair<int, int>& food) {
-    snake_body_.insert(snake_body_.begin(), food);
-  };
+  void eatFood(std::pair<int, int>&& food) {
+    snake_body_.insert(snake_body_.begin(), std::move(food));
+  }
 
   const Direction& getDirection() const { return head_dir_; };
 };
