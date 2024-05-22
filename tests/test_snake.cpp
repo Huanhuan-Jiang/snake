@@ -25,8 +25,8 @@ TEST_F(SnakeTest, SnakeSize) {
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
 
-  EXPECT_EQ(snake1_0.size(), 1) << "The SnakeSize with snake1_0 failed";
-  EXPECT_EQ(snake9_4.size(), 9) << "The SnakeSize with snake9_4 failed";
+  EXPECT_EQ(snake1_0.size(), 1u) << "The SnakeSize with snake1_0 failed";
+  EXPECT_EQ(snake9_4.size(), 9u) << "The SnakeSize with snake9_4 failed";
 }
 
 TEST_F(SnakeTest, GetBody) {
