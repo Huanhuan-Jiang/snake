@@ -56,12 +56,15 @@ TEST_F(SnakeTest, EatFood) {
 
 TEST_F(SnakeTest, GetDirection) {
   std::vector<std::pair<int, int>> expected1_0 = {{20, 30}};
-  std::vector<std::pair<int, int>> expected9_4 = {{20, 30}, {19, 30}, {19, 29}, {18, 29}, {17, 29},
-               {17, 28}, {17, 27}, {16, 27}, {15, 27}};
+  std::vector<std::pair<int, int>> expected9_4 = {{20, 30}, {19, 30}, {19, 29},
+                                                  {18, 29}, {17, 29}, {17, 28},
+                                                  {17, 27}, {16, 27}, {15, 27}};
 
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
 
-  EXPECT_EQ(snake1_0.getDirection(), snakestatus::Direction::RIGHT) << "GetDirection with snake1_0 failed";
-  EXPECT_EQ(snake9_4.getDirection(), snakestatus::Direction::RIGHT) << "GetDirection with snake9_4 failed";
+  EXPECT_EQ(snake1_0.getDirection(), snakestatus::Direction::RIGHT)
+      << "GetDirection with snake1_0 failed";
+  EXPECT_EQ(snake9_4.getDirection(), snakestatus::Direction::RIGHT)
+      << "GetDirection with snake9_4 failed";
 }
