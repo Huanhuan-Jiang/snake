@@ -1,7 +1,7 @@
 #pragma once
 
-#include <utility>
 #include <list>
+#include <utility>
 
 namespace snakestatus {
 
@@ -15,14 +15,11 @@ class Snake {
   Direction head_dir_;
 
  public:
-  Snake(std::list<std::pair<int, int>> initial_body,
-        Direction head_direction);
+  Snake(std::list<std::pair<int, int>> initial_body, Direction head_direction);
 
   std::size_t size() const noexcept { return snake_body_.size(); }
 
-  const std::list<std::pair<int, int>>& getBody() const {
-    return snake_body_;
-  }
+  const std::list<std::pair<int, int>>& getBody() const { return snake_body_; }
 
   const Direction& getDirection() const { return head_dir_; };
 };
