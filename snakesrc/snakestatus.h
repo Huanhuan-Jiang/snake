@@ -4,33 +4,28 @@
 #include <vector>
 
 namespace snakestatus {
+
 enum class Direction { UP, DOWN, RIGHT, LEFT };
+
 // definition of class Snake
 class Snake {
- private:
-  std::vector<std::pair<int, int>> snakeBody;
-  int head_X;
-  int head_Y;
-  Direction headDir;
+
+  std::vector<std::pair<int, int>> snake_body_;
+  Direction head_dir_;
 
  public:
-  // Constructor
-  Snake();
-  Snake(std::vector<std::pair<int, int>> initialBody, Direction headDirection);
+  Snake(std::vector<std::pair<int, int>> initialBody, Direction head_direction);
 
-  // Get the size of snake body
-  int size() { return snakeBody.size(); }
+  int size() { return snake_body_.size(); }
 
-  // Get the body of snake
-  std::vector<std::pair<int, int>> getBody() { return snakeBody; };
+  std::vector<std::pair<int, int>> getBody() { return snake_body_; };
 
   void eatFood(std::pair<int, int> food) {
-    snakeBody.insert(snakeBody.begin(), food);
+    snake_body_.insert(snake_body_.begin(), food);
   };
 
-  Direction getDirection() { return headDir; };
+  Direction getDirection() { return head_dir_; };
 
-  // Move the snake one step further based on its head's direction
   void move();
   
 };
