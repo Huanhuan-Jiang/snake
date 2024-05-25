@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <list>
+#include <stdexcept>
 #include <utility>
 
 #include "snakestatus.h"
@@ -72,7 +73,7 @@ TEST_F(SnakeTest, GetBody) {
 TEST_F(SnakeTest, GetDirection) {
   char a = 'a';
   int x;
-  //int sum = x; //introduce error
+  // int sum = x; //introduce error
 
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
