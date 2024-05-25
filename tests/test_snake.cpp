@@ -19,6 +19,40 @@ class SnakeTest : public ::testing::Test {
   std::list<std::pair<int, int>> body9_4;
 };
 
+TEST_F(SnakeTest, SnakeThrowExceptionOnIllegalSnake) {
+  std::list<std::pair<int, int>> illegal1 = {
+      {20, 30}, {19, 30}, {19, 29}, {18, 28}, {17, 29},
+      {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous
+  std::list<std::pair<int, int>> illegal2 = {
+      {20, 30}, {19, 30}, {19, 29}, {17, 28}, {17, 29},
+      {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous
+  std::list<std::pair<int, int>> illegal3 = {
+      {20, 30}, {19, 30}, {19, 29}, {19, 29}, {17, 29},
+      {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
+  std::list<std::pair<int, int>> illegal4 = {
+      {19, 29}, {19, 30}, {19, 29}, {18, 29}, {17, 29},
+      {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
+  std::list<std::pair<int, int>> illegal5 = {
+      {17, 29}, {17, 30}, {18, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
+
+  EXPECT_THROW(
+      {snakestatus::Snake snake1(illegal1, snakestatus::Direction::RIGHT);},
+      std::runtime_error);
+  EXPECT_THROW(
+      {snakestatus::Snake snake1(illegal2, snakestatus::Direction::RIGHT);},
+      std::runtime_error);
+  EXPECT_THROW(
+      {snakestatus::Snake snake1(illegal3, snakestatus::Direction::RIGHT);},
+      std::runtime_error);
+  EXPECT_THROW(
+      {snakestatus::Snake snake1(illegal4, snakestatus::Direction::RIGHT);},
+      std::runtime_error);
+  EXPECT_THROW(
+      {snakestatus::Snake snake1(illegal5, snakestatus::Direction::RIGHT);},
+      std::runtime_error);
+}
+
 TEST_F(SnakeTest, SnakeSize) {
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
