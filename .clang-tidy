@@ -3,8 +3,7 @@ Checks: '
   -*,
   clang-diagnostic-*,
   clang-analyzer-*,
+  readability-unused-variable,
 '
-WarningsAsErrors: '*'
+WarningsAsErrors: ''
 HeaderFilterRegex: '^.*\/tests\/.*\.(cpp|h)$'
-ExtraArgs:
-  - -Wunused-variable

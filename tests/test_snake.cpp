@@ -37,19 +37,19 @@ TEST_F(SnakeTest, SnakeThrowExceptionOnIllegalSnake) {
       {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
 
   EXPECT_THROW(
-      {snakestatus::Snake snake1(illegal1, snakestatus::Direction::RIGHT);},
+      { snakestatus::Snake snake1(illegal1, snakestatus::Direction::RIGHT); },
       std::runtime_error);
   EXPECT_THROW(
-      {snakestatus::Snake snake1(illegal2, snakestatus::Direction::RIGHT);},
+      { snakestatus::Snake snake1(illegal2, snakestatus::Direction::RIGHT); },
       std::runtime_error);
   EXPECT_THROW(
-      {snakestatus::Snake snake1(illegal3, snakestatus::Direction::RIGHT);},
+      { snakestatus::Snake snake1(illegal3, snakestatus::Direction::RIGHT); },
       std::runtime_error);
   EXPECT_THROW(
-      {snakestatus::Snake snake1(illegal4, snakestatus::Direction::RIGHT);},
+      { snakestatus::Snake snake1(illegal4, snakestatus::Direction::RIGHT); },
       std::runtime_error);
   EXPECT_THROW(
-      {snakestatus::Snake snake1(illegal5, snakestatus::Direction::RIGHT);},
+      { snakestatus::Snake snake1(illegal5, snakestatus::Direction::RIGHT); },
       std::runtime_error);
 }
 
@@ -70,8 +70,9 @@ TEST_F(SnakeTest, GetBody) {
 }
 
 TEST_F(SnakeTest, GetDirection) {
-  std::list<std::pair<int, int>> expected1 = {{21, 30}, {20, 30}};
-  char a;  // Unused variable
+  char a = 'a';
+  int x;
+  //int sum = x; //introduce error
 
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
