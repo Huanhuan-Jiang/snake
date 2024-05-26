@@ -37,21 +37,60 @@ TEST_F(SnakeTest, SnakeThrowExceptionOnIllegalSnake) {
       {17, 29}, {17, 30}, {18, 30}, {19, 30}, {19, 29}, {18, 29},
       {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
 
-  EXPECT_THROW(
-      { snakestatus::Snake snake1(illegal1, snakestatus::Direction::RIGHT); },
-      std::runtime_error);
-  EXPECT_THROW(
-      { snakestatus::Snake snake1(illegal2, snakestatus::Direction::RIGHT); },
-      std::runtime_error);
-  EXPECT_THROW(
-      { snakestatus::Snake snake1(illegal3, snakestatus::Direction::RIGHT); },
-      std::runtime_error);
-  EXPECT_THROW(
-      { snakestatus::Snake snake1(illegal4, snakestatus::Direction::RIGHT); },
-      std::runtime_error);
-  EXPECT_THROW(
-      { snakestatus::Snake snake1(illegal5, snakestatus::Direction::RIGHT); },
-      std::runtime_error);
+  try {
+    EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake1(illegal1,
+                                           snakestatus::Direction::RIGHT);
+        },
+        std::runtime_error);
+  } catch (const std::runtime_error& e) {
+    EXPECT_STREQ(e.what(), "Snake body is not continuous!");
+  }
+
+  try {
+    EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake2(illegal2,
+                                           snakestatus::Direction::RIGHT);
+        },
+        std::runtime_error);
+  } catch (const std::runtime_error& e) {
+    EXPECT_STREQ(e.what(), "Snake body is not continuous!");
+  }
+
+  try {
+    EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake3(illegal3,
+                                           snakestatus::Direction::RIGHT);
+        },
+        std::runtime_error);
+  } catch (const std::runtime_error& e) {
+    EXPECT_STREQ(e.what(), "Duplicate body segment detected!");
+  }
+
+  try {
+    EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake4(illegal4,
+                                           snakestatus::Direction::RIGHT);
+        },
+        std::runtime_error);
+  } catch (const std::runtime_error& e) {
+    EXPECT_STREQ(e.what(), "Duplicate body segment detected!");
+  }
+
+  try {
+    EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake5(illegal5,
+                                           snakestatus::Direction::RIGHT);
+        },
+        std::runtime_error);
+  } catch (const std::runtime_error& e) {
+    EXPECT_STREQ(e.what(), "Duplicate body segment detected!");
+  }
 }
 
 TEST_F(SnakeTest, SnakeSize) {
