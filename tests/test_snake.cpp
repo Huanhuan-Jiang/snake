@@ -71,8 +71,6 @@ TEST_F(SnakeTest, GetBody) {
 }
 
 TEST_F(SnakeTest, GetDirection) {
-  int x; // introduce errors
-  
   snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
   snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
 
