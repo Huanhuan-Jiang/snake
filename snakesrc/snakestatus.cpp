@@ -10,7 +10,8 @@ namespace snakestatus {
 
 Snake::Snake(std::list<std::pair<int, int>> initial_body,
              Direction head_direction)
-    : snake_body_(std::move(initial_body)), head_dir_(head_direction) {
+    : snake_body_(std::move(initial_body)),
+      head_dir_(std::move(head_direction)) {
   // Check if the snake body is coninuous and alive
   auto prev_it = snake_body_.begin();
   std::set<std::pair<int, int>> unique_elements;
@@ -23,7 +24,7 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
       throw std::runtime_error("Duplicate body segment detected!");
     }
     if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-      throw std::runtime_error("Snake body is invalid!");
+      throw std::runtime_error("Snake body is not continuous!");
     }
     unique_elements.insert(*it);
     ++prev_it;
