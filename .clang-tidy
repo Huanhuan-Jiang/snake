@@ -1,9 +1,15 @@
 ---
 Checks: '
   -*,
+  modernize-pass-by-value,
+  modernize-use-auto,
   clang-diagnostic-*,
   clang-analyzer-*,
   readability-unused-variable,
+  osx.cocoa.UnusedIvars
 '
 WarningsAsErrors: ''
 HeaderFilterRegex: '^.*\/tests\/.*\.(cpp|h)$'
+CheckOptions:
+  - key:             modernize-pass-by-value.IncludeStyle
+    value:           google
