@@ -21,7 +21,7 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
     if (unique_elements.find(*it) != unique_elements.end()) {
-      throw std::runtime_error("Duplicate body segment detected!");
+      throw std::runtime_error("Snake body overlaps!");
     }
     if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
       throw std::runtime_error("Snake body is not continuous!");

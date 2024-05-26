@@ -20,22 +20,44 @@ class SnakeTest : public ::testing::Test {
   std::list<std::pair<int, int>> body9_4;
 };
 
-TEST_F(SnakeTest, SnakeThrowExceptionOnIllegalSnake) {
-  std::list<std::pair<int, int>> illegal1 = {
+TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
+  std::list<std::pair<int, int>> illegalbody1 = {
       {20, 30}, {19, 30}, {19, 29}, {18, 28}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous
-  std::list<std::pair<int, int>> illegal2 = {
+  std::list<std::pair<int, int>> illegalbody2 = {
       {20, 30}, {19, 30}, {19, 29}, {17, 28}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous
-  std::list<std::pair<int, int>> illegal3 = {
+  std::list<std::pair<int, int>> illegalbody3 = {
       {20, 30}, {19, 30}, {19, 29}, {19, 29}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
-  std::list<std::pair<int, int>> illegal4 = {
+  std::list<std::pair<int, int>> illegalbody4 = {
       {19, 29}, {19, 30}, {19, 29}, {18, 29}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
-  std::list<std::pair<int, int>> illegal5 = {
+  std::list<std::pair<int, int>> illegalbody5 = {
       {17, 29}, {17, 30}, {18, 30}, {19, 30}, {19, 29}, {18, 29},
       {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
+
+  std::list<std::pair<std::list<std::pair<int, int>>, std::string>> illegal_cases = {
+    {illegalbody1, "Snake body is not continuous!"};
+    {illegalbody2, "Snake body is not continuous!"};
+    {illegalbody3, "Snake body overlaps!"};
+    {illegalbody4, "Snake body overlaps!"};
+    {illegalbody5, "Snake body overlaps!"}
+  }
+
+  for (const atuto& [illegalbody, error_message] : illegal_cases) {
+    try {
+      EXPECT_THROW(
+        {
+          snakestatus::Snake illegalsnake(illegalbody,
+                                           snakestatus::Direction::RIGHT);
+        }
+      ),
+        std::runtime_error);
+    } catch (const std::runtime_error& e) {
+      EXPECT_STREQ(e.what(), error_message.c_str);
+    }
+  }
 
   try {
     EXPECT_THROW(
