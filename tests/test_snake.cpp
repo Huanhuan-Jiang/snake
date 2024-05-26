@@ -71,9 +71,21 @@ TEST_F(SnakeTest, GetBody) {
 }
 
 TEST_F(SnakeTest, GetDirection) {
-  snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
-  snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
+  snakestatus::Snake snake1_0_right(body1_0, snakestatus::Direction::RIGHT);
+  snakestatus::Snake snake9_4_right(body9_4, snakestatus::Direction::RIGHT);
+  snakestatus::Snake snake1_0_left(body1_0, snakestatus::Direction::LEFT);
+  snakestatus::Snake snake9_4_left(body9_4, snakestatus::Direction::LEFT);
+  snakestatus::Snake snake1_0_up(body1_0, snakestatus::Direction::UP);
+  snakestatus::Snake snake9_4_up(body9_4, snakestatus::Direction::UP);
+  snakestatus::Snake snake1_0_down(body1_0, snakestatus::Direction::DOWN);
+  snakestatus::Snake snake9_4_down(body9_4, snakestatus::Direction::DOWN);
 
-  EXPECT_EQ(snake1_0.getDirection(), snakestatus::Direction::RIGHT);
-  EXPECT_EQ(snake9_4.getDirection(), snakestatus::Direction::RIGHT);
+  EXPECT_EQ(snake1_0_right.getDirection(), snakestatus::Direction::RIGHT);
+  EXPECT_EQ(snake9_4_right.getDirection(), snakestatus::Direction::RIGHT);
+  EXPECT_EQ(snake1_0_left.getDirection(), snakestatus::Direction::LEFT);
+  EXPECT_EQ(snake9_4_left.getDirection(), snakestatus::Direction::LEFT);
+  EXPECT_EQ(snake1_0_up.getDirection(), snakestatus::Direction::UP);
+  EXPECT_EQ(snake9_4_up.getDirection(), snakestatus::Direction::UP);
+  EXPECT_EQ(snake1_0_down.getDirection(), snakestatus::Direction::DOWN);
+  EXPECT_EQ(snake9_4_down.getDirection(), snakestatus::Direction::DOWN);
 }
