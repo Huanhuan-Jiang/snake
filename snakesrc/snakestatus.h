@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <list>
 #include <utility>
+#include <cstdint>
 
 namespace snakestatus {
 
