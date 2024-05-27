@@ -54,7 +54,7 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
         },
         std::runtime_error);
     } catch (const std::runtime_error& e) {
-      EXPECT_STREQ(e.what(), error_message);
+      EXPECT_STREQ(e.what(), error_message.c_str());
     }
   }
 }
