@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <list>
 #include <utility>
-#include <cstdint>
 
 namespace snakestatus {
 
