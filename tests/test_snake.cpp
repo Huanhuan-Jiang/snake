@@ -37,22 +37,21 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       {17, 29}, {17, 30}, {18, 30}, {19, 30}, {19, 29}, {18, 29},
       {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // duplicate elements
 
-  std::list<std::pair<std::list<std::pair<int, int>>, std::string>> illegal_cases = {
-    {illegalbody1, "Snake body is not continuous!"},
-    {illegalbody2, "Snake body is not continuous!"},
-    {illegalbody3, "Snake body overlaps!"},
-    {illegalbody4, "Snake body overlaps!"},
-    {illegalbody5, "Snake body overlaps!"}
-  };
+  std::list<std::pair<std::list<std::pair<int, int>>, std::string>>
+      illegal_cases = {{illegalbody1, "Snake body is not continuous!"},
+                       {illegalbody2, "Snake body is not continuous!"},
+                       {illegalbody3, "Snake body overlaps!"},
+                       {illegalbody4, "Snake body overlaps!"},
+                       {illegalbody5, "Snake body overlaps!"}};
 
-  for(const auto& [illegalbody, error_message] : illegal_cases) {
+  for (const auto& [illegalbody, error_message] : illegal_cases) {
     try {
       EXPECT_THROW(
-        {
-          snakestatus::Snake illegalsnake(illegalbody,
-                                           snakestatus::Direction::RIGHT);
-        },
-        std::runtime_error);
+          {
+            snakestatus::Snake illegalsnake(illegalbody,
+                                            snakestatus::Direction::RIGHT);
+          },
+          std::runtime_error);
     } catch (const std::runtime_error& e) {
       EXPECT_STREQ(e.what(), error_message.c_str());
     }
