@@ -10,7 +10,6 @@ Checks: '
   -bugprone-swapped-arguments,
   clang-diagnostic-*,
   clang-analyzer-*,
-  readability-unused-variable,
   cppcoreguidelines-*,
   -cppcoreguidelines-avoid-do-while,
   -cppcoreguidelines-avoid-magic-numbers,
@@ -49,6 +48,7 @@ Checks: '
   readability-container-size-empty,
   readability-braces-around-statements,
   readability-identifier-naming,
+  readability-unused-variable,
   cert-*,
 '
 WarningsAsErrors: '*'
