@@ -2,10 +2,11 @@
 
 #include <list>
 #include <utility>
+#include <cstddef>
 
 namespace snakestatus {
 
-enum class Direction { UP, DOWN, RIGHT, LEFT };
+enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 
 class Snake {
   // The (x, y) coordinates of each piece of the snake body

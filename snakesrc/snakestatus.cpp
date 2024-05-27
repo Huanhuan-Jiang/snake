@@ -5,13 +5,15 @@
 #include <set>
 #include <stdexcept>
 #include <utility>
+#include <iterator>
+#include <cstdint>
 
 namespace snakestatus {
 
 Snake::Snake(std::list<std::pair<int, int>> initial_body,
              Direction head_direction)
     : snake_body_(std::move(initial_body)),
-      head_dir_(std::move(head_direction)) {
+      head_dir_(head_direction) {
   // Check if the snake body is coninuous and alive
   auto prev_it = snake_body_.begin();
   std::set<std::pair<int, int>> unique_elements;
