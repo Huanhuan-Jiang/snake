@@ -17,11 +17,14 @@ class SnakeTest : public ::testing::Test {
     body1_0 = {{20, 30}};  // one unit long
     body9_4 = {{20, 30}, {19, 30}, {19, 29}, {18, 29}, {17, 29},
                {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // nine units long with
-                                                         // 4 turns
+    // 4 turns
+    body12_3 = {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29},
+                {20, 30}, {19, 30}, {18, 30}, {17, 30}, {16, 30}};
   }
 
   std::list<std::pair<int, int>> body1_0;
   std::list<std::pair<int, int>> body9_4;
+  std::list<std::pair<int, int>> body12_3;
 };
 
 TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
@@ -175,4 +178,13 @@ TEST(ToolsTest, GenerateFood) {
       500, 500);  // Assuming map_width = 500, map_height = 500
   EXPECT_THAT(food.first, testing::AllOf(testing::Ge(1), testing::Le(500)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Ge(1), testing::Le(500)));
+}
+
+TEST_F(SnakeTest, DeadSnake) {
+  gamestatus::Snake snake12_3(body12_3, gamestatus::Direction::UP);
+
+  snake12_3.move();
+  std::cout << "Head of snae12_3 is: (" << snake12_3.getBody().front().first
+            << ", " << snake12_3.getBody().front().second << ").\n";
+  EXPECT_EQ(snake12_3.deadSnake(), 1);
 }

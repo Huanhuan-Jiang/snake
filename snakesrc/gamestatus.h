@@ -34,6 +34,17 @@ class Snake {
   void eatFood(std::pair<int, int> food) {
     snake_body_.insert(snake_body_.begin(), food);
   };
+
+  int deadSnake() {
+    auto head = snake_body_.front();
+    for (auto it = snake_body_.begin(); it != snake_body_.end(); ++it) {
+      if (head == *it) {
+        return 1;
+        break;
+      }
+    }
+    return 0;
+  }
 };
 
 inline std::pair<int, int> generateFood(int map_width, int map_height) {
