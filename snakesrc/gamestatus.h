@@ -28,6 +28,8 @@ class Snake {
   const std::list<std::pair<int, int>>& getBody() const { return snake_body_; }
 
   const Direction& getDirection() const { return head_dir_; };
+
+  void move();
 };
 
 inline std::pair<int, int> generateFood(int map_width, int map_height) {

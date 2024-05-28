@@ -33,4 +33,31 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
   }
 }
 
+void Snake::move() {
+  auto head = snake_body_.front();
+
+  // Move all elements one step further
+  std::rotate(snake_body_.rbegin(), std::next(snake_body_.rbegin()),
+              snake_body_.rend());
+
+  // Update the head based on the direction
+  switch (head_dir_) {
+    case Direction::UP:
+      head.second++;
+      break;
+    case Direction::DOWN:
+      head.second--;
+      break;
+    case Direction::RIGHT:
+      head.first++;
+      break;
+    case Direction::LEFT:
+      head.first--;
+      break;
+  }
+
+  snake_body_.pop_front();
+  snake_body_.push_front(head);
+}
+
 }  // namespace gamestatus

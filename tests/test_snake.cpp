@@ -95,8 +95,75 @@ TEST_F(SnakeTest, GetDirection) {
   EXPECT_EQ(snake9_4_down.getDirection(), gamestatus::Direction::DOWN);
 }
 
+TEST_F(SnakeTest, MoveOneStep) {
+  gamestatus::Snake snake_right_1_0(body1_0, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake_right_9_4(body9_4, gamestatus::Direction::RIGHT);
+
+  gamestatus::Snake snake_left_1_0(body1_0, gamestatus::Direction::LEFT);
+  gamestatus::Snake snake_left_9_4(body9_4, gamestatus::Direction::LEFT);
+
+  gamestatus::Snake snake_up_1_0(body1_0, gamestatus::Direction::UP);
+  gamestatus::Snake snake_up_9_4(body9_4, gamestatus::Direction::UP);
+
+  gamestatus::Snake snake_down_1_0(body1_0, gamestatus::Direction::DOWN);
+  gamestatus::Snake snake_down_9_4(body9_4, gamestatus::Direction::DOWN);
+
+  std::list<std::pair<int, int>> expected_right_1_0 = {{21, 30}};
+  std::list<std::pair<int, int>> expected_right_9_4 = {
+      {21, 30}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}};
+
+  std::list<std::pair<int, int>> expected_left_1_0 = {{19, 30}};
+  std::list<std::pair<int, int>> expected_left_9_4 = {
+      {19, 30}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}};
+
+  std::list<std::pair<int, int>> expected_up_1_0 = {{20, 31}};
+  std::list<std::pair<int, int>> expected_up_9_4 = {
+      {20, 31}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}};
+
+  std::list<std::pair<int, int>> expected_down_1_0 = {{20, 29}};
+  std::list<std::pair<int, int>> expected_down_9_4 = {
+      {20, 29}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}};
+
+  snake_right_1_0.move();
+  snake_right_9_4.move();
+
+  snake_left_1_0.move();
+  snake_left_9_4.move();
+
+  snake_up_1_0.move();
+  snake_up_9_4.move();
+
+  snake_down_1_0.move();
+  snake_down_9_4.move();
+
+  EXPECT_EQ(snake_right_1_0.getBody(), expected_right_1_0)
+      << "The MoveOneStepTowardsRight with snake1_0 failed";
+  EXPECT_EQ(snake_right_9_4.getBody(), expected_right_9_4)
+      << "The MoveOneStepTowardsRight with snake9_4 failed";
+
+  EXPECT_EQ(snake_left_1_0.getBody(), expected_left_1_0)
+      << "The MoveOneStepTowardsLeft with snake1_0 failed";
+  EXPECT_EQ(snake_left_9_4.getBody(), expected_left_9_4)
+      << "The MoveOneStepTowardsLeft with snake9_4 failed";
+
+  EXPECT_EQ(snake_up_1_0.getBody(), expected_up_1_0)
+      << "The MoveOneStepTowardsUp with snake1_0 failed";
+  EXPECT_EQ(snake_up_9_4.getBody(), expected_up_9_4)
+      << "The MoveOneStepTowardsUp with snake9_4 failed";
+
+  EXPECT_EQ(snake_down_1_0.getBody(), expected_down_1_0)
+      << "The MoveOneStepTowardsDown with snake1_0 failed";
+  EXPECT_EQ(snake_down_9_4.getBody(), expected_down_9_4)
+      << "The MoveOneStepTowardsDown with snake9_4 failed";
+}
+
 TEST(ToolsTest, GenerateFood) {
-  std::pair<int, int> food = gamestatus::generateFood(500, 500); // Assuming map_width = 500, map_height = 500
+  std::pair<int, int> food = gamestatus::generateFood(
+      500, 500);  // Assuming map_width = 500, map_height = 500
   EXPECT_THAT(food.first, testing::AllOf(testing::Ge(1), testing::Le(500)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Ge(1), testing::Le(500)));
 }
