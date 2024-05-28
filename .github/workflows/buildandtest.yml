@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          submodules: recursive
       
       - name: Install Clang-Tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
@@ -24,6 +26,11 @@ jobs:
         run: |
           mkdir build
           cd build
-          clang++ -MJ helloworld.o.json -std=c++23 -o helloworld.o -c ../helloworld.cpp
-          sed -e '1s/^/[\n/' -e '$s/,$/\n]/' *.o.json > compile_commands.json
-          clang-tidy ../helloworld.cpp --checks=warnings | grep "warning" && exit 1 || exit 0
+          cmake ..
+          make
+          ctest --output-on-failure
+          find ../ \( -name '*.cpp' -o -name '*.h' \) \
+          -not \( -path '*/build/*' -o -path '*/thirdparty/*' \) \
+          -exec clang-tidy -p=. --config-file=../.clang-tidy -extra-arg=-Wunused-variable {} + \
+          -print | grep "warning" && exit 1 || exit 0
+
