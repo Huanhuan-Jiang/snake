@@ -1,4 +1,4 @@
-#include "snakestatus.h"
+#include "gamestatus.h"
 
 #include <cmath>
 #include <cstdint>
@@ -9,7 +9,7 @@
 #include <unordered_set>
 #include <utility>
 
-namespace snakestatus {
+namespace gamestatus {
 
 // Define hash for std::pair<T1, T2>
 struct pair_hash {
@@ -43,4 +43,4 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
   }
 }
 
-}  // namespace snakestatus
+}  // namespace gamestatus
