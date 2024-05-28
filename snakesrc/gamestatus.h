@@ -28,16 +28,17 @@ class Snake {
   const std::list<std::pair<int, int>>& getBody() const { return snake_body_; }
 
   const Direction& getDirection() const { return head_dir_; };
+};
 
-  std::pair<int, int> generateFood() {
-    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::mt19937 gen(seed);
-    std::uniform_int_distribution<int> dis(1, 100);
+inline std::pair<int, int> generateFood(int map_width, int map_height) {
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::mt19937 gen(seed);
+  std::uniform_int_distribution<int> dis_width(1, map_width);
+  std::uniform_int_distribution<int> dis_height(1, map_height);
 
-    int rand_x = dis(gen);
-    int rand_y = dis(gen);
-    return std::make_pair(rand_x, rand_y);
-  };
+  int rand_x = dis_width(gen);
+  int rand_y = dis_height(gen);
+  return std::make_pair(rand_x, rand_y);
 };
 
 }  // namespace gamestatus

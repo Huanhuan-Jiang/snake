@@ -94,3 +94,9 @@ TEST_F(SnakeTest, GetDirection) {
   EXPECT_EQ(snake1_0_down.getDirection(), gamestatus::Direction::DOWN);
   EXPECT_EQ(snake9_4_down.getDirection(), gamestatus::Direction::DOWN);
 }
+
+TEST(ToolsTest, GenerateFood) {
+  std::pair<int, int> food = gamestatus::generateFood(500, 500); // Assuming map_width = 500, map_height = 500
+  EXPECT_THAT(food.first, testing::AllOf(testing::Ge(1), testing::Le(500)));
+  EXPECT_THAT(food.second, testing::AllOf(testing::Ge(1), testing::Le(500)));
+}
