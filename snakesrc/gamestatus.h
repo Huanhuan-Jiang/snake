@@ -30,6 +30,10 @@ class Snake {
   const Direction& getDirection() const { return head_dir_; };
 
   void move();
+
+  void eatFood(std::pair<int, int> food) {
+    snake_body_.insert(snake_body_.begin(), food);
+  };
 };
 
 inline std::pair<int, int> generateFood(int map_width, int map_height) {

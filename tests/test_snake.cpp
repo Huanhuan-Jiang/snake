@@ -140,25 +140,34 @@ TEST_F(SnakeTest, MoveOneStep) {
   snake_down_1_0.move();
   snake_down_9_4.move();
 
-  EXPECT_EQ(snake_right_1_0.getBody(), expected_right_1_0)
-      << "The MoveOneStepTowardsRight with snake1_0 failed";
-  EXPECT_EQ(snake_right_9_4.getBody(), expected_right_9_4)
-      << "The MoveOneStepTowardsRight with snake9_4 failed";
+  EXPECT_EQ(snake_right_1_0.getBody(), expected_right_1_0);
+  EXPECT_EQ(snake_right_9_4.getBody(), expected_right_9_4);
 
-  EXPECT_EQ(snake_left_1_0.getBody(), expected_left_1_0)
-      << "The MoveOneStepTowardsLeft with snake1_0 failed";
-  EXPECT_EQ(snake_left_9_4.getBody(), expected_left_9_4)
-      << "The MoveOneStepTowardsLeft with snake9_4 failed";
+  EXPECT_EQ(snake_left_1_0.getBody(), expected_left_1_0);
+  EXPECT_EQ(snake_left_9_4.getBody(), expected_left_9_4);
 
-  EXPECT_EQ(snake_up_1_0.getBody(), expected_up_1_0)
-      << "The MoveOneStepTowardsUp with snake1_0 failed";
-  EXPECT_EQ(snake_up_9_4.getBody(), expected_up_9_4)
-      << "The MoveOneStepTowardsUp with snake9_4 failed";
+  EXPECT_EQ(snake_up_1_0.getBody(), expected_up_1_0);
+  EXPECT_EQ(snake_up_9_4.getBody(), expected_up_9_4);
 
-  EXPECT_EQ(snake_down_1_0.getBody(), expected_down_1_0)
-      << "The MoveOneStepTowardsDown with snake1_0 failed";
-  EXPECT_EQ(snake_down_9_4.getBody(), expected_down_9_4)
-      << "The MoveOneStepTowardsDown with snake9_4 failed";
+  EXPECT_EQ(snake_down_1_0.getBody(), expected_down_1_0);
+  EXPECT_EQ(snake_down_9_4.getBody(), expected_down_9_4);
+}
+
+TEST_F(SnakeTest, EatFood) {
+  std::pair<int, int> food = {21, 30};
+  std::list<std::pair<int, int>> expected1_0 = {{21, 30}, {20, 30}};
+  std::list<std::pair<int, int>> expected9_4 = {
+      {21, 30}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
+      {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}};
+
+  gamestatus::Snake snake1_0(body1_0, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake9_4(body9_4, gamestatus::Direction::RIGHT);
+
+  snake1_0.eatFood(food);
+  snake9_4.eatFood(food);
+
+  EXPECT_EQ(snake1_0.getBody(), expected1_0);
+  EXPECT_EQ(snake9_4.getBody(), expected9_4);
 }
 
 TEST(ToolsTest, GenerateFood) {
