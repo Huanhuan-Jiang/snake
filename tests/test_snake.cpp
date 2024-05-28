@@ -1,3 +1,4 @@
+// #include <gmock/gmock-matchers.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -6,6 +7,10 @@
 #include <utility>
 
 #include "snakestatus.h"
+
+using testing::HasSubstr;
+using testing::Property;
+using testing::Throws;
 
 class SnakeTest : public ::testing::Test {
  protected:
@@ -45,16 +50,13 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
                        {illegalbody5, "Snake body overlaps!"}};
 
   for (const auto& [illegalbody, error_message] : illegal_cases) {
-    try {
-      EXPECT_THROW(
-          {
-            snakestatus::Snake illegalsnake(illegalbody,
-                                            snakestatus::Direction::RIGHT);
-          },
-          std::runtime_error);
-    } catch (const std::runtime_error& e) {
-      EXPECT_STREQ(e.what(), error_message.c_str());
-    }
+    EXPECT_THAT(
+        [&illegalbody]() {
+          snakestatus::Snake illegalsnake(illegalbody,
+                                          snakestatus::Direction::RIGHT);
+        },
+        Throws<std::runtime_error>(Property(&std::runtime_error::what,
+                                            HasSubstr(error_message.c_str()))));
   }
 }
 
