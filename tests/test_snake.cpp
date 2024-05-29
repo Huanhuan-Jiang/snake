@@ -173,11 +173,16 @@ TEST_F(SnakeTest, EatFood) {
   EXPECT_EQ(snake9_4.getBody(), expected9_4);
 }
 
-TEST(ToolsTest, GenerateFood) {
+TEST_F(ToolsTest, GenerateFood) {
+  int map_width = 500;
+  int map_height = 500;
   std::pair<int, int> food = gamestatus::generateFood(
-      500, 500);  // Assuming map_width = 500, map_height = 500
-  EXPECT_THAT(food.first, testing::AllOf(testing::Ge(1), testing::Le(500)));
-  EXPECT_THAT(food.second, testing::AllOf(testing::Ge(1), testing::Le(500)));
+      body9_4, map_width,
+      map_height);  // Assuming map_width = 500, map_height = 500
+  EXPECT_THAT(food.first,
+              testing::AllOf(testing::Ge(1), testing::Le(map_width)));
+  EXPECT_THAT(food.second,
+              testing::AllOf(testing::Ge(1), testing::Le(map_height)));
 }
 
 TEST_F(SnakeTest, DeadSnake) {

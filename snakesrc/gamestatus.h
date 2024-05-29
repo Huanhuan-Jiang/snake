@@ -11,6 +11,16 @@
 
 namespace gamestatus {
 
+// Define hash for std::pair<T1, T2>
+struct pair_hash {
+  template <class T1, class T2>
+  std::size_t operator()(const std::pair<T1, T2>& p) const {
+    auto hash1 = std::hash<T1>{}(p.first);
+    auto hash2 = std::hash<T2>{}(p.second);
+    return hash1 ^ (hash2 << 1);
+  }
+};
+
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 
 class Snake {
@@ -31,7 +41,7 @@ class Snake {
 
   void move();
 
-  void eatFood(std::pair<int, int> food) {
+  void eatFood(const std::pair<int, int> food) {
     snake_body_.insert(snake_body_.begin(), food);
   };
 
@@ -47,15 +57,18 @@ class Snake {
   }
 };
 
-inline std::pair<int, int> generateFood(int map_width, int map_height) {
-  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-  std::mt19937 gen(seed);
-  std::uniform_int_distribution<int> dis_width(1, map_width);
-  std::uniform_int_distribution<int> dis_height(1, map_height);
+class Map {
+  int map_width_;
+  int map_height_;
 
-  int rand_x = dis_width(gen);
-  int rand_y = dis_height(gen);
-  return std::make_pair(rand_x, rand_y);
-};
+ public:
+  Map(int map_w, int map_h) : map_width_(map_width), map_height_(map_height) {};
+
+  int getWidth() { return map_width_; };
+  int getHeight() { return map_height_; };
+
+  std::pair<int, int> Map::generateFood(
+      const std::list<std::pair<int, int>>& snake_body, int width, int height);
+}
 
 }  // namespace gamestatus
