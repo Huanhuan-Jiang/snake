@@ -4,6 +4,7 @@
 #include <list>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include "gamestatus.h"
 
@@ -188,9 +189,41 @@ TEST_F(SnakeTest, GenerateFood) {
 
 TEST_F(SnakeTest, DeadSnake) {
   gamestatus::Snake snake12_3(body12_3, gamestatus::Direction::UP);
-
   snake12_3.move();
-  std::cout << "Head of snae12_3 is: (" << snake12_3.getBody().front().first
-            << ", " << snake12_3.getBody().front().second << ").\n";
   EXPECT_EQ(snake12_3.deadSnake(), 1);
+}
+
+TEST(CycleTest, FromBornToDie) {
+  std::list<std::pair<int, int>> initial_body = {{17, 30}};
+  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
+
+  std::vector<std::pair<int, int>> food_container = {
+      {18, 30}, {19, 30}, {20, 30}, {20, 29},
+      {20, 28}, {19, 28}, {18, 28}, {18, 29}};
+
+  std::cout << "Current snakebody: \n";
+  for (const auto& pair : snake.getBody()) {
+    std::cout << "{" << pair.first << ", " << pair.second << "}, ";
+  }
+  std::cout << "\n";
+
+  for (auto i = 0; i < food_container.size(); ++i) {
+    snake.move();
+    snake.eatFood(food_container[i]);
+    if (i == 2) {
+      snake.updateDirection(gamestatus::Direction::DOWN);
+    }
+    if (i == 4) {
+      snake.updateDirection(gamestatus::Direction::LEFT);
+    }
+    if (i == 6) {
+      snake.updateDirection(gamestatus::Direction::UP);
+    }
+    std::cout << "Current snakebody: \n";
+    for (const auto& pair : snake.getBody()) {
+      std::cout << "{" << pair.first << ", " << pair.second << ")} ";
+    }
+    std::cout << "\n";
+  }
+  EXPECT_EQ(snake.deadSnake(), 1);
 }

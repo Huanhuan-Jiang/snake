@@ -36,10 +36,6 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
 void Snake::move() {
   auto head = snake_body_.front();
 
-  // Move all elements one step further
-  std::rotate(snake_body_.rbegin(), std::next(snake_body_.rbegin()),
-              snake_body_.rend());
-
   // Update the head based on the direction
   switch (head_dir_) {
     case Direction::UP:
@@ -55,6 +51,9 @@ void Snake::move() {
       head.first--;
       break;
   }
+  // Move all elements one step further
+  std::rotate(snake_body_.rbegin(), std::next(snake_body_.rbegin()),
+              snake_body_.rend());
 
   snake_body_.pop_front();
   snake_body_.push_front(head);

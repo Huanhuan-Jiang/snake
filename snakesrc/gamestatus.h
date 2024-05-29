@@ -55,6 +55,8 @@ class Snake {
     }
     return 0;
   }
+
+  void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
 };
 
 class Map {
