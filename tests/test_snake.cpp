@@ -204,7 +204,7 @@ TEST(CycleTest, FromBornToDie) {
 
   std::cout << "Current snakebody: \n";
   for (const auto& pair : snake.getBody()) {
-    std::cout << "{" << pair.first << ", " << pair.second << "}, " ;
+    std::cout << "{" << pair.first << ", " << pair.second << "}, ";
   }
   std::cout << "\n";
 
@@ -212,7 +212,7 @@ TEST(CycleTest, FromBornToDie) {
     std::pair<int, int> food = food_container[i];
     std::cout << "Food is: (" << food.first << ", " << food.second << ")\n";
     snake.moveOrEat(food_container[i]);
-   
+
     if (i == 2) {
       snake.updateDirection(gamestatus::Direction::DOWN);
     }
@@ -222,7 +222,8 @@ TEST(CycleTest, FromBornToDie) {
     if (i == 6) {
       snake.updateDirection(gamestatus::Direction::UP);
     }
-    std::cout << "Current snakebody with snake size of " << snake.getBody().size() << "\n";
+    std::cout << "Current snakebody with snake size of "
+              << snake.getBody().size() << "\n";
     for (const auto& pair : snake.getBody()) {
       std::cout << "(" << pair.first << ", " << pair.second << ")\n ";
     }
