@@ -194,7 +194,7 @@ TEST_F(SnakeTest, DeadSnake) {
   EXPECT_EQ(snake12_3.deadSnake(), 1);
 }
 
-TEST(CycleTest, FromBornToDie) {
+TEST(CycleTest, FromBithToDeath) {
   std::list<std::pair<int, int>> initial_body = {{17, 30}};
   gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
 
