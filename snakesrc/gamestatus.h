@@ -39,7 +39,7 @@ class Snake {
 
   const Direction& getDirection() const { return head_dir_; };
 
-  void move();
+  void moveOrEat(const std::pair<int, int> food);
 
   void eatFood(const std::pair<int, int> food) {
     snake_body_.insert(snake_body_.begin(), food);
@@ -49,7 +49,7 @@ class Snake {
     auto head = snake_body_.front();
     for (auto it = snake_body_.begin(); it != snake_body_.end(); ++it) {
       if (head == *it) {
-        return 1;
+        return 1; // Snake dies;
         break;
       }
     }

@@ -33,7 +33,7 @@ Snake::Snake(std::list<std::pair<int, int>> initial_body,
   }
 }
 
-void Snake::move() {
+void Snake::moveOrEat(const std::pair<int, int> food) {
   auto head = snake_body_.front();
 
   // Update the head based on the direction
@@ -51,12 +51,16 @@ void Snake::move() {
       head.first--;
       break;
   }
-  // Move all elements one step further
-  std::rotate(snake_body_.rbegin(), std::next(snake_body_.rbegin()),
-              snake_body_.rend());
 
-  snake_body_.pop_front();
-  snake_body_.push_front(head);
+  if (head == food) {
+    snake_body_.insert(snake_body_.begin(), food);
+  } else {
+    // Move all elements one step further
+    std::rotate(snake_body_.rbegin(), std::next(snake_body_.rbegin()),
+                snake_body_.rend());
+    snake_body_.pop_front();
+    snake_body_.push_front(head);
+  }
 }
 
 std::pair<int, int> Map::generateFood(

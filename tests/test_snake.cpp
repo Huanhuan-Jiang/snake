@@ -132,17 +132,18 @@ TEST_F(SnakeTest, MoveOneStep) {
       {20, 29}, {20, 30}, {19, 30}, {19, 29}, {18, 29},
       {17, 29}, {17, 28}, {17, 27}, {16, 27}};
 
-  snake_right_1_0.move();
-  snake_right_9_4.move();
+  std::pair<int, int> random_food = {100, 100};
+  snake_right_1_0.moveOrEat(random_food);
+  snake_right_9_4.moveOrEat(random_food);
 
-  snake_left_1_0.move();
-  snake_left_9_4.move();
+  snake_left_1_0.moveOrEat(random_food);
+  snake_left_9_4.moveOrEat(random_food);
 
-  snake_up_1_0.move();
-  snake_up_9_4.move();
+  snake_up_1_0.moveOrEat(random_food);
+  snake_up_9_4.moveOrEat(random_food);
 
-  snake_down_1_0.move();
-  snake_down_9_4.move();
+  snake_down_1_0.moveOrEat(random_food);
+  snake_down_9_4.moveOrEat(random_food);
 
   EXPECT_EQ(snake_right_1_0.getBody(), expected_right_1_0);
   EXPECT_EQ(snake_right_9_4.getBody(), expected_right_9_4);
@@ -167,8 +168,8 @@ TEST_F(SnakeTest, EatFood) {
   gamestatus::Snake snake1_0(body1_0, gamestatus::Direction::RIGHT);
   gamestatus::Snake snake9_4(body9_4, gamestatus::Direction::RIGHT);
 
-  snake1_0.eatFood(food);
-  snake9_4.eatFood(food);
+  snake1_0.moveOrEat(food);
+  snake9_4.moveOrEat(food);
 
   EXPECT_EQ(snake1_0.getBody(), expected1_0);
   EXPECT_EQ(snake9_4.getBody(), expected9_4);
@@ -189,7 +190,7 @@ TEST_F(SnakeTest, GenerateFood) {
 
 TEST_F(SnakeTest, DeadSnake) {
   gamestatus::Snake snake12_3(body12_3, gamestatus::Direction::UP);
-  snake12_3.move();
+  snake12_3.moveOrEat({100, 100});
   EXPECT_EQ(snake12_3.deadSnake(), 1);
 }
 
@@ -203,13 +204,15 @@ TEST(CycleTest, FromBornToDie) {
 
   std::cout << "Current snakebody: \n";
   for (const auto& pair : snake.getBody()) {
-    std::cout << "{" << pair.first << ", " << pair.second << "}, ";
+    std::cout << "{" << pair.first << ", " << pair.second << "}, " ;
   }
   std::cout << "\n";
 
   for (auto i = 0; i < food_container.size(); ++i) {
-    snake.move();
-    snake.eatFood(food_container[i]);
+    std::pair<int, int> food = food_container[i];
+    std::cout << "Food is: (" << food.first << ", " << food.second << ")\n";
+    snake.moveOrEat(food_container[i]);
+   
     if (i == 2) {
       snake.updateDirection(gamestatus::Direction::DOWN);
     }
@@ -219,9 +222,9 @@ TEST(CycleTest, FromBornToDie) {
     if (i == 6) {
       snake.updateDirection(gamestatus::Direction::UP);
     }
-    std::cout << "Current snakebody: \n";
+    std::cout << "Current snakebody with snake size of " << snake.getBody().size() << "\n";
     for (const auto& pair : snake.getBody()) {
-      std::cout << "{" << pair.first << ", " << pair.second << ")} ";
+      std::cout << "(" << pair.first << ", " << pair.second << ")\n ";
     }
     std::cout << "\n";
   }
