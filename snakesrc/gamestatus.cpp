@@ -62,20 +62,18 @@ void Snake::move() {
 
 std::pair<int, int> Map::generateFood(
     const std::list<std::pair<int, int>>& snake_body, int width, int height) {
-  bool is_valid = false;
-  std::unordered_set<std::pair<int, int>, pari_hash> snake_body_set(
-      snake_body.begin(), snake_body_end());
+  std::unordered_set<std::pair<int, int>, pair_hash> snake_body_set(
+      snake_body.begin(), snake_body.end());
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::mt19937 gen(seed);
   std::uniform_int_distribution<int> dis_width(1, width);
   std::uniform_int_distribution<int> dis_height(1, height);
 
-  while (!is_valid) {
+  while (true) {
     int rand_x = dis_width(gen);
     int rand_y = dis_height(gen);
     auto food = std::make_pair(rand_x, rand_y);
     if (snake_body_set.find(food) == snake_body_set.end()) {
-      is_valid = true;
       return std::make_pair(rand_x, rand_y);
     }
   }

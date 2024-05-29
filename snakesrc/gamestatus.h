@@ -62,13 +62,13 @@ class Map {
   int map_height_;
 
  public:
-  Map(int map_w, int map_h) : map_width_(map_width), map_height_(map_height) {};
+  Map(int map_w, int map_h) : map_width_(map_w), map_height_(map_h) {};
 
   int getWidth() { return map_width_; };
   int getHeight() { return map_height_; };
 
-  std::pair<int, int> Map::generateFood(
+  std::pair<int, int> generateFood(
       const std::list<std::pair<int, int>>& snake_body, int width, int height);
-}
+};
 
 }  // namespace gamestatus
