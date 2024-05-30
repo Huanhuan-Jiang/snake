@@ -18,7 +18,7 @@ target_link_libraries(snaketest PRIVATE
     GTest::gmock_main
 )
 
-target_link_libraries(snaketest PRIVATE snakestatus)
+target_link_libraries(snaketest PRIVATE gamestatus)
 
 enable_testing()
 

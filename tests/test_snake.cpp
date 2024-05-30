@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "snakestatus.h"
+#include "gamestatus.h"
 
 using testing::HasSubstr;
 using testing::Property;
@@ -51,8 +51,8 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
   for (const auto& [illegalbody, error_message] : illegal_cases) {
     EXPECT_THAT(
         [&illegalbody]() {
-          snakestatus::Snake illegalsnake(illegalbody,
-                                          snakestatus::Direction::RIGHT);
+          gamestatus::Snake illegalsnake(illegalbody,
+                                         gamestatus::Direction::RIGHT);
         },
         Throws<std::runtime_error>(Property(&std::runtime_error::what,
                                             HasSubstr(error_message.c_str()))));
@@ -60,37 +60,37 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
 }
 
 TEST_F(SnakeTest, SnakeSize) {
-  snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
-  snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
+  gamestatus::Snake snake1_0(body1_0, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake9_4(body9_4, gamestatus::Direction::RIGHT);
 
   EXPECT_EQ(snake1_0.size(), 1u);
   EXPECT_EQ(snake9_4.size(), 9u);
 }
 
 TEST_F(SnakeTest, GetBody) {
-  snakestatus::Snake snake1_0(body1_0, snakestatus::Direction::RIGHT);
-  snakestatus::Snake snake9_4(body9_4, snakestatus::Direction::RIGHT);
+  gamestatus::Snake snake1_0(body1_0, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake9_4(body9_4, gamestatus::Direction::RIGHT);
 
   EXPECT_EQ(snake1_0.getBody(), body1_0);
   EXPECT_EQ(snake9_4.getBody(), body9_4);
 }
 
 TEST_F(SnakeTest, GetDirection) {
-  snakestatus::Snake snake1_0_right(body1_0, snakestatus::Direction::RIGHT);
-  snakestatus::Snake snake9_4_right(body9_4, snakestatus::Direction::RIGHT);
-  snakestatus::Snake snake1_0_left(body1_0, snakestatus::Direction::LEFT);
-  snakestatus::Snake snake9_4_left(body9_4, snakestatus::Direction::LEFT);
-  snakestatus::Snake snake1_0_up(body1_0, snakestatus::Direction::UP);
-  snakestatus::Snake snake9_4_up(body9_4, snakestatus::Direction::UP);
-  snakestatus::Snake snake1_0_down(body1_0, snakestatus::Direction::DOWN);
-  snakestatus::Snake snake9_4_down(body9_4, snakestatus::Direction::DOWN);
+  gamestatus::Snake snake1_0_right(body1_0, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake9_4_right(body9_4, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake1_0_left(body1_0, gamestatus::Direction::LEFT);
+  gamestatus::Snake snake9_4_left(body9_4, gamestatus::Direction::LEFT);
+  gamestatus::Snake snake1_0_up(body1_0, gamestatus::Direction::UP);
+  gamestatus::Snake snake9_4_up(body9_4, gamestatus::Direction::UP);
+  gamestatus::Snake snake1_0_down(body1_0, gamestatus::Direction::DOWN);
+  gamestatus::Snake snake9_4_down(body9_4, gamestatus::Direction::DOWN);
 
-  EXPECT_EQ(snake1_0_right.getDirection(), snakestatus::Direction::RIGHT);
-  EXPECT_EQ(snake9_4_right.getDirection(), snakestatus::Direction::RIGHT);
-  EXPECT_EQ(snake1_0_left.getDirection(), snakestatus::Direction::LEFT);
-  EXPECT_EQ(snake9_4_left.getDirection(), snakestatus::Direction::LEFT);
-  EXPECT_EQ(snake1_0_up.getDirection(), snakestatus::Direction::UP);
-  EXPECT_EQ(snake9_4_up.getDirection(), snakestatus::Direction::UP);
-  EXPECT_EQ(snake1_0_down.getDirection(), snakestatus::Direction::DOWN);
-  EXPECT_EQ(snake9_4_down.getDirection(), snakestatus::Direction::DOWN);
+  EXPECT_EQ(snake1_0_right.getDirection(), gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake9_4_right.getDirection(), gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake1_0_left.getDirection(), gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake9_4_left.getDirection(), gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake1_0_up.getDirection(), gamestatus::Direction::UP);
+  EXPECT_EQ(snake9_4_up.getDirection(), gamestatus::Direction::UP);
+  EXPECT_EQ(snake1_0_down.getDirection(), gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake9_4_down.getDirection(), gamestatus::Direction::DOWN);
 }

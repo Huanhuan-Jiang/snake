@@ -5,7 +5,7 @@
 #include <list>
 #include <utility>
 
-namespace snakestatus {
+namespace gamestatus {
 
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 
@@ -26,4 +26,4 @@ class Snake {
   const Direction& getDirection() const { return head_dir_; };
 };
 
-}  // namespace snakestatus
+}  // namespace gamestatus
