@@ -52,7 +52,7 @@ TEST_F(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
     EXPECT_THAT(
         [&illegalbody]() {
           gamestatus::Snake illegalsnake(illegalbody,
-                                          gamestatus::Direction::RIGHT);
+                                         gamestatus::Direction::RIGHT);
         },
         Throws<std::runtime_error>(Property(&std::runtime_error::what,
                                             HasSubstr(error_message.c_str()))));

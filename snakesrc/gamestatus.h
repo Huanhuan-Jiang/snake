@@ -26,4 +26,4 @@ class Snake {
   const Direction& getDirection() const { return head_dir_; };
 };
 
-}  // namespace gametatus
+}  // namespace gamestatus
