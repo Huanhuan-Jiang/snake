@@ -57,7 +57,7 @@ void Snake::moveOrEat(const std::pair<int, int> food) {
   } else {
     // Move all elements one step further
     snake_body_.pop_back();
-    snake_body_.push_front(head);
+    snake_body_.emplace_front(head);
   }
 }
 
