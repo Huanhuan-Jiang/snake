@@ -177,11 +177,9 @@ TEST_F(SnakeTest, EatFood) {
 
 TEST_F(SnakeTest, GenerateFood) {
   int map_width = 500;
-  int map_height = 500;
+  int map_height = 500;  // Assuming map_width = 500, map_height = 500
   gamestatus::Map snake_map(map_width, map_height);
-  std::pair<int, int> food = snake_map.generateFood(
-      body9_4, map_width,
-      map_height);  // Assuming map_width = 500, map_height = 500
+  std::pair<int, int> food = snake_map.generateFood(body9_4);
   EXPECT_THAT(food.first,
               testing::AllOf(testing::Ge(1), testing::Le(map_width)));
   EXPECT_THAT(food.second,
@@ -194,7 +192,7 @@ TEST_F(SnakeTest, DeadSnake) {
   EXPECT_EQ(snake12_3.deadSnake(), 1);
 }
 
-TEST(CycleTest, FromBithToDeath) {
+TEST(CycleTest, FromBirthToDeath) {
   std::list<std::pair<int, int>> initial_body = {{17, 30}};
   gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
 
@@ -202,15 +200,8 @@ TEST(CycleTest, FromBithToDeath) {
       {18, 30}, {19, 30}, {20, 30}, {20, 29},
       {20, 28}, {19, 28}, {18, 28}, {18, 29}};
 
-  std::cout << "Current snakebody: \n";
-  for (const auto& pair : snake.getBody()) {
-    std::cout << "{" << pair.first << ", " << pair.second << "}, ";
-  }
-  std::cout << "\n";
-
   for (auto i = 0; i < food_container.size(); ++i) {
     std::pair<int, int> food = food_container[i];
-    std::cout << "Food is: (" << food.first << ", " << food.second << ")\n";
     snake.moveOrEat(food_container[i]);
 
     if (i == 2) {
@@ -222,12 +213,6 @@ TEST(CycleTest, FromBithToDeath) {
     if (i == 6) {
       snake.updateDirection(gamestatus::Direction::UP);
     }
-    std::cout << "Current snakebody with snake size of "
-              << snake.getBody().size() << "\n";
-    for (const auto& pair : snake.getBody()) {
-      std::cout << "(" << pair.first << ", " << pair.second << ")\n ";
-    }
-    std::cout << "\n";
   }
   EXPECT_EQ(snake.deadSnake(), 1);
 }

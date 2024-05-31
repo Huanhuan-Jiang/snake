@@ -24,10 +24,7 @@ struct pair_hash {
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 
 class Snake {
-  // The (x, y) coordinates of each piece of the snake body
   std::list<std::pair<int, int>> snake_body_;
-
-  // The direction of snake head
   Direction head_dir_;
 
  public:
@@ -66,7 +63,7 @@ class Map {
   int getHeight() { return map_height_; };
 
   std::pair<int, int> generateFood(
-      const std::list<std::pair<int, int>>& snake_body, int width, int height);
+      const std::list<std::pair<int, int>>& snake_body);
 };
 
 }  // namespace gamestatus

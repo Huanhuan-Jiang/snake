@@ -64,13 +64,13 @@ void Snake::moveOrEat(const std::pair<int, int> food) {
 }
 
 std::pair<int, int> Map::generateFood(
-    const std::list<std::pair<int, int>>& snake_body, int width, int height) {
+    const std::list<std::pair<int, int>>& snake_body) {
   std::unordered_set<std::pair<int, int>, pair_hash> snake_body_set(
       snake_body.begin(), snake_body.end());
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::mt19937 gen(seed);
-  std::uniform_int_distribution<int> dis_width(1, width);
-  std::uniform_int_distribution<int> dis_height(1, height);
+  std::uniform_int_distribution<int> dis_width(1, map_width_);
+  std::uniform_int_distribution<int> dis_height(1, map_height_);
 
   while (true) {
     int rand_x = dis_width(gen);
