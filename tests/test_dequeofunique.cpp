@@ -1,4 +1,5 @@
 #include <gmock/gmock.h>
+#include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 
 #include <deque>
@@ -7,19 +8,27 @@
 
 #include "gamestatus.h"
 
-TEST(DequeOfUniqueTest, Deque) {
+using testing::HasSubstr;
+using testing::Property;
+using testing::Throws;
+
+TEST(DequeOfUniqueTest, ThrowExceptionWithCorrectMessage) {
   std::deque<std::pair<int, int>> deque1 = {
-      {20, 30}, {19, 30}, {19, 29}, {18, 28}};
+      {20, 30}, {19, 30}, {19, 29},
+      {18, 28}, {19, 29}, {18, 28}};  // duplicate elements
   std::deque<std::pair<int, int>> deque2 = {
       {19, 29}, {19, 30}, {19, 29}, {18, 29}};  // duplicate elements
-  std::deque<std::pair<int, int>> deque3 = {
-      {19, 29}, {19, 29}, {18, 30}, {19, 30}, {19, 29}};  // duplicate elements
 
-  gamestatus::DequeOfUniquePairs<int, int> deque_unique1(deque1);
-  gamestatus::DequeOfUniquePairs<int, int> deque_unique2(deque2);
-  gamestatus::DequeOfUniquePairs<int, int> deque_unique3(deque3);
-  
-  EXPECT_EQ(deque_unique1.deque(), deque1);
-  EXPECT_EQ(deque_unique2.deque(), deque2);
-  EXPECT_EQ(deque_unique3.deque(), deque3);
+  const std::deque<std::pair<std::deque<std::pair<int, int>>, std::string>>
+      illegal_cases = {{deque1, "Duplicates detected!"},
+                       {deque2, "Duplicates detected!"}};
+
+  for (const auto& [illegaldeque, error_message] : illegal_cases) {
+        EXPECT_THAT(
+            [&illegaldeque]() {
+                gamestatus::DequeOfUniquePairs<int, int> deque_unique(illegaldeque);
+            },
+            Throws<std::runtime_error>(Property(&std::runtime_error::what, HasSubstr(error_message)))
+        );
+  }
 }

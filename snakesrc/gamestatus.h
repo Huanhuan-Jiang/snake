@@ -28,6 +28,9 @@ class DequeOfUniquePairs {
   DequeOfUniquePairs(const std::deque<std::pair<T1, T2>> initial_deque)
       : deque_(std::move(initial_deque)) {
     for (auto it = deque_.begin(); it != deque_.end(); ++it) {
+      if (set_.find(*it) != set_.end()) {
+        throw std::runtime_error("Duplicates detected!");
+      }
       set_.insert(*it);
     }
   };
