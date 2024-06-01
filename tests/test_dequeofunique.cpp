@@ -1,5 +1,5 @@
-#include <gmock/gmock.h>
 #include <gmock/gmock-matchers.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <deque>
@@ -24,11 +24,12 @@ TEST(DequeOfUniqueTest, ThrowExceptionWithCorrectMessage) {
                        {deque2, "Duplicates detected!"}};
 
   for (const auto& [illegaldeque, error_message] : illegal_cases) {
-        EXPECT_THAT(
-            [&illegaldeque]() {
-                gamestatus::DequeOfUniquePairs<int, int> deque_unique(illegaldeque);
-            },
-            Throws<std::runtime_error>(Property(&std::runtime_error::what, HasSubstr(error_message)))
-        );
+    auto lambda = [&illegaldeque]() {
+      gamestatus::DequeOfUniquePairs<int, int> deque_unique(illegaldeque);
+    };
+
+    EXPECT_THAT(lambda,
+                Throws<std::runtime_error>(Property(&std::runtime_error::what,
+                                                    HasSubstr(error_message))));
   }
 }
