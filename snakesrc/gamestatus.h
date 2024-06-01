@@ -37,7 +37,9 @@ class DequeOfUniquePairs {
 
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
 
-  const std::unordered_set<std::pair<T1, T2>> set() const { return set_; };
+  const std::unordered_set<std::pair<T1, T2>, pair_hash> set() const {
+    return set_;
+  };
 
   void insertFront(std::pair<T1, T2> element) {
     deque_.emplace_front(element);
