@@ -11,16 +11,6 @@
 
 namespace gamestatus {
 
-// Define hash for std::pair<T1, T2>
-struct pair_hash {
-  template <class T1, class T2>
-  std::size_t operator()(const std::pair<T1, T2>& p) const {
-    auto hash1 = std::hash<T1>{}(p.first);
-    auto hash2 = std::hash<T2>{}(p.second);
-    return hash1 ^ (hash2 << 1);
-  }
-};
-
 Snake::Snake(std::list<std::pair<int, int>> initial_body,
              Direction head_direction)
     : snake_body_(std::move(initial_body)), head_dir_(head_direction) {
