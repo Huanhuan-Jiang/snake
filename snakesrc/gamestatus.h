@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <deque>
 #include <list>
+#include <stdexcept>
 #include <unordered_set>
 #include <utility>
 
