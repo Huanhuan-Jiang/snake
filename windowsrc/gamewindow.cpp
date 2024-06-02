@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError()
-              << std::endl;
+              << "\n";
     return -1;
   }
 
@@ -26,15 +26,15 @@ int main(int argc, char* argv[]) {
                        WINDOW_HEIGHT * PIXEL_SIZE, SDL_WINDOW_RESIZABLE);
   if (window == nullptr) {
     std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError()
-              << std::endl;
+              << "\n";
     SDL_Quit();
     return -1;
   }
 
-  SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
+  SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
   if (renderer == nullptr) {
     std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError()
-              << std::endl;
+              << "\n";
     SDL_DestroyWindow(window);
     SDL_Quit();
     return -1;
