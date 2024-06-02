@@ -11,14 +11,16 @@ set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(snakesrc)
-add_subdirectory(windowsrc)
+add_subdirectory(gamesrc)
 add_subdirectory(thirdparty/googletest)
 add_subdirectory(thirdparty/SDL)
 
-set(SDL_SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/SDL)
-set(SDL_BUILD_DIR ${SDL_SOURCE_DIR}/build)
-set(SDL_INCLUDE_DIR ${SDL_SOURCE_DIR}/include)
-set(SDL_LIBRARY ${SDL_BUILD_DIR}/libSDL3.dylib)
+include_directories(${SDL_INCLUDE_DIR})
+
+set(SDL_SOURCE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/SDL CACHE PATH "Path to SDL source directory")
+set(SDL_BUILD_DIR ${SDL_SOURCE_DIR}/build CACHE PATH "Path to SDL build directory")
+set(SDL_INCLUDE_DIR ${SDL_SOURCE_DIR}/include CACHE PATH "Path to SDL include directory")
+set(SDL_LIBRARY ${SDL_BUILD_DIR}/libSDL3.dylib CACHE FILEPATH "Path to SDL library")
 
 # Ensure that SDL is built with CMake
 if(NOT EXISTS ${SDL_BUILD_DIR}/CMakeCache.txt)
