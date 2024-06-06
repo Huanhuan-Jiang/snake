@@ -9,6 +9,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "dequeofunique.h"
+
 namespace gamestatus {
 
 Snake::Snake(std::list<std::pair<int, int>> initial_body,

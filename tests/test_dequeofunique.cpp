@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "gamestatus.h"
+#include "dequeofunique.h"
 
 using testing::HasSubstr;
 using testing::Property;
