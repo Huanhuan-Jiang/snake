@@ -74,14 +74,16 @@ TEST(DequeOfUniqueTest, InsertFrontAndCheckDequeAndSet) {
       {15, 15}, {19, 29}, {19, 30}, {19, 31}, {18, 29}};
 
   gamestatus::DequeOfUniquePairs<int, int> deque_unique1(deque1);
-  deque_unique1.insertFront(head);
+  EXPECT_EQ(deque_unique1.insertFront(head), true);
   EXPECT_EQ(deque_unique1.deque(), expect_deque1);
   EXPECT_EQ(deque_unique1.set(), expect_set1);
+  EXPECT_EQ(deque_unique1.insertFront(head), false);
 
   gamestatus::DequeOfUniquePairs<int, int> deque_unique2(deque2);
-  deque_unique2.insertFront(head);
+  EXPECT_EQ(deque_unique2.insertFront(head), true);
   EXPECT_EQ(deque_unique2.deque(), expect_deque2);
   EXPECT_EQ(deque_unique2.set(), expect_set2);
+  EXPECT_EQ(deque_unique2.insertFront(head), false);
 }
 
 TEST(DequeOfUniqueTest, RemoveBackAndCheckDequeAndSet) {
