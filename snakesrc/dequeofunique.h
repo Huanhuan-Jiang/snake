@@ -32,9 +32,12 @@ class DequeOfUniquePairs {
     return set_;
   };
 
-  void insertFront(std::pair<T1, T2> element) {
-    deque_.emplace_front(element);
-    set_.insert(element);
+  bool insertFront(std::pair<T1, T2> element) {
+    if (set_.emplace(element).second) {
+      deque_.emplace_front(element);
+      return true;
+    }
+    return false;
   };
 
   void removeBack() {
