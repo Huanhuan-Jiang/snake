@@ -1,25 +1,15 @@
 #include "gamestatus.h"
 
 #include <cmath>
-#include <cstdint>
-#include <functional>
 #include <iterator>
 #include <list>
 #include <stdexcept>
 #include <unordered_set>
 #include <utility>
 
-namespace gamestatus {
+#include "dequeofunique.h"
 
-// Define hash for std::pair<T1, T2>
-struct pair_hash {
-  template <class T1, class T2>
-  std::size_t operator()(const std::pair<T1, T2>& p) const {
-    auto hash1 = std::hash<T1>{}(p.first);
-    auto hash2 = std::hash<T2>{}(p.second);
-    return hash1 ^ (hash2 << 1);
-  }
-};
+namespace gamestatus {
 
 Snake::Snake(std::list<std::pair<int, int>> initial_body,
              Direction head_direction)

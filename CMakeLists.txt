@@ -12,15 +12,23 @@ add_subdirectory(snakesrc)
 add_subdirectory(thirdparty/googletest)
 
 add_executable(snaketest tests/test_snake.cpp)
+add_executable(dequeofuniquetest tests/test_dequeofunique.cpp)
 
 target_link_libraries(snaketest PRIVATE 
     GTest::gtest_main 
     GTest::gmock_main
 )
 
+target_link_libraries(dequeofuniquetest PRIVATE 
+    GTest::gtest_main 
+    GTest::gmock_main
+)
+
 target_link_libraries(snaketest PRIVATE gamestatus)
+target_link_libraries(dequeofuniquetest PRIVATE gamestatus)
 
 enable_testing()
 
 include(GoogleTest)
 gtest_discover_tests(snaketest)
+gtest_discover_tests(dequeofuniquetest)
