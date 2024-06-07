@@ -1,3 +1,6 @@
+#ifndef GAMESTATUS_H
+#define GAMESTATUS_H
+
 #pragma once
 
 #include <chrono>
@@ -5,42 +8,37 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
-#include <list>
+// #include <list>
 #include <random>
 #include <utility>
 
-namespace gamestatus {
+#include "dequeofunique.h"
 
-// Define hash for std::pair<T1, T2>
-struct pair_hash {
-  template <class T1, class T2>
-  std::size_t operator()(const std::pair<T1, T2>& p) const {
-    auto hash1 = std::hash<T1>{}(p.first);
-    auto hash2 = std::hash<T2>{}(p.second);
-    return hash1 ^ (hash2 << 1);
-  }
-};
+namespace gamestatus {
 
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 
 class Snake {
-  std::list<std::pair<int, int>> snake_body_;
+  gamestatus::DequeOfUniquePairs<int, int> snake_body_;
   Direction head_dir_;
 
  public:
-  Snake(std::list<std::pair<int, int>> initial_body, Direction head_direction);
+  Snake(const DequeOfUniquePairs<int, int>& initial_body,
+        Direction head_direction);
 
-  std::size_t size() const noexcept { return snake_body_.size(); }
+  std::size_t size() const noexcept { return snake_body_.deque().size(); }
 
-  const std::list<std::pair<int, int>>& getBody() const { return snake_body_; }
+  const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
 
   const Direction& getDirection() const { return head_dir_; };
 
   void moveOrEat(const std::pair<int, int> food);
 
   int deadSnake() {
-    auto head = snake_body_.front();
-    for (auto it = snake_body_.begin(); it != snake_body_.end(); ++it) {
+    auto head = snake_body_.deque().front();
+    auto snake_deque = snake_body_.deque();
+    for (auto it = snake_deque.begin(); it != snake_deque.end();
+         ++it) {
       if (head == *it) {
         return 1;  // Snake dies;
         break;
@@ -63,7 +61,9 @@ class Map {
   int getHeight() { return map_height_; };
 
   std::pair<int, int> generateFood(
-      const std::list<std::pair<int, int>>& snake_body);
+      const DequeOfUniquePairs<int, int>& snake_body);
 };
 
 }  // namespace gamestatus
+
+#endif

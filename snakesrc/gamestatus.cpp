@@ -2,39 +2,50 @@
 
 #include <cmath>
 #include <iterator>
-#include <list>
+// #include <list>
 #include <stdexcept>
 #include <unordered_set>
 #include <utility>
 
 #include "dequeofunique.h"
+#include "gamestatus.h"
 
 namespace gamestatus {
 
-Snake::Snake(std::list<std::pair<int, int>> initial_body,
-             Direction head_direction)
-    : snake_body_(std::move(initial_body)), head_dir_(head_direction) {
-  // Check if the snake body is coninuous and alive
-  auto prev_it = snake_body_.begin();
-  std::unordered_set<std::pair<int, int>, pair_hash> unique_elements;
-  unique_elements.insert(*prev_it);
-  for (auto it = std::next(snake_body_.begin()); it != snake_body_.end();
-       ++it) {
-    auto diff_x = std::abs(it->first - prev_it->first);
-    auto diff_y = std::abs(it->second - prev_it->second);
-    if (unique_elements.find(*it) != unique_elements.end()) {
+Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
+             Direction head_direction) : snake_body_(initial_body){
+  // Check if the snake body is valid
+  try {
+    snake_body_ = initial_body;
+    head_dir_ = head_direction;
+    std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
+
+    auto prev_it = snake_deque.begin();
+
+    for (auto it = std::next(snake_deque.begin());
+         it != snake_deque.end(); ++it) {
+      auto diff_x = std::abs(it->first - prev_it->first);
+      auto diff_y = std::abs(it->second - prev_it->second);
+
+      if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
+        throw std::runtime_error("Snake body is not continuous!");
+      }
+
+      ++prev_it;
+    }
+
+    if (snake_deque.size() == 0) {
+      throw std::runtime_error("Snake body is empty!");
+    }
+  } catch (const std::runtime_error& e) {
+    if (std::string(e.what()) == "Duplicates detected!") {
       throw std::runtime_error("Snake body overlaps!");
     }
-    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-      throw std::runtime_error("Snake body is not continuous!");
-    }
-    unique_elements.insert(*it);
-    ++prev_it;
   }
 }
 
 void Snake::moveOrEat(const std::pair<int, int> food) {
-  auto head = snake_body_.front();
+  auto head = snake_body_.deque().front();
 
   // Update the head based on the direction
   switch (head_dir_) {
@@ -53,18 +64,18 @@ void Snake::moveOrEat(const std::pair<int, int> food) {
   }
 
   if (head == food) {
-    snake_body_.insert(snake_body_.begin(), food);
+    snake_body_.insertFront(food);
   } else {
     // Move all elements one step further
-    snake_body_.pop_back();
-    snake_body_.emplace_front(head);
+    snake_body_.removeBack();
+    snake_body_.insertFront(head);
   }
 }
 
 std::pair<int, int> Map::generateFood(
-    const std::list<std::pair<int, int>>& snake_body) {
-  std::unordered_set<std::pair<int, int>, pair_hash> snake_body_set(
-      snake_body.begin(), snake_body.end());
+    const DequeOfUniquePairs<int, int>& snake_body) {
+  std::unordered_set<std::pair<int, int>, pair_hash> snake_body_set{
+      snake_body.set()};
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::mt19937 gen(seed);
   std::uniform_int_distribution<int> dis_width(1, map_width_);

@@ -1,3 +1,6 @@
+#ifndef DEQUEOFUNIQUE_H
+#define DEQUEOFUNIQUE_H
+
 #pragma once
 
 #include <deque>
@@ -52,3 +55,5 @@ class DequeOfUniquePairs {
   };
 };
 }  // namespace gamestatus
+
+#endif
