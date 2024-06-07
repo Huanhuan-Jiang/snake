@@ -1,5 +1,10 @@
 #pragma once
 
+#include <deque>
+#include <stdexcept>
+#include <unordered_set>
+#include <utility>
+
 namespace gamestatus {
 
 // Define hash for std::pair<T1, T2>

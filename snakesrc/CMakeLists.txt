@@ -9,4 +9,3 @@ set(SOURCE_FILES
 add_library(${LIBRARY_NAME} ${SOURCE_FILES})
 
 target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-

@@ -1,8 +1,6 @@
 #include "gamestatus.h"
 
 #include <cmath>
-#include <cstdint>
-#include <functional>
 #include <iterator>
 #include <list>
 #include <stdexcept>

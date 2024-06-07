@@ -22,18 +22,17 @@ TEST(DequeOfUniqueTest, ThrowExceptionWithCorrectMessage) {
   std::deque<std::pair<int, int>> deque2 = {
       {19, 29}, {19, 30}, {19, 29}, {18, 29}};  // duplicate elements
 
-  const std::deque<std::pair<std::deque<std::pair<int, int>>, std::string>>
+  const std::vector<std::pair<std::deque<std::pair<int, int>>, std::string>>
       illegal_cases = {{deque1, "Duplicates detected!"},
                        {deque2, "Duplicates detected!"}};
 
-  for (const auto& [illegaldeque, error_message] : illegal_cases) {
-    auto lambda = [&illegaldeque]() {
-      gamestatus::DequeOfUniquePairs<int, int> deque_unique(illegaldeque);
-    };
-
-    EXPECT_THAT(lambda,
-                Throws<std::runtime_error>(Property(&std::runtime_error::what,
-                                                    HasSubstr(error_message))));
+  for (const auto& [illegal_deque, expected_error_message] : illegal_cases) {
+    EXPECT_THAT(
+        ([&illegal_deque]() -> void {
+          gamestatus::DequeOfUniquePairs<int, int> deque_unique(illegal_deque);
+        }),
+        Throws<std::runtime_error>(Property(
+            &std::runtime_error::what, HasSubstr(expected_error_message))));
   }
 }
 
