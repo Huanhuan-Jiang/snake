@@ -217,3 +217,28 @@ TEST(SnakeTest, DeadSnake) {
   snake12.moveOrEat({100, 100});
   EXPECT_EQ(snake12.deadSnake(), false);
 }
+
+TEST(CycleTest, FromBirthToDeath) {
+  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}});
+  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
+
+  std::vector<std::pair<int, int>> food_container = {
+      {18, 30}, {19, 30}, {20, 30}, {20, 29},
+      {20, 28}, {19, 28}, {18, 28}, {18, 29}};
+
+  for (auto i = 0; i < food_container.size(); ++i) {
+    std::pair<int, int> food = food_container[i];
+    snake.moveOrEat(food_container[i]);
+
+    if (i == 2) {
+      snake.updateDirection(gamestatus::Direction::DOWN);
+    }
+    if (i == 4) {
+      snake.updateDirection(gamestatus::Direction::LEFT);
+    }
+    if (i == 6) {
+      snake.updateDirection(gamestatus::Direction::UP);
+    }
+  }
+  EXPECT_EQ(snake.deadSnake(), false);
+}
