@@ -158,15 +158,46 @@ TEST(SnakeTest, MoveOneStep) {
   gamestatus::DequeOfUniquePairs<int, int> expected_left_7(
       {{17, 30}, {18, 30}, {18, 29}, {17, 29}, {17, 28}, {17, 27}, {16, 27}});
 
-  std::pair<int, int> random_food = {100, 100};
+  std::pair<int, int> food = {100, 100};
 
-  snake_right_9.moveOrEat(random_food);
-  snake_up_9.moveOrEat(random_food);
-  snake_down_9.moveOrEat(random_food);
-  snake_left_7.moveOrEat(random_food);
+  snake_right_9.moveOrEat(food);
+  snake_up_9.moveOrEat(food);
+  snake_down_9.moveOrEat(food);
+  snake_left_7.moveOrEat(food);
 
   EXPECT_EQ(snake_right_9.getBody().deque(), expected_right_9.deque());
   EXPECT_EQ(snake_up_9.getBody().deque(), expected_up_9.deque());
   EXPECT_EQ(snake_down_9.getBody().deque(), expected_down_9.deque());
   EXPECT_EQ(snake_left_7.getBody().deque(), expected_left_7.deque());
+}
+
+TEST(SnakeTest, EatFood) {
+  gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
+                                                  {19, 30},
+                                                  {19, 29},
+                                                  {18, 29},
+                                                  {17, 29},
+                                                  {17, 28},
+                                                  {17, 27},
+                                                  {16, 27},
+                                                  {15, 27}});
+
+  std::pair<int, int> food = {21, 30};
+
+  gamestatus::DequeOfUniquePairs<int, int> expected9({{21, 30},
+                                                      {20, 30},
+                                                      {19, 30},
+                                                      {19, 29},
+                                                      {18, 29},
+                                                      {17, 29},
+                                                      {17, 28},
+                                                      {17, 27},
+                                                      {16, 27},
+                                                      {15, 27}});
+
+  gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT);
+
+  snake9.moveOrEat(food);
+
+  EXPECT_EQ(snake9.getBody().deque(), expected9.deque());
 }
