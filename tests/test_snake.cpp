@@ -12,19 +12,15 @@
 #include "dequeofunique.h"
 #include "gamestatus.h"
 
-using testing::HasSubstr;
-using testing::Property;
-using testing::Throws;
-
 TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
-  gamestatus::Map test_map(500, 500);
-
   std::deque<std::pair<int, int>> illegaldeque0;  // empty body
   std::deque<std::pair<int, int>> illegaldeque1 = {
       {20, 30}, {19, 30}, {19, 29}, {18, 28}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous
   std::deque<std::pair<int, int>> illegaldeque2 = {
       {20, 30}, {19, 30}, {19, 29}, {17, 28}, {17, 29}};  // not continuous
+  std::deque<std::pair<int, int>> illegaldeque3 = {
+      {500, 501}, {499, 501}, {499, 500}};  // beyond the map
 
   std::vector<std::pair<gamestatus::DequeOfUniquePairs<int, int>, std::string>>
       illegal_cases = {{gamestatus::DequeOfUniquePairs<int, int>(illegaldeque0),
@@ -32,8 +28,10 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
                        {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque1),
                         "Snake body is not continuous!"},
                        {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque2),
-                        "Snake body is not continuous!"}};
-
+                        "Snake body is not continuous!"},
+                       {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque3),
+                        "Snake body is beyond the map!"}};
+  gamestatus::Map test_map(500, 500);
   for (const auto& [illegalbody, error_message] : illegal_cases) {
     EXPECT_THROW(
         {
@@ -261,7 +259,7 @@ TEST(CycleTest, FromBirthToDeath) {
 
   for (auto i = 0; i < food_container.size(); ++i) {
     std::pair<int, int> food = food_container[i];
-    bool alive_snake = snake.moveOrEat(food_container[i]);
+    snake.moveOrEat(food);
 
     if (i == 2) {
       snake.updateDirection(gamestatus::Direction::DOWN);
