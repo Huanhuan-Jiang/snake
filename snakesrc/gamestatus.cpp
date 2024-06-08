@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <iterator>
-// #include <list>
 #include <stdexcept>
 #include <unordered_set>
 #include <utility>
@@ -38,7 +37,7 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 }
 
-void Snake::moveOrEat(const std::pair<int, int> food) {
+bool Snake::moveOrEat(const std::pair<int, int> food) {
   auto head = snake_body_.deque().front();
 
   // Update the head based on the direction
@@ -57,13 +56,14 @@ void Snake::moveOrEat(const std::pair<int, int> food) {
       break;
   }
 
-  if (head == food) {
-    snake_body_.insertFront(food);
-  } else {
-    // Move all elements one step further
-    snake_body_.removeBack();
-    snake_body_.insertFront(head);
+  if (head != food) {
+    snake_body_.removeBack();  // Snake moves;
+    if (snake_body_.set().find(head) != snake_body_.set().end()) {
+      return false;  // Snake dies;
+    }
   }
+  snake_body_.insertFront(head);
+  return true;  // Snake eats food;
 }
 
 }  // namespace gamestatus

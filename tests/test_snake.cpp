@@ -201,7 +201,7 @@ TEST(SnakeTest, EatFood) {
 }
 
 TEST(SnakeTest, DeadSnake) {
-  gamestatus::DequeOfUniquePairs<int, int> body12({{18, 29},
+  gamestatus::DequeOfUniquePairs<int, int> body10({{18, 29},
                                                    {18, 28},
                                                    {19, 28},
                                                    {20, 28},
@@ -211,9 +211,8 @@ TEST(SnakeTest, DeadSnake) {
                                                    {18, 30},
                                                    {17, 30},
                                                    {16, 30}});
-  gamestatus::Snake snake12(body12, gamestatus::Direction::UP);
-  snake12.moveOrEat({100, 100});
-  EXPECT_EQ(snake12.deadSnake(), false);
+  gamestatus::Snake snake10(body10, gamestatus::Direction::UP);
+  EXPECT_EQ(snake10.moveOrEat({100, 100}), false);
 }
 
 TEST(CycleTest, FromBirthToDeath) {

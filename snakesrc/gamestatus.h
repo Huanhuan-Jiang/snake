@@ -1,6 +1,3 @@
-#ifndef GAMESTATUS_H
-#define GAMESTATUS_H
-
 #pragma once
 
 #include <chrono>
@@ -8,7 +5,6 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
-// #include <list>
 #include <random>
 #include <utility>
 
@@ -32,23 +28,9 @@ class Snake {
 
   const Direction& getDirection() const { return head_dir_; };
 
-  void moveOrEat(const std::pair<int, int> food);
-
-  bool deadSnake() {
-    auto head = snake_body_.deque().front();
-    auto snake_deque = snake_body_.deque();
-    for (auto it = snake_deque.begin(); it != snake_deque.end(); ++it) {
-      if (head == *it) {
-        return false;  // Snake dies;
-        break;
-      }
-    }
-    return true;
-  }
+  bool moveOrEat(const std::pair<int, int> food);
 
   void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
 };
 
 }  // namespace gamestatus
-
-#endif
