@@ -37,8 +37,7 @@ class Snake {
   int deadSnake() {
     auto head = snake_body_.deque().front();
     auto snake_deque = snake_body_.deque();
-    for (auto it = snake_deque.begin(); it != snake_deque.end();
-         ++it) {
+    for (auto it = snake_deque.begin(); it != snake_deque.end(); ++it) {
       if (head == *it) {
         return 1;  // Snake dies;
         break;

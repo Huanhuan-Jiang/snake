@@ -13,34 +13,28 @@
 namespace gamestatus {
 
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction) : snake_body_(initial_body){
+             Direction head_direction)
+    : snake_body_(initial_body), head_dir_(head_direction) {
   // Check if the snake body is valid
-  try {
-    snake_body_ = initial_body;
-    head_dir_ = head_direction;
-    std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
 
-    auto prev_it = snake_deque.begin();
+  std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
 
-    for (auto it = std::next(snake_deque.begin());
-         it != snake_deque.end(); ++it) {
-      auto diff_x = std::abs(it->first - prev_it->first);
-      auto diff_y = std::abs(it->second - prev_it->second);
+  if (snake_deque.size() == 0) {
+    throw std::runtime_error("Snake body is empty!");
+  }
 
-      if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-        throw std::runtime_error("Snake body is not continuous!");
-      }
+  auto prev_it = snake_deque.begin();
 
-      ++prev_it;
+  for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
+       ++it) {
+    auto diff_x = std::abs(it->first - prev_it->first);
+    auto diff_y = std::abs(it->second - prev_it->second);
+
+    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
+      throw std::runtime_error("Snake body is not continuous!");
     }
 
-    if (snake_deque.size() == 0) {
-      throw std::runtime_error("Snake body is empty!");
-    }
-  } catch (const std::runtime_error& e) {
-    if (std::string(e.what()) == "Duplicates detected!") {
-      throw std::runtime_error("Snake body overlaps!");
-    }
+    ++prev_it;
   }
 }
 
