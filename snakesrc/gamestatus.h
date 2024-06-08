@@ -34,33 +34,19 @@ class Snake {
 
   void moveOrEat(const std::pair<int, int> food);
 
-  int deadSnake() {
+  bool deadSnake() {
     auto head = snake_body_.deque().front();
     auto snake_deque = snake_body_.deque();
     for (auto it = snake_deque.begin(); it != snake_deque.end(); ++it) {
       if (head == *it) {
-        return 1;  // Snake dies;
+        return false;  // Snake dies;
         break;
       }
     }
-    return 0;
+    return true;
   }
 
   void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
-};
-
-class Map {
-  int map_width_;
-  int map_height_;
-
- public:
-  Map(int map_w, int map_h) : map_width_(map_w), map_height_(map_h) {}
-
-  int getWidth() { return map_width_; };
-  int getHeight() { return map_height_; };
-
-  std::pair<int, int> generateFood(
-      const DequeOfUniquePairs<int, int>& snake_body);
 };
 
 }  // namespace gamestatus

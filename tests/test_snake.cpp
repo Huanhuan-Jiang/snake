@@ -240,3 +240,20 @@ TEST(CycleTest, FromBirthToDeath) {
   }
   EXPECT_EQ(snake.deadSnake(), false);
 }
+
+TEST(UpdateTest, UpdateDirection) {
+  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
+  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
+
+  snake.updateDirection(gamestatus::Direction::UP);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
+
+  snake.updateDirection(gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
+
+  snake.updateDirection(gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
+
+  snake.updateDirection(gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
+}
