@@ -33,4 +33,15 @@ class Snake {
   void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
 };
 
+class Map {
+  int map_width_;
+  int map_height_;
+
+ public:
+  Map(int map_w, int map_h) : map_width_(map_w), map_height_(map_h) {}
+
+  int getWidth() { return map_width_; };
+  int getHeight() { return map_height_; };
+};
+
 }  // namespace gamestatus
