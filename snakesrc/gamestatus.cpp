@@ -12,8 +12,8 @@
 namespace gamestatus {
 
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction)
-    : snake_body_(initial_body), head_dir_(head_direction) {
+             Direction head_direction, const Map& map)
+    : snake_body_(initial_body), head_dir_(head_direction), snake_map_(map) {
   // Check if the snake body is valid
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
@@ -23,9 +23,17 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 
   auto prev_it = snake_deque.begin();
+  if (prev_it->first > snake_map_.getWidth() |
+      prev_it->second > snake_map_.getHeight()) {
+    throw std::runtime_error("Snake body is beyond the map!");
+  }
 
   for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
        ++it) {
+    if (prev_it->first > snake_map_.getWidth() |
+        prev_it->second > snake_map_.getHeight()) {
+      throw std::runtime_error("Snake body is beyond the map!");
+    }
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
 
