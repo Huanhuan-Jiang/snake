@@ -117,8 +117,6 @@ TEST(SnakeTest, MoveOneStep) {
                                                   {16, 27},
                                                   {15, 27}});
 
-  std::cout << "body9 size: " << body9.deque().size() << '\n';
-
   gamestatus::Snake snake_right_9(body9, gamestatus::Direction::RIGHT);
   gamestatus::Snake snake_up_9(body9, gamestatus::Direction::UP);
   gamestatus::Snake snake_down_9(body9, gamestatus::Direction::DOWN);
