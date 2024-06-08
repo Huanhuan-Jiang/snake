@@ -201,3 +201,19 @@ TEST(SnakeTest, EatFood) {
 
   EXPECT_EQ(snake9.getBody().deque(), expected9.deque());
 }
+
+TEST(SnakeTest, DeadSnake) {
+  gamestatus::DequeOfUniquePairs<int, int> body12({{18, 29},
+                                                   {18, 28},
+                                                   {19, 28},
+                                                   {20, 28},
+                                                   {20, 29},
+                                                   {20, 30},
+                                                   {19, 30},
+                                                   {18, 30},
+                                                   {17, 30},
+                                                   {16, 30}});
+  gamestatus::Snake snake12(body12, gamestatus::Direction::UP);
+  snake12.moveOrEat({100, 100});
+  EXPECT_EQ(snake12.deadSnake(), false);
+}
