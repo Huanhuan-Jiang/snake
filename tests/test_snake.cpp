@@ -215,31 +215,6 @@ TEST(SnakeTest, DeadSnake) {
   EXPECT_EQ(snake10.moveOrEat({100, 100}), false);
 }
 
-TEST(CycleTest, FromBirthToDeath) {
-  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}});
-  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
-
-  std::vector<std::pair<int, int>> food_container = {
-      {18, 30}, {19, 30}, {20, 30}, {20, 29},
-      {20, 28}, {19, 28}, {18, 28}, {18, 29}};
-
-  for (auto i = 0; i < food_container.size(); ++i) {
-    std::pair<int, int> food = food_container[i];
-    snake.moveOrEat(food_container[i]);
-
-    if (i == 2) {
-      snake.updateDirection(gamestatus::Direction::DOWN);
-    }
-    if (i == 4) {
-      snake.updateDirection(gamestatus::Direction::LEFT);
-    }
-    if (i == 6) {
-      snake.updateDirection(gamestatus::Direction::UP);
-    }
-  }
-  EXPECT_EQ(snake.deadSnake(), false);
-}
-
 TEST(UpdateTest, UpdateDirection) {
   gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
   gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
@@ -255,4 +230,29 @@ TEST(UpdateTest, UpdateDirection) {
 
   snake.updateDirection(gamestatus::Direction::RIGHT);
   EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
+}
+
+TEST(CycleTest, FromBirthToDeath) {
+  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}});
+  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT);
+
+  std::vector<std::pair<int, int>> food_container = {
+      {18, 30}, {19, 30}, {20, 30}, {20, 29},
+      {20, 28}, {19, 28}, {18, 28}, {18, 29}};
+
+  for (auto i = 0; i < food_container.size(); ++i) {
+    std::pair<int, int> food = food_container[i];
+    bool alive_snake = snake.moveOrEat(food_container[i]);
+
+    if (i == 2) {
+      snake.updateDirection(gamestatus::Direction::DOWN);
+    }
+    if (i == 4) {
+      snake.updateDirection(gamestatus::Direction::LEFT);
+    }
+    if (i == 6) {
+      snake.updateDirection(gamestatus::Direction::UP);
+    }
+  }
+  EXPECT_EQ(snake.moveOrEat({100, 100}), false);
 }
