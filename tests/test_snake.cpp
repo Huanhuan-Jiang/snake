@@ -17,7 +17,7 @@ using testing::Property;
 using testing::Throws;
 
 TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
-  std::deque<std::pair<int, int>> illegaldeque0 = {};  // empty body
+  std::deque<std::pair<int, int>> illegaldeque0;  // empty body
   std::deque<std::pair<int, int>> illegaldeque1 = {
       {20, 30}, {19, 30}, {19, 29}, {18, 28}, {17, 29},
       {17, 28}, {17, 27}, {16, 27}, {15, 27}};  // not continuous

@@ -19,7 +19,7 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
 
-  if (snake_deque.size() == 0) {
+  if (snake_deque.empty()) {
     throw std::runtime_error("Snake body is empty!");
   }
 
