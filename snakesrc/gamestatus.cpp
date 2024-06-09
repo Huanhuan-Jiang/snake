@@ -12,8 +12,11 @@
 namespace gamestatus {
 
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction, const Map& map)
-    : snake_body_(initial_body), head_dir_(head_direction), snake_map_(map) {
+             Direction head_direction, const int map_w, const int map_h)
+    : snake_body_(initial_body),
+      head_dir_(head_direction),
+      map_width_(map_w),
+      map_height_(map_h) {
   eat_ = false;
   alive_ = true;
 
@@ -26,15 +29,13 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 
   auto prev_it = snake_deque.begin();
-  if (prev_it->first > snake_map_.getWidth() |
-      prev_it->second > snake_map_.getHeight()) {
+  if (prev_it->first > map_width_ | prev_it->second > map_height_) {
     throw std::runtime_error("Snake body is beyond the map!");
   }
 
   for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
        ++it) {
-    if (prev_it->first > snake_map_.getWidth() |
-        prev_it->second > snake_map_.getHeight()) {
+    if (prev_it->first > map_width_ | prev_it->second > map_height_) {
       throw std::runtime_error("Snake body is beyond the map!");
     }
     auto diff_x = std::abs(it->first - prev_it->first);
@@ -67,7 +68,7 @@ bool Snake::moveOrEat(const std::pair<int, int> food) {
       break;
   }
 
-  if (head.first > 500 | head.second > 500) {
+  if (head.first > map_width_ | head.second > map_height_) {
     return alive_ = false;
   }  // Snake hits the wall and dies;
 
