@@ -79,10 +79,8 @@ TEST(SnakeTest, GetBody) {
   gamestatus::Snake snake1(body1, gamestatus::Direction::RIGHT, test_map);
   gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT, test_map);
 
-  EXPECT_EQ(snake1.getBody().deque(), body1.deque());
-  EXPECT_EQ(snake9.getBody().deque(), body9.deque());
-  EXPECT_EQ(snake1.getBody().set(), body1.set());
-  EXPECT_EQ(snake9.getBody().set(), body9.set());
+  EXPECT_EQ(snake1.getBody(), body1);
+  EXPECT_EQ(snake9.getBody(), body9);
 }
 
 TEST(SnakeTest, GetDirection) {
@@ -172,10 +170,10 @@ TEST(SnakeTest, MoveOneStep) {
   snake_down_9.moveOrEat(food);
   snake_left_7.moveOrEat(food);
 
-  EXPECT_EQ(snake_right_9.getBody().deque(), expected_right_9.deque());
-  EXPECT_EQ(snake_up_9.getBody().deque(), expected_up_9.deque());
-  EXPECT_EQ(snake_down_9.getBody().deque(), expected_down_9.deque());
-  EXPECT_EQ(snake_left_7.getBody().deque(), expected_left_7.deque());
+  EXPECT_EQ(snake_right_9.getBody(), expected_right_9);
+  EXPECT_EQ(snake_up_9.getBody(), expected_up_9);
+  EXPECT_EQ(snake_down_9.getBody(), expected_down_9);
+  EXPECT_EQ(snake_left_7.getBody(), expected_left_7);
 }
 
 TEST(SnakeTest, EatFood) {
@@ -208,7 +206,7 @@ TEST(SnakeTest, EatFood) {
 
   snake9.moveOrEat(food);
 
-  EXPECT_EQ(snake9.getBody().deque(), expected9.deque());
+  EXPECT_EQ(snake9.getBody(), expected9);
 }
 
 TEST(SnakeTest, DeadSnake) {

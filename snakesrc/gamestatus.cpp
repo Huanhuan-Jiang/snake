@@ -14,6 +14,9 @@ namespace gamestatus {
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
              Direction head_direction, const Map& map)
     : snake_body_(initial_body), head_dir_(head_direction), snake_map_(map) {
+  eat_ = false;
+  alive_ = true;
+
   // Check if the snake body is valid
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
@@ -64,14 +67,17 @@ bool Snake::moveOrEat(const std::pair<int, int> food) {
       break;
   }
 
+  if (head.first > 500 | head.second > 500) {
+    return alive_ = false;
+  }  // Snake hits the wall and dies;
+
   if (head != food) {
     snake_body_.removeBack();  // Snake moves;
     if (snake_body_.set().find(head) != snake_body_.set().end()) {
-      return false;  // Snake dies;
+      return alive_ = false;  // Snake dies;
     }
   }
-  snake_body_.insertFront(head);
-  return true;  // Snake eats food;
+  return eat_ = (snake_body_.insertFront(head));  // Snake eats food;
 }
 
 }  // namespace gamestatus

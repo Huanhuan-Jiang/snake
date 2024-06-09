@@ -29,6 +29,8 @@ class Snake {
   gamestatus::DequeOfUniquePairs<int, int> snake_body_;
   Direction head_dir_;
   Map snake_map_;
+  bool eat_;
+  bool alive_;
 
  public:
   Snake(const DequeOfUniquePairs<int, int>& initial_body,

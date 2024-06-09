@@ -34,6 +34,10 @@ class DequeOfUniquePairs {
     }
   };
 
+  bool operator==(const DequeOfUniquePairs<T1, T2>& other) const {
+    return (deque_ == other.deque()) && (set_ == other.set());
+  }
+
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
 
   const std::unordered_set<std::pair<T1, T2>, pair_hash> set() const {
