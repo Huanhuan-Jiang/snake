@@ -87,12 +87,17 @@ class Game {
     window_ = game_window.getWindow();
     Renderer game_renderer;
     rederer = renderer
+    // Todo: initialize snake
+    gamestatus::Snake snake_();
   }
-
+  
   void run() {
     while (is_running_) {
       handleEvents();
-      // update();
+
+      // Todo: moveOrEat() return 0 if moves, return 1 if eats, return 2 if dies
+      snake_.generateFood();
+      snake_.moveOrEat();
       render();
     }
   };
@@ -105,6 +110,7 @@ class Game {
   static constexpr int default_window_width = 100;
   static constexpr int default_window_height = 100;
 
+  // Todo Check if initialized is necessary.
   bool initialized_;
 
   const int pixel_size_;
@@ -113,6 +119,8 @@ class Game {
 
   bool is_running_ = true;
 
+  gamestatus::Snake snake_;
+
   void handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -120,6 +128,14 @@ class Game {
         case SDL_EVENT_QUIT:
           is_running_ = false;
           break;
+        case SDL_KEYDOWN:
+          snake.updateDirection(gamestatus::Direction DOWN);
+        case SDL_KEYUP:
+          snake.updateDirection(gamestatus::Direction UP);
+        case SDL_KEYRIGHT:
+          snake.updateDirection(gamestatus::Direction RIGHT);
+        case SDL_KEYLEFT:
+          snake.updateDirection(gamestatus::Direction LEFT);
         default:
           break;
       }
