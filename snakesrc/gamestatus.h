@@ -32,11 +32,10 @@ class Snake {
 
   const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
 
-  const Direction& getDirection() const { return head_dir_; };
+  const Direction& getDirection() const { return head_dir_; }
 
   SnakeState moveOrEat(const std::pair<int, int>& food);
 
-  void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
+  void updateDirection(const Direction new_direction);
 };
-
 }  // namespace gamestatus

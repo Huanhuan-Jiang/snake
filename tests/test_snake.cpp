@@ -199,13 +199,13 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
   gamestatus::DequeOfUniquePairs<int, int> body_right(
       {{499, 496}, {499, 497}, {499, 498}, {498, 498}});
   gamestatus::Snake snake_right(body_right, gamestatus::Direction::RIGHT, 500,
-                               500);
+                                500);
 
   gamestatus::DequeOfUniquePairs<int, int> body_left(
       {{1, 3}, {1, 4}, {2, 4}, {3, 4}});
   gamestatus::Snake snake_left(body_left, gamestatus::Direction::LEFT, 500,
                                500);
-  
+
   EXPECT_EQ(snake_up.moveOrEat(food), gamestatus::SnakeState::DIE);
   EXPECT_EQ(snake_down.moveOrEat(food), gamestatus::SnakeState::DIE);
   EXPECT_EQ(snake_right.moveOrEat(food), gamestatus::SnakeState::DIE);
@@ -257,19 +257,63 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
   EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
 }
 
-TEST(UpdateTest, UpdateDirection) {
+TEST(UpdateTest, NextDirection) {
   gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
   gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT, 500, 500);
+
+  // From RIGHT
+  snake.updateDirection(gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
+
+  snake.updateDirection(gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
 
   snake.updateDirection(gamestatus::Direction::UP);
   EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
 
+  snake.updateDirection(gamestatus::Direction::RIGHT);
+  snake.updateDirection(gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
+
+  // From DOWN
+  snake.updateDirection(gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
+
+  snake.updateDirection(gamestatus::Direction::UP);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
+
+  snake.updateDirection(gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
+
+  snake.updateDirection(gamestatus::Direction::DOWN);
   snake.updateDirection(gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
+
+  // From LEFT
+  snake.updateDirection(gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
+
+  snake.updateDirection(gamestatus::Direction::RIGHT);
   EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
 
   snake.updateDirection(gamestatus::Direction::DOWN);
   EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
 
+  snake.updateDirection(gamestatus::Direction::LEFT);
+  snake.updateDirection(gamestatus::Direction::UP);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
+
+  // From UP
+  snake.updateDirection(gamestatus::Direction::UP);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
+
+  snake.updateDirection(gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
+
+  snake.updateDirection(gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
+
+  snake.updateDirection(gamestatus::Direction::UP);
   snake.updateDirection(gamestatus::Direction::RIGHT);
   EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
 }
