@@ -13,6 +13,7 @@
 namespace gamestatus {
 
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
+enum class SnakeState : std::uint8_t { MOVE, EAT, DIE };
 
 class Snake {
   gamestatus::DequeOfUniquePairs<int, int> snake_body_;
@@ -21,6 +22,7 @@ class Snake {
   int map_height_;
   bool eat_;
   bool alive_;
+  std::pair<int, int> getNextHead();
 
  public:
   Snake(const DequeOfUniquePairs<int, int>& initial_body,
@@ -32,7 +34,7 @@ class Snake {
 
   const Direction& getDirection() const { return head_dir_; };
 
-  bool moveOrEat(const std::pair<int, int> food);
+  SnakeState moveOrEat(const std::pair<int, int>& food);
 
   void updateDirection(Direction new_direction) { head_dir_ = new_direction; }
 };

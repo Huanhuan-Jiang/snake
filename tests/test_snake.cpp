@@ -238,7 +238,7 @@ TEST(SnakeTest, DeadSnake) {
                                                    {17, 30},
                                                    {16, 30}});
   gamestatus::Snake snake10(body10, gamestatus::Direction::UP, 500, 500);
-  EXPECT_EQ(snake10.moveOrEat({100, 100}), false);
+  EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
 }
 
 TEST(UpdateTest, UpdateDirection) {
@@ -280,5 +280,5 @@ TEST(CycleTest, FromBirthToDeath) {
       snake.updateDirection(gamestatus::Direction::UP);
     }
   }
-  EXPECT_EQ(snake.moveOrEat({100, 100}), false);
+  EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
 }

@@ -29,14 +29,15 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 
   auto prev_it = snake_deque.begin();
-  if (prev_it->first > map_width_ | prev_it->second > map_height_) {
+  if (prev_it->first >= map_width_ || prev_it->first <= 0 ||
+      prev_it->second >= map_height_ || prev_it->second <= 0) {
     throw std::runtime_error("Snake body is beyond the map!");
   }
 
   for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
        ++it) {
-    if (prev_it->first > map_width_ |
-        prev_it->first<0 | prev_it->second> map_height_ | prev_it->second < 0) {
+    if (prev_it->first >= map_width_ || prev_it->first <= 0 ||
+        prev_it->second >= map_height_ || prev_it->second <= 0) {
       throw std::runtime_error("Snake body is beyond the map!");
     }
     auto diff_x = std::abs(it->first - prev_it->first);
@@ -50,8 +51,8 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 }
 
-bool Snake::moveOrEat(const std::pair<int, int> food) {
-  auto next_head = snake_body_.deque().front();
+std::pair<int, int> Snake::getNextHead() {
+  auto head = snake_body_.deque().front();
 
   // Update the head based on the direction
   switch (head_dir_) {
@@ -68,18 +69,29 @@ bool Snake::moveOrEat(const std::pair<int, int> food) {
       next_head.first--;
       break;
   }
+  return head;
+}
 
-  if (next_head.first > map_width_ | next_head.second > map_height_) {
-    return alive_ = false;
+SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
+  auto next_head = getNextHead();
+
+  if (next_head.first >= map_width_ || next_head.first <= 0 ||
+      next_head.second >= map_height_ || next_head.second <= 0) {
+    return SnakeState::DIE;
   }  // Snake hits the wall and dies;
 
-  if (next_head != food) {
-    snake_body_.removeBack();  // Snake moves;
-    if (snake_body_.set().find(next_head) != snake_body_.set().end()) {
-      return alive_ = false;  // Snake dies;
-    }
+  if (head == food) {
+    snake_body_.insertFront(head);
+    return SnakeState::EAT;  // Snake eats food;
   }
-  return eat_ = (snake_body_.insertFront(next_head));  // Snake eats food;
+
+  snake_body_.removeBack();
+  if (snake_body_.set().find(head) != snake_body_.set().end()) {
+    return SnakeState::DIE;  // Snake hits the body and dies;
+  }
+
+  snake_body_.insertFront(head);
+  return SnakeState::MOVE;  // Snake moves one step alive.
 }
 
 }  // namespace gamestatus
