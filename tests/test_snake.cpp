@@ -13,8 +13,8 @@
 #include "gamestatus.h"
 
 using testing::HasSubstr;
-using testing::Throws;
 using testing::Property;
+using testing::Throws;
 
 TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
   std::deque<std::pair<int, int>> illegaldeque0;  // empty body
@@ -24,7 +24,13 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
   std::deque<std::pair<int, int>> illegaldeque2 = {
       {20, 30}, {19, 30}, {19, 29}, {17, 28}, {17, 29}};  // not continuous
   std::deque<std::pair<int, int>> illegaldeque3 = {
-      {500, 501}, {499, 501}, {499, 500}};  // beyond the map
+      {500, 501}, {500, 500}, {499, 500}};  // y > 500, beyond the map
+  std::deque<std::pair<int, int>> illegaldeque4 = {
+      {501, 500}, {500, 500}, {499, 500}};  // x > 500, beyond the map
+  std::deque<std::pair<int, int>> illegaldeque5 = {
+      {0, -1}, {0, 0}, {0, 1}};  // y < 0, beyond the map
+  std::deque<std::pair<int, int>> illegaldeque6 = {
+      {-1, 0}, {0, 0}, {0, 1}};  // x < 0, beyond the map
 
   std::vector<std::pair<gamestatus::DequeOfUniquePairs<int, int>, std::string>>
       illegal_cases = {{gamestatus::DequeOfUniquePairs<int, int>(illegaldeque0),
@@ -34,13 +40,19 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
                        {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque2),
                         "Snake body is not continuous!"},
                        {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque3),
+                        "Snake body is beyond the map!"},
+                       {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque4),
+                        "Snake body is beyond the map!"},
+                       {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque5),
+                        "Snake body is beyond the map!"},
+                       {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque6),
                         "Snake body is beyond the map!"}};
-  
+
   for (const auto& [illegalbody, error_message] : illegal_cases) {
     EXPECT_THAT(
         [&illegalbody]() {
-          gamestatus::Snake illegalsnake(illegalbody,
-                                         gamestatus::Direction::RIGHT, 500, 500);
+          gamestatus::Snake illegalsnake(
+              illegalbody, gamestatus::Direction::RIGHT, 500, 500);
         },
         Throws<std::runtime_error>(
             Property(&std::runtime_error::what, HasSubstr(error_message))));
@@ -48,7 +60,6 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
 }
 
 TEST(SnakeTest, SnakeSize) {
-
   gamestatus::DequeOfUniquePairs<int, int> body1({{20, 30}});  // one unit long
   gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
                                                   {19, 30},
@@ -120,8 +131,8 @@ TEST(SnakeTest, MoveOneStep) {
                                                   {16, 27},
                                                   {15, 27}});
 
-  gamestatus::Snake snake_right_9(body9, gamestatus::Direction::RIGHT,
-                                  500, 500);
+  gamestatus::Snake snake_right_9(body9, gamestatus::Direction::RIGHT, 500,
+                                  500);
   gamestatus::Snake snake_up_9(body9, gamestatus::Direction::UP, 500, 500);
   gamestatus::Snake snake_down_9(body9, gamestatus::Direction::DOWN, 500, 500);
 
@@ -171,6 +182,17 @@ TEST(SnakeTest, MoveOneStep) {
   EXPECT_EQ(snake_up_9.getBody(), expected_up_9);
   EXPECT_EQ(snake_down_9.getBody(), expected_down_9);
   EXPECT_EQ(snake_left_7.getBody(), expected_left_7);
+}
+
+TEST(SnakeTest, MoveOneStepThenDie) {
+  gamestatus::DequeOfUniquePairs<int, int> body_up(
+      {{499, 496}, {499, 497}, {499, 498}, {500, 498}});
+  gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500, 500);
+
+  gamestatus::DequeOfUniquePairs<int, int> body_down(
+      {{499, 496}, {499, 497}, {499, 498}, {500, 498}});
+  gamestatus::Snake snake_down(body_down, gamestatus::Direction::DOWN, 500,
+                               500);
 }
 
 TEST(SnakeTest, EatFood) {

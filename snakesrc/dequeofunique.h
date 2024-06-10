@@ -32,7 +32,7 @@ class DequeOfUniquePairs {
   };
 
   bool operator==(const DequeOfUniquePairs<T1, T2>& other) const {
-    return (deque_ == other.deque()) && (set_ == other.set());
+    return (deque_ == other.deque());
   }
 
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
@@ -56,5 +56,3 @@ class DequeOfUniquePairs {
   };
 };
 }  // namespace gamestatus
-
-#endif
