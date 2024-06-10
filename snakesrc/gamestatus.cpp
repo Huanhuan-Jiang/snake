@@ -52,7 +52,7 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
 }
 
 std::pair<int, int> Snake::getNextHead() {
-  auto head = snake_body_.deque().front();
+  auto next_head = snake_body_.deque().front();
 
   // Update the head based on the direction
   switch (head_dir_) {
@@ -69,7 +69,7 @@ std::pair<int, int> Snake::getNextHead() {
       next_head.first--;
       break;
   }
-  return head;
+  return next_head;
 }
 
 SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
@@ -80,17 +80,17 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
     return SnakeState::DIE;
   }  // Snake hits the wall and dies;
 
-  if (head == food) {
-    snake_body_.insertFront(head);
+  if (next_head == food) {
+    snake_body_.insertFront(next_head);
     return SnakeState::EAT;  // Snake eats food;
   }
 
   snake_body_.removeBack();
-  if (snake_body_.set().find(head) != snake_body_.set().end()) {
+  if (snake_body_.set().find(next_head) != snake_body_.set().end()) {
     return SnakeState::DIE;  // Snake hits the body and dies;
   }
 
-  snake_body_.insertFront(head);
+  snake_body_.insertFront(next_head);
   return SnakeState::MOVE;  // Snake moves one step alive.
 }
 
