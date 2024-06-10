@@ -51,35 +51,35 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
 }
 
 bool Snake::moveOrEat(const std::pair<int, int> food) {
-  auto head = snake_body_.deque().front();
+  auto next_head = snake_body_.deque().front();
 
   // Update the head based on the direction
   switch (head_dir_) {
     case Direction::UP:
-      head.second++;
+      next_head.second++;
       break;
     case Direction::DOWN:
-      head.second--;
+      next_head.second--;
       break;
     case Direction::RIGHT:
-      head.first++;
+      next_head.first++;
       break;
     case Direction::LEFT:
-      head.first--;
+      next_head.first--;
       break;
   }
 
-  if (head.first > map_width_ | head.second > map_height_) {
+  if (next_head.first > map_width_ | next_head.second > map_height_) {
     return alive_ = false;
   }  // Snake hits the wall and dies;
 
-  if (head != food) {
+  if (next_head != food) {
     snake_body_.removeBack();  // Snake moves;
-    if (snake_body_.set().find(head) != snake_body_.set().end()) {
+    if (snake_body_.set().find(next_head) != snake_body_.set().end()) {
       return alive_ = false;  // Snake dies;
     }
   }
-  return eat_ = (snake_body_.insertFront(head));  // Snake eats food;
+  return eat_ = (snake_body_.insertFront(next_head));  // Snake eats food;
 }
 
 }  // namespace gamestatus
