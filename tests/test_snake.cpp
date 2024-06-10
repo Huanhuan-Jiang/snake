@@ -238,8 +238,7 @@ TEST(SnakeTest, EatFood) {
 
   gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT, 500, 500);
 
-  snake9.moveOrEat(food);
-
+  EXPECT_EQ(snake9.moveOrEat(food), gamestatus::SnakeState::EAT);
   EXPECT_EQ(snake9.getBody(), expected9);
 }
 
