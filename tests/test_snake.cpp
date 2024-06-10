@@ -243,7 +243,7 @@ TEST(SnakeTest, EatFood) {
   EXPECT_EQ(snake9.getBody(), expected9);
 }
 
-TEST(SnakeTest, DeadSnake) {
+TEST(SnakeTest, MoveOneStepThenHitBody) {
   gamestatus::DequeOfUniquePairs<int, int> body10({{18, 29},
                                                    {18, 28},
                                                    {19, 28},
