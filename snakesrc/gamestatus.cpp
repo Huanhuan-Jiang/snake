@@ -12,16 +12,18 @@
 namespace gamestatus {
 
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction, const int map_w, const int map_h)
+             Direction head_direction, const int map_w, const int map_h, 
+             int seed)
     : snake_body_(initial_body),
       head_dir_(head_direction),
       map_width_(map_w),
       map_height_(map_h),
-      seed_(std::chrono::system_clock::now().time_since_epoch().count()),
+      seed_(seed),
       gen_(seed_),
       dis_width_(1, map_width_),
       dis_height_(1, map_height_) {
-
+  
+  // std::cout << "Seed is " << seed_ << "\n";
   // Check if the snake body is valid
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
@@ -53,32 +55,25 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
   }
 }
 
-Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction, const int map_w, const int map_h,
-             int seed)
-    : Snake(initial_body, head_direction, map_w, map_h) {
-  seed_ = seed;
-}
-
 std::pair<int, int> Snake::getNextHead() {
-  auto next_head = snake_body_.deque().front();
+  auto head = snake_body_.deque().front();
 
   // Update the head based on the direction
   switch (head_dir_) {
     case Direction::UP:
-      next_head.second++;
+      head.second++;
       break;
     case Direction::DOWN:
-      next_head.second--;
+      head.second--;
       break;
     case Direction::RIGHT:
-      next_head.first++;
+      head.first++;
       break;
     case Direction::LEFT:
-      next_head.first--;
+      head.first--;
       break;
   }
-  return next_head;
+  return head;
 }
 
 SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
