@@ -20,13 +20,15 @@ class Snake {
   Direction head_dir_;
   int map_width_;
   int map_height_;
-  bool eat_;
-  bool alive_;
+  int seed_;
   std::pair<int, int> getNextHead();
 
  public:
   Snake(const DequeOfUniquePairs<int, int>& initial_body,
         Direction head_direction, const int map_w, const int map_h);
+
+  Snake(const DequeOfUniquePairs<int, int>& initial_body,
+        Direction head_direction, const int map_w, const int map_h, int seed);
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
 
@@ -37,5 +39,20 @@ class Snake {
   SnakeState moveOrEat(const std::pair<int, int>& food);
 
   void updateDirection(const Direction new_direction);
+
+  std::pair<int, int> generateFood() {
+    std::mt19937 gen(seed_);
+    std::uniform_int_distribution<int> dis_width(1, map_width_);
+    std::uniform_int_distribution<int> dis_height(1, map_height_);
+
+    while (true) {
+      int rand_x = dis_width(gen);
+      int rand_y = dis_height(gen);
+      auto food = std::make_pair(rand_x, rand_y);
+      if (snake_body_.set().find(food) == snake_body_.set().end()) {
+        return std::make_pair(rand_x, rand_y);
+      }
+    }
+  };
 };
 }  // namespace gamestatus
