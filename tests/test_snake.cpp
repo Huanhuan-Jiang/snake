@@ -355,3 +355,16 @@ TEST(ToolsTest, GenerateFood) {
   EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
 }
+
+TEST(GameTest, MimicGame) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h, 12345);
+  for (auto i=0; i<= 50; ++i) {
+    auto food = snake.generateFood();
+    std::cout << "The " << i+1 << " food is at (" << food.first << ", " << food.second << "). \n";
+  }
+}

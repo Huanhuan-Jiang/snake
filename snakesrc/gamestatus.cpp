@@ -16,8 +16,11 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
     : snake_body_(initial_body),
       head_dir_(head_direction),
       map_width_(map_w),
-      map_height_(map_h) {
-  auto seed_ = std::chrono::system_clock::now().time_since_epoch().count();
+      map_height_(map_h),
+      seed_(std::chrono::system_clock::now().time_since_epoch().count()),
+      gen_(seed_),
+      dis_width_(1, map_width_),
+      dis_height_(1, map_height_) {
 
   // Check if the snake body is valid
 

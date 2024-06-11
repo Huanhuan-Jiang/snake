@@ -21,6 +21,9 @@ class Snake {
   int map_width_;
   int map_height_;
   int seed_;
+  std::mt19937 gen_;
+  std::uniform_int_distribution<int> dis_width_;
+  std::uniform_int_distribution<int> dis_height_;
   std::pair<int, int> getNextHead();
 
  public:
@@ -41,13 +44,9 @@ class Snake {
   void updateDirection(const Direction new_direction);
 
   std::pair<int, int> generateFood() {
-    std::mt19937 gen(seed_);
-    std::uniform_int_distribution<int> dis_width(1, map_width_);
-    std::uniform_int_distribution<int> dis_height(1, map_height_);
-
     while (true) {
-      int rand_x = dis_width(gen);
-      int rand_y = dis_height(gen);
+      int rand_x = dis_width_(gen_);
+      int rand_y = dis_height_(gen_);
       auto food = std::make_pair(rand_x, rand_y);
       if (snake_body_.set().find(food) == snake_body_.set().end()) {
         return std::make_pair(rand_x, rand_y);
