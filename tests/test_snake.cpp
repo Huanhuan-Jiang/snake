@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <yaml-cpp/yaml.h>
 
 #include <deque>
 #include <iostream>
