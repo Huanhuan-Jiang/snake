@@ -12,7 +12,7 @@
 namespace gamestatus {
 
 Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
-             Direction head_direction, const int map_w, const int map_h, 
+             Direction head_direction, const int map_w, const int map_h,
              int seed)
     : snake_body_(initial_body),
       head_dir_(head_direction),
@@ -22,7 +22,6 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
       gen_(seed_),
       dis_width_(1, map_width_),
       dis_height_(1, map_height_) {
-  
   // std::cout << "Seed is " << seed_ << "\n";
   // Check if the snake body is valid
 

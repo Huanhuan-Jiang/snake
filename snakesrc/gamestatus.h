@@ -5,9 +5,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <random>
 #include <utility>
-#include <iostream>
 
 #include "dequeofunique.h"
 
@@ -28,9 +28,10 @@ class Snake {
   std::pair<int, int> getNextHead();
 
  public:
-  Snake(const DequeOfUniquePairs<int, int>& initial_body,
-        Direction head_direction, const int map_w, const int map_h, 
-        int seed_ = std::chrono::system_clock::now().time_since_epoch().count());
+  Snake(
+      const DequeOfUniquePairs<int, int>& initial_body,
+      Direction head_direction, const int map_w, const int map_h,
+      int seed_ = std::chrono::system_clock::now().time_since_epoch().count());
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
 
@@ -53,9 +54,9 @@ class Snake {
     }
   };
 
-  void printBody(){
+  void printBody() {
     std::cout << "The snake body is: ";
-    for (auto& element: snake_body_.deque()) {
+    for (auto& element : snake_body_.deque()) {
       std::cout << "{" << element.first << ", " << element.second << "}";
     }
     std::cout << ".\n";
