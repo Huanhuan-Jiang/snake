@@ -396,6 +396,7 @@ TEST(CycleTest, EatOneRandomFood) {
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           12345);
   // snake.printBody();
+  
   auto food = snake.generateFood();
   //std::pair<int, int> food = {35, 38};
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
