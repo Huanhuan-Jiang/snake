@@ -57,7 +57,7 @@ class Snake {
   void printBody() {
     std::cout << "The snake body is: ";
     for (auto& element : snake_body_.deque()) {
-      std::cout << "{" << element.first << ", " << element.second << "}";
+      std::cout << "{" << element.first << ", " << element.second << "} ";
     }
     std::cout << ".\n";
   }

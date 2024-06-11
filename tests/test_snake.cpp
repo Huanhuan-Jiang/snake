@@ -394,22 +394,25 @@ TEST(CycleTest, EatOneRandomFood) {
   auto map_h = 50;
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           12345);
-  snake.printBody();
-  // auto food = snake.generateFood();
-  std::pair<int, int> food = {35, 38};
+  // snake.printBody();
+  auto food = snake.generateFood();
+  //std::pair<int, int> food = {35, 38};
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
   snake.moveOrEat(food);
-  snake.printBody();
+  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::DOWN);
   snake.moveOrEat(food);
-  snake.printBody();
+  // snake.printBody();
   snake.moveOrEat(food);
-  snake.printBody();
+  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::LEFT);
   snake.moveOrEat(food);
-  snake.printBody();
+  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::UP);
   snake.moveOrEat(food);
-  snake.printBody();
+  // snake.printBody();
   EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
+
+  food = snake.generateFood();
+  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
 }
