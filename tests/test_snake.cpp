@@ -437,7 +437,7 @@ TEST(CycleTest, MimicASimpleGame) {
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT, 50,
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50,
                           50, seed);
   snake.printBody();
 
