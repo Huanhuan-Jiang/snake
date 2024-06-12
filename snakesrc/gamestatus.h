@@ -37,11 +37,11 @@ class Snake {
   std::pair<int, int> getNextHead();
 
  public:
-  Snake(
-      const DequeOfUniquePairs<int, int>& initial_body,
-      Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
-      const int map_height_ = 50,
-      int seed_ = std::chrono::system_clock::now().time_since_epoch().count());
+  Snake(const DequeOfUniquePairs<int, int>& initial_body,
+        Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
+        const int map_height_ = 50,
+        int64_t seed_ =
+            std::chrono::system_clock::now().time_since_epoch().count());
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
 

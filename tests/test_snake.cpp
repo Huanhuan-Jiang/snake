@@ -371,7 +371,7 @@ TEST(ToolsTest, GenerateFoodWithCustomizedSeed) {
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           seed);
   auto food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
+
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
@@ -386,7 +386,7 @@ TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
   auto food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
+
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
@@ -400,29 +400,31 @@ TEST(ToolsTest, GenerateMultipleFoodWithCustomizedSeed) {
   auto map_h = 50;
   auto seed = 12345;
 
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h, seed);
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
 
   for (auto i = 0; i < 10; ++i) {
     auto food = snake.generateFood();
-    std::cout << "The " << i+1 << " food is {" << food.first << ", " << food.second << "}.\n";
+
     EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
-    EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+    EXPECT_THAT(food.second,
+                testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
     EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
   }
 }
 
 TEST(CycleTest, EatRandomFoodAndDie) {
   gamestatus::DequeOfUniquePairs<int, int> body(
-      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40,44}});
+      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40, 44}});
 
   auto map_w = 50;
   auto map_h = 50;
-  int seed = 12345; 
+  int seed = 12345;
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           seed);
 
   auto food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
+
   snake.moveOrEat(food);
   snake.updateDirection(gamestatus::Direction::DOWN);
   snake.moveOrEat(food);
@@ -436,7 +438,7 @@ TEST(CycleTest, EatRandomFoodAndDie) {
 
 TEST(CycleTest, MimicASimpleGame) {
   gamestatus::DequeOfUniquePairs<int, int> body(
-      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40,44}});
+      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40, 44}});
 
   auto map_w = 50;
   auto map_h = 50;
@@ -445,13 +447,10 @@ TEST(CycleTest, MimicASimpleGame) {
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50,
-                          50, 12345);
-  snake.printBody();
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
 
   auto food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
-
   auto snake_state = gamestatus::SnakeState::MOVE;
 
   for (const auto& key_node : user_input["keys"]) {
@@ -469,23 +468,23 @@ TEST(CycleTest, MimicASimpleGame) {
     snake_state = snake.moveOrEat(food);
   }
   EXPECT_EQ(snake_state, gamestatus::SnakeState::DIE);
-  snake.printBody();
 }
 
 TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
   gamestatus::DequeOfUniquePairs<int, int> default_init_body =
       gamestatus::initBody();
+
+  auto map_w = 50;
+  auto map_h = 50;
+
   std::string filename = "../tests/a_simple_input_with_default_body.yml";
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT, 50,
-                          50, seed);
-  snake.printBody();
+  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT,
+                          map_w, map_h, seed);
 
   auto food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
-
   auto snake_state = gamestatus::SnakeState::MOVE;
 
   for (const auto& key_node : user_input["keys"]) {
@@ -493,19 +492,14 @@ TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
 
     if (value == "up") {
       snake.updateDirection(gamestatus::Direction::UP);
-      std::cout << "Turn " << value << "\n";
     } else if (value == "down") {
       snake.updateDirection(gamestatus::Direction::DOWN);
-      std::cout << "Turn " << value << "\n";
     } else if (value == "left") {
       snake.updateDirection(gamestatus::Direction::LEFT);
-      std::cout << "Turn " << value << "\n";
     } else if (value == "right") {
       snake.updateDirection(gamestatus::Direction::RIGHT);
-      std::cout << "Turn " << value << "\n";
     }
     snake_state = snake.moveOrEat(food);
-    snake.printBody();
   }
   EXPECT_EQ(snake_state, gamestatus::SnakeState::EAT);
 }
