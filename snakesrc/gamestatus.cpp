@@ -102,7 +102,7 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
   return SnakeState::MOVE;  // Snake moves one step alive.
 }
 
-void Snake::updateDirection(const Direction new_direction) {
+Direction Snake::updateDirection(const Direction new_direction) {
   switch (head_dir_) {
     case Direction::UP:
       if (new_direction != Direction::DOWN) {
@@ -127,6 +127,7 @@ void Snake::updateDirection(const Direction new_direction) {
     default:
       break;
   }
+  return(head_dir_);
 };
 
 }  // namespace gamestatus

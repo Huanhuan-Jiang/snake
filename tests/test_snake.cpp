@@ -100,32 +100,6 @@ TEST(SnakeTest, GetBody) {
   EXPECT_EQ(snake9.getBody(), body9);
 }
 
-TEST(SnakeTest, GetDirection) {
-  gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
-                                                  {19, 30},
-                                                  {19, 29},
-                                                  {18, 29},
-                                                  {17, 29},
-                                                  {17, 28},
-                                                  {17, 27},
-                                                  {16, 27},
-                                                  {15, 27}});
-
-  gamestatus::Snake snake9_right(body9, gamestatus::Direction::RIGHT, 500, 500,
-                                 12345);
-  gamestatus::Snake snake9_left(body9, gamestatus::Direction::LEFT, 500, 500,
-                                12345);
-  gamestatus::Snake snake9_up(body9, gamestatus::Direction::UP, 500, 500,
-                              12345);
-  gamestatus::Snake snake9_down(body9, gamestatus::Direction::DOWN, 500, 500,
-                                12345);
-
-  EXPECT_EQ(snake9_right.getDirection(), gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake9_left.getDirection(), gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake9_up.getDirection(), gamestatus::Direction::UP);
-  EXPECT_EQ(snake9_down.getDirection(), gamestatus::Direction::DOWN);
-}
-
 TEST(SnakeTest, MoveOneStep) {
   gamestatus::DequeOfUniquePairs<int, int> body7(
       {{18, 30}, {18, 29}, {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}});
@@ -271,66 +245,38 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
   EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
 }
 
-TEST(UpdateTest, NextDirection) {
+TEST(ToolsTest, UpdateDirection) {
   gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
   gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT, 500, 500,
                           12345);
 
   // From RIGHT
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT), gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT), gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP), gamestatus::Direction::UP);
   snake.updateDirection(gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
-
-  snake.updateDirection(gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
-
-  snake.updateDirection(gamestatus::Direction::UP);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
-
-  snake.updateDirection(gamestatus::Direction::RIGHT);
-  snake.updateDirection(gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN), gamestatus::Direction::DOWN);
 
   // From DOWN
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN), gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP), gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT), gamestatus::Direction::RIGHT);
   snake.updateDirection(gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
-
-  snake.updateDirection(gamestatus::Direction::UP);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
-
-  snake.updateDirection(gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
-
-  snake.updateDirection(gamestatus::Direction::DOWN);
-  snake.updateDirection(gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT), gamestatus::Direction::LEFT);
 
   // From LEFT
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT), gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT), gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN), gamestatus::Direction::DOWN);
   snake.updateDirection(gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
-
-  snake.updateDirection(gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
-
-  snake.updateDirection(gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::DOWN);
-
-  snake.updateDirection(gamestatus::Direction::LEFT);
-  snake.updateDirection(gamestatus::Direction::UP);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP), gamestatus::Direction::UP);
 
   // From UP
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP), gamestatus::Direction::UP);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN), gamestatus::Direction::UP);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT), gamestatus::Direction::LEFT);
   snake.updateDirection(gamestatus::Direction::UP);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
-
-  snake.updateDirection(gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::UP);
-
-  snake.updateDirection(gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::LEFT);
-
-  snake.updateDirection(gamestatus::Direction::UP);
-  snake.updateDirection(gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.getDirection(), gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT), gamestatus::Direction::RIGHT);
 }
 
 TEST(CycleTest, FromBirthToDeath) {
