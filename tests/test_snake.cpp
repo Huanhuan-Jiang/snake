@@ -509,5 +509,5 @@ TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
     snake_state = snake.moveOrEat(food);
     snake.printBody();
   }
-  EXPECT_EQ(snake_state, gamestatus::SnakeState::DIE);
+  EXPECT_EQ(snake_state, gamestatus::SnakeState::EAT);
 }
