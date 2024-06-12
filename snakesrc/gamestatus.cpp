@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "dequeofunique.h"
-#include "gamestatus.h"
 
 namespace gamestatus {
 
@@ -22,7 +21,6 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
       gen_(seed_),
       dis_width_(1, map_width_ - 1),
       dis_height_(1, map_height_ - 1) {
-  // std::cout << "Seed is " << seed_ << "\n";
   // Check if the snake body is valid
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
@@ -49,7 +47,6 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
     if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
       throw std::runtime_error("Snake body is not continuous!");
     }
-
     ++prev_it;
   }
 }

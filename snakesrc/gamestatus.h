@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chrono>
-#include <cmath>  // std::floor
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -62,14 +62,6 @@ class Snake {
         return std::make_pair(rand_x, rand_y);
       }
     }
-  };
-
-  void printBody() {
-    std::cout << "The snake body is: ";
-    for (auto& element : snake_body_.deque()) {
-      std::cout << "{" << element.first << ", " << element.second << "} ";
-    }
-    std::cout << ".\n";
   }
 };
 }  // namespace gamestatus

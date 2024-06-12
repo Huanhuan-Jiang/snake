@@ -3,9 +3,8 @@
 #include <yaml-cpp/yaml.h>
 
 #include <deque>
-#include <fstream>  // std::ifstream
+#include <fstream>
 #include <iostream>
-#include <list>
 #include <stdexcept>
 #include <string>
 #include <utility>
