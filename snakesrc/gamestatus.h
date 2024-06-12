@@ -30,14 +30,14 @@ class Snake {
   Direction head_dir_;
   int map_width_;
   int map_height_;
-  int seed_;
+  int64_t seed_;
   std::mt19937 gen_;
   std::uniform_int_distribution<int> dis_width_;
   std::uniform_int_distribution<int> dis_height_;
   std::pair<int, int> getNextHead();
 
  public:
-  Snake(const DequeOfUniquePairs<int, int>& initial_body,
+  Snake(const DequeOfUniquePairs<int, int> initial_body,
         const Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
         const int map_height_ = 50,
         const int64_t seed_ =
