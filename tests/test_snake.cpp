@@ -442,7 +442,7 @@ TEST(CycleTest, MimicASimpleGame) {
 
   auto seed = user_input["seed"]["value"].as<int>();
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50,
-                          50, seed);
+                          50, 12345);
   snake.printBody();
 
   auto food = snake.generateFood();
