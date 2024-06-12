@@ -20,8 +20,8 @@ Snake::Snake(const DequeOfUniquePairs<int, int>& initial_body,
       map_height_(map_h),
       seed_(seed),
       gen_(seed_),
-      dis_width_(1, map_width_),
-      dis_height_(1, map_height_) {
+      dis_width_(1, map_width_-1),
+      dis_height_(1, map_height_-1) {
   // std::cout << "Seed is " << seed_ << "\n";
   // Check if the snake body is valid
 

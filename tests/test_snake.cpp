@@ -384,6 +384,7 @@ TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
   auto food = snake.generateFood();
+  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
