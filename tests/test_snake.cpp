@@ -390,7 +390,7 @@ TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
 }
 
-TEST(GameTest, GenerateMultipleFoods) {
+TEST(ToolsTest, GenerateMultipleFoods) {
   gamestatus::DequeOfUniquePairs<int, int> body({{18, 29}});
 
   auto map_w = 50;
