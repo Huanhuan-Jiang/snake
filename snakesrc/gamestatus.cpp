@@ -45,8 +45,8 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 
   for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
        ++it) {
-    if (prev_it->first >= map_width_ || prev_it->first <= 0 ||
-        prev_it->second >= map_height_ || prev_it->second <= 0) {
+    if (it->first >= map_width_ || it->first <= 0 ||
+        it->second >= map_height_ || it->second <= 0) {
       throw std::runtime_error("Snake body is beyond the map!");
     }
     auto diff_x = std::abs(it->first - prev_it->first);
@@ -127,7 +127,7 @@ Direction Snake::updateDirection(const Direction new_direction) {
     default:
       break;
   }
-  return(head_dir_);
+  return (head_dir_);
 };
 
 }  // namespace gamestatus
