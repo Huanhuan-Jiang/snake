@@ -17,10 +17,10 @@ namespace gamestatus {
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 enum class SnakeState : std::uint8_t { MOVE, EAT, DIE };
 
-inline DequeOfUniquePairs<int, int> initBody(int width, int height) {
+inline DequeOfUniquePairs<int, int> initBody(int width=50, int height=50) {
     auto e1 = std::make_pair(std::floor(width/2), std::floor(height/2));
-    auto e2 = std::make_pair(std::floor(width/2)-1, std::floor(height/2)-1);
-    auto e3 = std::make_pair(std::floor(width/2)-2, std::floor(height/2)-2);
+    auto e2 = std::make_pair(std::floor(width/2)-1, std::floor(height/2));
+    auto e3 = std::make_pair(std::floor(width/2)-2, std::floor(height/2));
     std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
     return DequeOfUniquePairs<int, int>(initial_deque);
   }
