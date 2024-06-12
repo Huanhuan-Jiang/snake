@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <cmath> // std::floor
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -16,8 +17,16 @@ namespace gamestatus {
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 enum class SnakeState : std::uint8_t { MOVE, EAT, DIE };
 
+inline DequeOfUniquePairs<int, int> initBody(int width, int height) {
+    auto e1 = std::make_pair(std::floor(width/2), std::floor(height/2));
+    auto e2 = std::make_pair(std::floor(width/2)-1, std::floor(height/2)-1);
+    auto e3 = std::make_pair(std::floor(width/2)-2, std::floor(height/2)-2);
+    std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
+    return DequeOfUniquePairs<int, int>(initial_deque);
+  }
+
 class Snake {
-  gamestatus::DequeOfUniquePairs<int, int> snake_body_;
+  DequeOfUniquePairs<int, int> snake_body_;
   Direction head_dir_;
   int map_width_;
   int map_height_;
@@ -30,7 +39,9 @@ class Snake {
  public:
   Snake(
       const DequeOfUniquePairs<int, int>& initial_body,
-      Direction head_direction, const int map_w, const int map_h,
+      Direction head_dir_= Direction::RIGHT, 
+      const int map_width_ = 50, 
+      const int map_height_ = 50,
       int seed_ = std::chrono::system_clock::now().time_since_epoch().count());
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
