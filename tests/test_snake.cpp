@@ -364,38 +364,27 @@ TEST(ToolsTest, GenerateFoodWithCustomSeed) {
   gamestatus::DequeOfUniquePairs<int, int> body(
       {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
 
-  auto map_w = 200;
-  auto map_h = 200;
+  auto map_w = 50;
+  auto map_h = 50;
+  int seed = 12345;
 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           12345);
-  auto food = snake.generateFood();
-  EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
-  EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
-  EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
-}
-
-TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
-  gamestatus::DequeOfUniquePairs<int, int> body(
-      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
-
-  auto map_w = 200;
-  auto map_h = 200;
-
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
   auto food = snake.generateFood();
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
   EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+  EXPECT_EQ(food.first, 35);
 }
 
-TEST(ToolsTest, GenerateMultipleFoods) {
+TEST(ToolsTest, GenerateMultipleFoodWithDefaultSeed) {
   gamestatus::DequeOfUniquePairs<int, int> body({{18, 29}});
 
   auto map_w = 50;
   auto map_h = 50;
   int seed = 12345;
+
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           seed);
   for (auto i = 0; i < 2; ++i) {
@@ -406,6 +395,23 @@ TEST(ToolsTest, GenerateMultipleFoods) {
   }
   
 }
+
+TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
+  auto food = snake.generateFood();
+  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
+  EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+}
+
+
 
 TEST(CycleTest, EatOneRandomFood) {
   gamestatus::DequeOfUniquePairs<int, int> body(
