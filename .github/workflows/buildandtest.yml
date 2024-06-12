@@ -21,6 +21,11 @@ jobs:
       
       - name: Install Clang-Tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      
+      - name: Print compiler version
+        run: |
+          g++ --version
+          clang --version
 
       - name: Build and run tests
         run: |
