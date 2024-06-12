@@ -37,7 +37,7 @@ class Snake {
   std::pair<int, int> getNextHead();
 
  public:
-  Snake(const DequeOfUniquePairs<int, int> initial_body,
+  Snake(DequeOfUniquePairs<int, int> initial_body,
         const Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
         const int map_height_ = 50,
         const int64_t seed_ =
