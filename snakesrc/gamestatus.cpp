@@ -10,6 +10,14 @@
 
 namespace gamestatus {
 
+DequeOfUniquePairs<int, int> initBody(int width, int height) {
+  auto e1 = std::make_pair(std::floor(width / 2), std::floor(height / 2));
+  auto e2 = std::make_pair(std::floor(width / 2) - 1, std::floor(height / 2));
+  auto e3 = std::make_pair(std::floor(width / 2) - 2, std::floor(height / 2));
+  std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
+  return DequeOfUniquePairs<int, int>(initial_deque);
+}
+
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
              const Direction head_direction, const int map_w, const int map_h,
              const int64_t seed)
