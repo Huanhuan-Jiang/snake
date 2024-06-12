@@ -409,8 +409,9 @@ TEST(CycleTest, EatOneRandomFood) {
 
   auto map_w = 50;
   auto map_h = 50;
+  int seed = 12345; 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          12345);
+                          seed);
 
   auto food = snake.generateFood();
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
@@ -436,8 +437,8 @@ TEST(CycleTest, MimicASimpleGame) {
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          seed);
+  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT, 50,
+                          50, seed);
   snake.printBody();
 
   auto food = snake.generateFood();
