@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <fstream> // std::ifstream
+//#include <unistd.h> // For getcwd
 
 #include "dequeofunique.h"
 #include "gamestatus.h"
@@ -395,26 +397,69 @@ TEST(CycleTest, EatOneRandomFood) {
   auto map_h = 50;
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           12345);
-  // snake.printBody();
   
   auto food = snake.generateFood();
-  //std::pair<int, int> food = {35, 38};
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
   snake.moveOrEat(food);
-  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::DOWN);
   snake.moveOrEat(food);
-  // snake.printBody();
   snake.moveOrEat(food);
-  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::LEFT);
   snake.moveOrEat(food);
-  // snake.printBody();
   snake.updateDirection(gamestatus::Direction::UP);
   snake.moveOrEat(food);
-  // snake.printBody();
   EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
-
-  food = snake.generateFood();
-  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
 }
+
+TEST(CycleTest, MimicASimpleGame) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{34, 38}, {33, 38}, {32, 38}, {31, 38}, {30, 38}, {29, 38}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+
+
+  std::string filename = "../tests/user_input.yml";
+
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+      std::cerr << "Error: Cannot open file: " << filename << std::endl;
+  }
+
+  YAML::Node user_input = YAML::LoadFile(filename);
+
+  if(user_input.IsNull()) {
+    std::cerr << "Error: User Input file is empty!" << "\n";
+  }
+
+  auto seed = user_input["seed"]["value"];
+  std::cout << seed << "\n";
+
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          12345);
+  snake.printBody();
+  
+  auto food = snake.generateFood();
+  std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
+
+  auto snake_state = gamestatus::SnakeState::MOVE;
+
+  for(const auto& key_node: user_input["keys"]){
+    auto value = key_node["value"].as<std::string>();
+
+    if(value=="up"){
+      snake.updateDirection(gamestatus::Direction::UP);
+    } else if(value=="down"){
+      snake.updateDirection(gamestatus::Direction::DOWN);
+    } else if(value=="left"){
+      snake.updateDirection(gamestatus::Direction::LEFT);
+    } else if(value=="right"){
+      snake.updateDirection(gamestatus::Direction::RIGHT);
+    }
+    snake_state = snake.moveOrEat(food);
+    snake.printBody();
+  }
+  
+  EXPECT_EQ(snake_state, gamestatus::SnakeState::DIE);
+  snake.printBody();
+} 
