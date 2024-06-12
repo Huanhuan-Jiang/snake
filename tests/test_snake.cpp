@@ -3,13 +3,13 @@
 #include <yaml-cpp/yaml.h>
 
 #include <deque>
+#include <fstream>  // std::ifstream
 #include <iostream>
 #include <list>
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
-#include <fstream> // std::ifstream
 
 #include "dequeofunique.h"
 #include "gamestatus.h"
@@ -411,7 +411,7 @@ TEST(CycleTest, EatOneRandomFood) {
   auto map_h = 50;
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           12345);
-  
+
   auto food = snake.generateFood();
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
   snake.moveOrEat(food);
@@ -439,38 +439,39 @@ TEST(CycleTest, MimicASimpleGame) {
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           seed);
   snake.printBody();
-  
+
   auto food = snake.generateFood();
   std::cout << "Food is {" << food.first << ", " << food.second << "}.\n";
 
   auto snake_state = gamestatus::SnakeState::MOVE;
 
-  for(const auto& key_node: user_input["keys"]){
+  for (const auto& key_node : user_input["keys"]) {
     auto value = key_node["value"].as<std::string>();
 
-    if(value=="up"){
+    if (value == "up") {
       snake.updateDirection(gamestatus::Direction::UP);
-    } else if(value=="down"){
+    } else if (value == "down") {
       snake.updateDirection(gamestatus::Direction::DOWN);
-    } else if(value=="left"){
+    } else if (value == "left") {
       snake.updateDirection(gamestatus::Direction::LEFT);
-    } else if(value=="right"){
+    } else if (value == "right") {
       snake.updateDirection(gamestatus::Direction::RIGHT);
     }
     snake_state = snake.moveOrEat(food);
   }
   EXPECT_EQ(snake_state, gamestatus::SnakeState::DIE);
   snake.printBody();
-} 
+}
 
 TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
-  gamestatus::DequeOfUniquePairs<int, int> default_init_body=gamestatus::initBody();
+  gamestatus::DequeOfUniquePairs<int, int> default_init_body =
+      gamestatus::initBody();
   std::string filename = "../tests/a_simple_input_with_default_body.yml";
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT, 50, 50,
-                          seed);
+  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT, 50,
+                          50, seed);
   snake.printBody();
 
   auto food = snake.generateFood();
@@ -478,19 +479,19 @@ TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
 
   auto snake_state = gamestatus::SnakeState::MOVE;
 
-  for(const auto& key_node: user_input["keys"]){
+  for (const auto& key_node : user_input["keys"]) {
     auto value = key_node["value"].as<std::string>();
 
-    if(value=="up"){
+    if (value == "up") {
       snake.updateDirection(gamestatus::Direction::UP);
       std::cout << "Turn " << value << "\n";
-    } else if(value=="down"){
+    } else if (value == "down") {
       snake.updateDirection(gamestatus::Direction::DOWN);
       std::cout << "Turn " << value << "\n";
-    } else if(value=="left"){
+    } else if (value == "left") {
       snake.updateDirection(gamestatus::Direction::LEFT);
       std::cout << "Turn " << value << "\n";
-    } else if(value=="right"){
+    } else if (value == "right") {
       snake.updateDirection(gamestatus::Direction::RIGHT);
       std::cout << "Turn " << value << "\n";
     }
