@@ -38,9 +38,9 @@ class Snake {
 
  public:
   Snake(const DequeOfUniquePairs<int, int>& initial_body,
-        Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
+        const Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
         const int map_height_ = 50,
-        int64_t seed_ =
+        const int64_t seed_ =
             std::chrono::system_clock::now().time_since_epoch().count());
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }

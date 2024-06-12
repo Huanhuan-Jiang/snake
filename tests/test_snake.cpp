@@ -52,8 +52,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
   for (const auto& [illegalbody, error_message] : illegal_cases) {
     EXPECT_THAT(
         [&illegalbody]() {
-          gamestatus::Snake illegalsnake(
-              illegalbody, gamestatus::Direction::RIGHT, 500, 500, 12345);
+          gamestatus::Snake illegalsnake(std::move(illegalbody),
+                                         gamestatus::Direction::RIGHT, 500, 500,
+                                         12345);
         },
         Throws<std::runtime_error>(
             Property(&std::runtime_error::what, HasSubstr(error_message))));
@@ -71,10 +72,10 @@ TEST(SnakeTest, SnakeSize) {
                                                   {17, 27},
                                                   {16, 27},
                                                   {15, 27}});
-  gamestatus::Snake snake1(body1, gamestatus::Direction::RIGHT, 500, 500,
-                           12345);
-  gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT, 500, 500,
-                           12345);
+  gamestatus::Snake snake1(std::move(body1), gamestatus::Direction::RIGHT, 500,
+                           500, 12345);
+  gamestatus::Snake snake9(std::move(body9), gamestatus::Direction::RIGHT, 500,
+                           500, 12345);
 
   EXPECT_EQ(snake1.size(), 1u);
   EXPECT_EQ(snake9.size(), 9u);
@@ -91,10 +92,10 @@ TEST(SnakeTest, GetBody) {
                                                   {17, 27},
                                                   {16, 27},
                                                   {15, 27}});
-  gamestatus::Snake snake1(body1, gamestatus::Direction::RIGHT, 500, 500,
-                           12345);
-  gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT, 500, 500,
-                           12345);
+  gamestatus::Snake snake1(std::move(body1), gamestatus::Direction::RIGHT, 500,
+                           500, 12345);
+  gamestatus::Snake snake9(std::move(body9), gamestatus::Direction::RIGHT, 500,
+                           500, 12345);
 
   EXPECT_EQ(snake1.getBody(), body1);
   EXPECT_EQ(snake9.getBody(), body9);
@@ -111,14 +112,14 @@ TEST(SnakeTest, GetDirection) {
                                                   {16, 27},
                                                   {15, 27}});
 
-  gamestatus::Snake snake9_right(body9, gamestatus::Direction::RIGHT, 500, 500,
-                                 12345);
-  gamestatus::Snake snake9_left(body9, gamestatus::Direction::LEFT, 500, 500,
-                                12345);
-  gamestatus::Snake snake9_up(body9, gamestatus::Direction::UP, 500, 500,
-                              12345);
-  gamestatus::Snake snake9_down(body9, gamestatus::Direction::DOWN, 500, 500,
-                                12345);
+  gamestatus::Snake snake9_right(std::move(body9), gamestatus::Direction::RIGHT,
+                                 500, 500, 12345);
+  gamestatus::Snake snake9_left(std::move(body9), gamestatus::Direction::LEFT,
+                                500, 500, 12345);
+  gamestatus::Snake snake9_up(std::move(body9), gamestatus::Direction::UP, 500,
+                              500, 12345);
+  gamestatus::Snake snake9_down(std::move(body9), gamestatus::Direction::DOWN,
+                                500, 500, 12345);
 
   EXPECT_EQ(snake9_right.getDirection(), gamestatus::Direction::RIGHT);
   EXPECT_EQ(snake9_left.getDirection(), gamestatus::Direction::LEFT);
@@ -140,15 +141,15 @@ TEST(SnakeTest, MoveOneStep) {
                                                   {16, 27},
                                                   {15, 27}});
 
-  gamestatus::Snake snake_right_9(body9, gamestatus::Direction::RIGHT, 500, 500,
-                                  12345);
-  gamestatus::Snake snake_up_9(body9, gamestatus::Direction::UP, 500, 500,
-                               12345);
-  gamestatus::Snake snake_down_9(body9, gamestatus::Direction::DOWN, 500, 500,
-                                 12345);
+  gamestatus::Snake snake_right_9(
+      std::move(body9), gamestatus::Direction::RIGHT, 500, 500, 12345);
+  gamestatus::Snake snake_up_9(std::move(body9), gamestatus::Direction::UP, 500,
+                               500, 12345);
+  gamestatus::Snake snake_down_9(std::move(body9), gamestatus::Direction::DOWN,
+                                 500, 500, 12345);
 
-  gamestatus::Snake snake_left_7(body7, gamestatus::Direction::LEFT, 500, 500,
-                                 12345);
+  gamestatus::Snake snake_left_7(std::move(body7), gamestatus::Direction::LEFT,
+                                 500, 500, 12345);
 
   gamestatus::DequeOfUniquePairs<int, int> expected_right_9({{21, 30},
                                                              {20, 30},
@@ -201,23 +202,23 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
 
   gamestatus::DequeOfUniquePairs<int, int> body_up(
       {{499, 499}, {499, 498}, {498, 498}, {498, 497}});
-  gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500, 500,
-                             12345);
+  gamestatus::Snake snake_up(std::move(body_up), gamestatus::Direction::UP, 500,
+                             500, 12345);
 
   gamestatus::DequeOfUniquePairs<int, int> body_down(
       {{1, 1}, {1, 2}, {2, 2}, {2, 3}});
-  gamestatus::Snake snake_down(body_down, gamestatus::Direction::DOWN, 500, 500,
-                               12345);
+  gamestatus::Snake snake_down(std::move(body_down),
+                               gamestatus::Direction::DOWN, 500, 500, 12345);
 
   gamestatus::DequeOfUniquePairs<int, int> body_right(
       {{499, 496}, {499, 497}, {499, 498}, {498, 498}});
-  gamestatus::Snake snake_right(body_right, gamestatus::Direction::RIGHT, 500,
-                                500, 12345);
+  gamestatus::Snake snake_right(std::move(body_right),
+                                gamestatus::Direction::RIGHT, 500, 500, 12345);
 
   gamestatus::DequeOfUniquePairs<int, int> body_left(
       {{1, 3}, {1, 4}, {2, 4}, {3, 4}});
-  gamestatus::Snake snake_left(body_left, gamestatus::Direction::LEFT, 500, 500,
-                               12345);
+  gamestatus::Snake snake_left(std::move(body_left),
+                               gamestatus::Direction::LEFT, 500, 500, 12345);
 
   EXPECT_EQ(snake_up.moveOrEat(food), gamestatus::SnakeState::DIE);
   EXPECT_EQ(snake_down.moveOrEat(food), gamestatus::SnakeState::DIE);
@@ -249,8 +250,8 @@ TEST(SnakeTest, EatFood) {
                                                       {16, 27},
                                                       {15, 27}});
 
-  gamestatus::Snake snake9(body9, gamestatus::Direction::RIGHT, 500, 500,
-                           12345);
+  gamestatus::Snake snake9(std::move(body9), gamestatus::Direction::RIGHT, 500,
+                           500, 12345);
 
   EXPECT_EQ(snake9.moveOrEat(food), gamestatus::SnakeState::EAT);
   EXPECT_EQ(snake9.getBody(), expected9);
@@ -267,14 +268,15 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
                                                    {18, 30},
                                                    {17, 30},
                                                    {16, 30}});
-  gamestatus::Snake snake10(body10, gamestatus::Direction::UP, 500, 500, 12345);
+  gamestatus::Snake snake10(std::move(body10), gamestatus::Direction::UP, 500,
+                            500, 12345);
   EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
 }
 
 TEST(UpdateTest, NextDirection) {
   gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
-  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT, 500, 500,
-                          12345);
+  gamestatus::Snake snake(std::move(initial_body), gamestatus::Direction::RIGHT,
+                          500, 500, 12345);
 
   // From RIGHT
   snake.updateDirection(gamestatus::Direction::RIGHT);
@@ -335,8 +337,8 @@ TEST(UpdateTest, NextDirection) {
 
 TEST(CycleTest, FromBirthToDeath) {
   gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}});
-  gamestatus::Snake snake(initial_body, gamestatus::Direction::RIGHT, 500, 500,
-                          12345);
+  gamestatus::Snake snake(std::move(initial_body), gamestatus::Direction::RIGHT,
+                          500, 500, 12345);
 
   std::vector<std::pair<int, int>> food_container = {
       {18, 30}, {19, 30}, {20, 30}, {20, 29},
@@ -367,8 +369,8 @@ TEST(ToolsTest, GenerateFoodWithCustomizedSeed) {
   auto map_h = 50;
   int seed = 12345;
 
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          seed);
+  gamestatus::Snake snake(std::move(body), gamestatus::Direction::RIGHT, map_w,
+                          map_h, seed);
   auto food = snake.generateFood();
 
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
@@ -383,7 +385,8 @@ TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
   auto map_w = 50;
   auto map_h = 50;
 
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
+  gamestatus::Snake snake(std::move(body), gamestatus::Direction::RIGHT, map_w,
+                          map_h);
   auto food = snake.generateFood();
 
   EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
@@ -399,8 +402,8 @@ TEST(ToolsTest, GenerateMultipleFoodWithCustomizedSeed) {
   auto map_h = 50;
   auto seed = 12345;
 
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          seed);
+  gamestatus::Snake snake(std::move(body), gamestatus::Direction::RIGHT, map_w,
+                          map_h, seed);
 
   for (auto i = 0; i < 10; ++i) {
     auto food = snake.generateFood();
@@ -419,8 +422,8 @@ TEST(CycleTest, EatRandomFoodAndDie) {
   auto map_w = 50;
   auto map_h = 50;
   int seed = 12345;
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          seed);
+  gamestatus::Snake snake(std::move(body), gamestatus::Direction::RIGHT, map_w,
+                          map_h, seed);
 
   auto food = snake.generateFood();
 
@@ -446,8 +449,8 @@ TEST(CycleTest, MimicASimpleGame) {
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          seed);
+  gamestatus::Snake snake(std::move(body), gamestatus::Direction::RIGHT, map_w,
+                          map_h, seed);
 
   auto food = snake.generateFood();
   auto snake_state = gamestatus::SnakeState::MOVE;
@@ -480,8 +483,8 @@ TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
   YAML::Node user_input = YAML::LoadFile(filename);
 
   auto seed = user_input["seed"]["value"].as<int>();
-  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT,
-                          map_w, map_h, seed);
+  gamestatus::Snake snake(std::move(default_init_body),
+                          gamestatus::Direction::RIGHT, map_w, map_h, seed);
 
   auto food = snake.generateFood();
   auto snake_state = gamestatus::SnakeState::MOVE;
