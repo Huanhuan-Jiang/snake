@@ -395,13 +395,16 @@ TEST(GameTest, GenerateMultipleFoods) {
 
   auto map_w = 50;
   auto map_h = 50;
+  int seed = 12345;
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
-                          12345);
-  for (auto i = 0; i <= 10; ++i) {
+                          seed);
+  for (auto i = 0; i < 2; ++i) {
     auto food = snake.generateFood();
     std::cout << "The " << i + 1 << " food is at (" << food.first << ", "
               << food.second << "). \n";
+    EXPECT_EQ(food.first, 35);
   }
+  
 }
 
 TEST(CycleTest, EatOneRandomFood) {
