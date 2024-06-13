@@ -1,13 +1,9 @@
 #pragma once
 
-#include <chrono>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <random>
 #include <utility>
 
 #include "dequeofunique.h"
@@ -38,6 +34,5 @@ class Snake {
   SnakeState moveOrEat(const std::pair<int, int>& food);
 
   Direction updateDirection(const Direction new_direction);
-
 };
 }  // namespace gamestatus

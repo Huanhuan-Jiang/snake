@@ -19,8 +19,7 @@ DequeOfUniquePairs<int, int> initBody(int width, int height) {
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
-             const Direction head_direction, const int map_w, const int map_h,
-             const int64_t seed)
+             const Direction head_direction, const int map_w, const int map_h)
     : snake_body_(std::move(initial_body)),
       head_dir_(head_direction),
       map_width_(map_w),
