@@ -23,13 +23,18 @@ class Snake {
   std::pair<int, int> getNextHead();
 
  public:
-  Snake(DequeOfUniquePairs<int, int> initial_body,
+  Snake(const DequeOfUniquePairs<int, int> initial_body,
         const Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
         const int map_height_ = 50);
+
+  Snake(const int map_width_ = 50, const int map_height_ = 50)
+      : Snake(initBody(map_width_, map_height_)) {};
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
 
   const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
+
+  Direction getDirection() { return head_dir_; };
 
   SnakeState moveOrEat(const std::pair<int, int>& food);
 
