@@ -24,11 +24,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     : snake_body_(std::move(initial_body)),
       head_dir_(head_direction),
       map_width_(map_w),
-      map_height_(map_h),
-      seed_(seed),
-      gen_(seed_),
-      dis_width_(1, map_width_ - 1),
-      dis_height_(1, map_height_ - 1) {
+      map_height_(map_h) {
   // Check if the snake body is valid
 
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
