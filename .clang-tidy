@@ -12,6 +12,7 @@ Checks: '
   clang-analyzer-*,
   cppcoreguidelines-*,
   -cppcoreguidelines-avoid-do-while,
+  -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-avoid-non-const-global-variables,
   -cppcoreguidelines-interfaces-global-init,
   -cppcoreguidelines-macro-usage,
