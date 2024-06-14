@@ -103,22 +103,14 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
 Direction Snake::updateDirection(const Direction new_direction) {
   switch (head_dir_) {
     case Direction::UP:
-      if (new_direction != Direction::DOWN) {
-        head_dir_ = new_direction;
-      }
-      break;
     case Direction::DOWN:
-      if (new_direction != Direction::UP) {
-        head_dir_ = new_direction;
-      }
-      break;
-    case Direction::RIGHT:
-      if (new_direction != Direction::LEFT) {
+      if (new_direction != Direction::DOWN && new_direction != Direction::UP) {
         head_dir_ = new_direction;
       }
       break;
     case Direction::LEFT:
-      if (new_direction != Direction::RIGHT) {
+    case Direction::RIGHT:
+      if (new_direction != Direction::RIGHT && new_direction != Direction::LEFT) {
         head_dir_ = new_direction;
       }
       break;
@@ -126,6 +118,6 @@ Direction Snake::updateDirection(const Direction new_direction) {
       break;
   }
   return (head_dir_);
-};
+}
 
 }  // namespace gamestatus
