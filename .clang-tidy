@@ -1,6 +1,5 @@
 ---
 Checks: '
-  -*,
   bugprone-*,
   -bugprone-easily-swappable-parameters,
   -bugprone-forward-declaration-namespace,
