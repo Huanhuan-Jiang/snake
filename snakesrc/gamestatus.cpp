@@ -10,10 +10,13 @@
 
 namespace gamestatus {
 
-DequeOfUniquePairs<int, int> initBody(int width, int height) {
-  auto e1 = std::make_pair(std::floor(width / 2), std::floor(height / 2));
-  auto e2 = std::make_pair(std::floor(width / 2) - 1, std::floor(height / 2));
-  auto e3 = std::make_pair(std::floor(width / 2) - 2, std::floor(height / 2));
+DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
+  int mid_x = width / 2;
+  int mid_y = height / 2;
+
+  auto e1 = std::make_pair(mid_x, mid_y);
+  auto e2 = std::make_pair(mid_x - 1, mid_y);
+  auto e3 = std::make_pair(mid_x - 2, mid_y);
   std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
   return DequeOfUniquePairs<int, int>(initial_deque);
 }

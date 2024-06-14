@@ -146,12 +146,24 @@ TEST(SnakeTest, GetDefaultBody) {
   gamestatus::DequeOfUniquePairs<int, int> expect_body1(
       {{25, 25}, {24, 25}, {23, 25}});
 
+std::cout << "The snake body is: ";
+for (auto& element : snake1.getBody().deque()) {
+	std::cout << "{" << element.first << ", " << element.second << "} ";
+ }
+std::cout << ".\n";
+
   EXPECT_EQ(snake1.getBody(), expect_body1);
   EXPECT_EQ(snake1.getDirection(), gamestatus::Direction::RIGHT);
 
   gamestatus::Snake snake2(100, 100);
   gamestatus::DequeOfUniquePairs<int, int> expect_body2(
       {{50, 50}, {49, 50}, {48, 50}});
+
+  std::cout << "The snake body is: ";
+  for (auto& element : snake2.getBody().deque()) {
+  std::cout << "{" << element.first << ", " << element.second << "} ";
+  }
+  std::cout << ".\n";
 
   EXPECT_EQ(snake2.getBody(), expect_body2);
   EXPECT_EQ(snake2.getDirection(), gamestatus::Direction::RIGHT);
