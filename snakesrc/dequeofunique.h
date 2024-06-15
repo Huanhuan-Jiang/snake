@@ -39,6 +39,7 @@ class DequeOfUniquePairs {
     if (deque_.empty()) {
       return true;
     }
+    return false;
   }
 
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
@@ -52,6 +53,7 @@ class DequeOfUniquePairs {
       deque_.emplace_front(element);
       return true;
     }
+    return false;
   };
 
   std::size_t size() { return deque_.size(); };
