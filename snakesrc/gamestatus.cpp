@@ -27,7 +27,7 @@ bool Snake::outOfRange(std::pair<int, int> element) const {
   return (x >= map_width_ || x <= 0 || y >= map_height_ || y <= 0);
 }
 
-bool Snake::continuous() {
+bool Snake::discontinuous() const noexcept {
   std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
   auto prev_it = snake_deque.begin();
   for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
@@ -35,7 +35,9 @@ bool Snake::continuous() {
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
 
-    return (!(diff_x == 0 && diff_y == 1) && !(diff_x == 1 && diff_y == 0)) 
+    if ((diff_x != 0 || diff_y != 1) && (diff_x != 1 || diff_y != 0)) {
+      return true;
+    }
     ++prev_it;
   }
   return false;
@@ -57,7 +59,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     throw std::runtime_error("Snake body is beyond the map!");
   }
 
-  if (continuous()) {
+  if (discontinuous()) {
     throw std::runtime_error("Snake body is not continuous!");
   }
 }

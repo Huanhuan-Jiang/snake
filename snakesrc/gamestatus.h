@@ -23,8 +23,8 @@ class Snake {
   int map_height_;
   std::pair<int, int> getNextHead();
 
-  bool outOfRange(std::pair<int, int> element);
-  bool continuous();
+  bool outOfRange(std::pair<int, int>) const;
+  bool discontinuous() const noexcept;
 
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,

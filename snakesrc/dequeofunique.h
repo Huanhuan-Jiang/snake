@@ -35,11 +35,7 @@ class DequeOfUniquePairs {
     return (deque_ == other.deque());
   }
 
-  bool empty() const noexcept {
-    if (deque_.empty()) {
-      return true;
-    }
-  }
+  bool empty() const noexcept { return deque_.empty(); }
 
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
 
