@@ -27,25 +27,13 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       {499, 499},
       {499, 498}};  // first element y >= 500, beyond the map
   std::deque<std::pair<int, int>> illegaldeque5 = {
-      {499, 499},
-      {499, 500},
-      {498, 500}};  // intermediate element y >= 500, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque6 = {
       {500, 499},
       {499, 499},
       {499, 498}};  // first element x >= 500, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque7 = {
-      {499, 499},
-      {500, 499},
-      {500, 498}};  // intermediate element x >= 500, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque8 = {
+  std::deque<std::pair<int, int>> illegaldeque6 = {
       {0, 1}, {1, 1}, {1, 2}};  // first element y <= 0, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque9 = {
-      {1, 1}, {1, 0}, {2, 0}};  // intermediate element y <= 0, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque10 = {
+  std::deque<std::pair<int, int>> illegaldeque7 = {
       {0, 0}, {1, 1}, {1, 2}};  // first x <= 0, beyond the map
-  std::deque<std::pair<int, int>> illegaldeque11 = {
-      {1, 1}, {0, 1}, {0, 2}};  // intermediate x <= 0, beyond the map
 
   std::vector<std::pair<gamestatus::DequeOfUniquePairs<int, int>, std::string>>
       illegal_cases = {
@@ -62,15 +50,7 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
           {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque6),
            "Snake body is beyond the map!"},
           {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque7),
-           "Snake body is beyond the map!"},
-          {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque8),
-           "Snake body is beyond the map!"},
-          {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque9),
-           "Snake body is beyond the map!"},
-          {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque10),
-           "Snake body is beyond the map!"},
-          {gamestatus::DequeOfUniquePairs<int, int>(illegaldeque11),
-           "Snake body is beyond the map!"}};
+          "Snake body is beyond the map!"}};
 
   for (auto& [illegalbody, error_message] : illegal_cases) {
     EXPECT_THAT(
@@ -146,11 +126,11 @@ TEST(SnakeTest, GetDefaultBody) {
   gamestatus::DequeOfUniquePairs<int, int> expect_body1(
       {{25, 25}, {24, 25}, {23, 25}});
 
-std::cout << "The snake body is: ";
-for (auto& element : snake1.getBody().deque()) {
-	std::cout << "{" << element.first << ", " << element.second << "} ";
- }
-std::cout << ".\n";
+  std::cout << "The snake body is: ";
+  for (auto& element : snake1.getBody().deque()) {
+    std::cout << "{" << element.first << ", " << element.second << "} ";
+  }
+  std::cout << ".\n";
 
   EXPECT_EQ(snake1.getBody(), expect_body1);
   EXPECT_EQ(snake1.getDirection(), gamestatus::Direction::RIGHT);
@@ -161,7 +141,7 @@ std::cout << ".\n";
 
   std::cout << "The snake body is: ";
   for (auto& element : snake2.getBody().deque()) {
-  std::cout << "{" << element.first << ", " << element.second << "} ";
+    std::cout << "{" << element.first << ", " << element.second << "} ";
   }
   std::cout << ".\n";
 

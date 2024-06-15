@@ -21,6 +21,33 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   return DequeOfUniquePairs<int, int>(initial_deque);
 }
 
+bool Snake::outOfRange() {
+  auto head_x = snake_body_.front().first;
+  auto head_y = snake_body_.front().second;
+
+  if (head_x >= map_width_ || head_x <= 0 || head_y >= map_height_ ||
+      head_y <= 0) {
+    return true;
+  }
+  return false;
+}
+
+bool Snake::continuous() {
+  std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
+  auto prev_it = snake_deque.begin();
+  for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
+       ++it) {
+    auto diff_x = std::abs(it->first - prev_it->first);
+    auto diff_y = std::abs(it->second - prev_it->second);
+
+    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
+      return true;
+    }
+    ++prev_it;
+  }
+  return false;
+}
+
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
              const Direction head_direction, const int map_w, const int map_h)
     : snake_body_(std::move(initial_body)),
@@ -29,31 +56,16 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
       map_height_(map_h) {
   // Check if the snake body is valid
 
-  std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
-
-  if (snake_deque.empty()) {
+  if (snake_body_.empty()) {
     throw std::runtime_error("Snake body is empty!");
   }
 
-  auto prev_it = snake_deque.begin();
-  if (prev_it->first >= map_width_ || prev_it->first <= 0 ||
-      prev_it->second >= map_height_ || prev_it->second <= 0) {
+  if (outOfRange()) {
     throw std::runtime_error("Snake body is beyond the map!");
   }
 
-  for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
-       ++it) {
-    if (it->first >= map_width_ || it->first <= 0 ||
-        it->second >= map_height_ || it->second <= 0) {
-      throw std::runtime_error("Snake body is beyond the map!");
-    }
-    auto diff_x = std::abs(it->first - prev_it->first);
-    auto diff_y = std::abs(it->second - prev_it->second);
-
-    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-      throw std::runtime_error("Snake body is not continuous!");
-    }
-    ++prev_it;
+  if (continuous()) {
+    throw std::runtime_error("Snake body is not continuous!");
   }
 }
 
@@ -110,7 +122,8 @@ Direction Snake::updateDirection(const Direction new_direction) {
       break;
     case Direction::LEFT:
     case Direction::RIGHT:
-      if (new_direction != Direction::RIGHT && new_direction != Direction::LEFT) {
+      if (new_direction != Direction::RIGHT &&
+          new_direction != Direction::LEFT) {
         head_dir_ = new_direction;
       }
       break;

@@ -35,6 +35,13 @@ class DequeOfUniquePairs {
     return (deque_ == other.deque());
   }
 
+  bool empty() noexcept {
+    if (deque_.empty()) {
+      return true;
+    }
+    return false;
+  }
+
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
 
   const std::unordered_set<std::pair<T1, T2>, pair_hash> set() const {
@@ -48,6 +55,10 @@ class DequeOfUniquePairs {
     }
     return false;
   };
+
+  std::size_t size() { return deque_.size(); };
+
+  std::pair<T1, T2> front() { return deque_.front(); }
 
   void removeBack() {
     auto last = deque_.back();

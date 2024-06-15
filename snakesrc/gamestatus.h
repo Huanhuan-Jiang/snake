@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <iostream>  //delete before pr
 #include <utility>
-#include <iostream> //delete before pr
 
 #include "dequeofunique.h"
 
@@ -23,13 +23,17 @@ class Snake {
   int map_height_;
   std::pair<int, int> getNextHead();
 
+  bool outOfRange();
+  bool continuous();
+
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,
         const Direction head_dir_ = Direction::RIGHT, const int map_width_ = 50,
         const int map_height_ = 50);
 
-  Snake(const int map_width_ =50 , const int map_height_ =50)
-      : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_, map_height_) {};
+  Snake(const int map_width_ = 50, const int map_height_ = 50)
+      : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
+              map_height_) {};
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }
 
