@@ -49,8 +49,8 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
       head_dir_(head_direction),
       map_width_(map_w),
       map_height_(map_h) {
-  // Check if the snake body is valid
 
+  // Check if the snake body is valid
   if (snake_body_.empty()) {
     throw std::runtime_error("Snake body is empty!");
   }
@@ -69,7 +69,6 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 std::pair<int, int> Snake::getNextHead() {
   auto head = snake_body_.deque().front();
 
-  // Update the head based on the direction
   switch (head_dir_) {
     case Direction::UP:
       head.second++;
