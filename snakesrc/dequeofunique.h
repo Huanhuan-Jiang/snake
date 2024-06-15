@@ -55,7 +55,7 @@ class DequeOfUniquePairs {
 
   std::pair<T1, T2> front() { return deque_.front(); }
 
-  void removeBack() {
+  void popBack() {
     auto last = deque_.back();
     deque_.pop_back();
     set_.erase(last);

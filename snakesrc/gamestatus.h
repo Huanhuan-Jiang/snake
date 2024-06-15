@@ -39,7 +39,7 @@ class Snake {
 
   const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
 
-  Direction getDirection() { return head_dir_; };
+  Direction getDirection() const { return head_dir_; };
 
   SnakeState moveOrEat(const std::pair<int, int>& food);
 
