@@ -21,7 +21,7 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   return DequeOfUniquePairs<int, int>(initial_deque);
 }
 
-bool Snake::outOfRange(std::pair<int, int> element) {
+bool Snake::outOfRange(std::pair<int, int> element) const {
   auto x = element.first;
   auto y = element.second;
   return (x >= map_width_ || x <= 0 || y >= map_height_ || y <= 0);
@@ -35,9 +35,7 @@ bool Snake::continuous() {
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
 
-    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-      return true;
-    }
+    return (!(diff_x == 0 && diff_y == 1) && !(diff_x == 1 && diff_y == 0)) 
     ++prev_it;
   }
   return false;
