@@ -21,15 +21,10 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   return DequeOfUniquePairs<int, int>(initial_deque);
 }
 
-bool Snake::outOfRange() {
-  auto head_x = snake_body_.front().first;
-  auto head_y = snake_body_.front().second;
-
-  if (head_x >= map_width_ || head_x <= 0 || head_y >= map_height_ ||
-      head_y <= 0) {
-    return true;
-  }
-  return false;
+bool Snake::outOfRange(std::pair<int, int> element) {
+  auto x = element.first;
+  auto y = element.second;
+  return (x >= map_width_ || x <= 0 || y >= map_height_ || y <= 0);
 }
 
 bool Snake::continuous() {
@@ -60,7 +55,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     throw std::runtime_error("Snake body is empty!");
   }
 
-  if (outOfRange()) {
+  if (outOfRange(snake_body_.front())) {
     throw std::runtime_error("Snake body is beyond the map!");
   }
 
@@ -93,8 +88,7 @@ std::pair<int, int> Snake::getNextHead() {
 SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
   auto next_head = getNextHead();
 
-  if (next_head.first >= map_width_ || next_head.first <= 0 ||
-      next_head.second >= map_height_ || next_head.second <= 0) {
+  if (outOfRange(next_head)) {
     return SnakeState::DIE;
   }  // Snake hits the wall and dies;
 
@@ -104,7 +98,7 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
   }
 
   snake_body_.removeBack();
-  if (snake_body_.set().find(next_head) != snake_body_.set().end()) {
+  if (snake_body_.has(next_head)) {
     return SnakeState::DIE;  // Snake hits the body and dies;
   }
 

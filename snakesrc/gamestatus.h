@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include <iostream>  //delete before pr
+#include <deque>
 #include <utility>
 
 #include "dequeofunique.h"
@@ -23,7 +23,7 @@ class Snake {
   int map_height_;
   std::pair<int, int> getNextHead();
 
-  bool outOfRange();
+  bool outOfRange(std::pair<int, int> element);
   bool continuous();
 
  public:
