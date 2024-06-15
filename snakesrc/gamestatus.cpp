@@ -56,7 +56,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   }
 
   for (auto element : snake_body_.deque()) {
-    if (outOfRange(element) {
+    if (outOfRange(element)) {
       throw std::runtime_error("Snake body is beyond the map!");
     }
   }
