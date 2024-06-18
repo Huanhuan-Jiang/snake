@@ -29,9 +29,8 @@ bool Snake::outOfRange(const std::pair<int, int> element) const {
 }
 
 bool Snake::discontinuous() const noexcept {
-  std::deque<std::pair<int, int>> snake_deque = snake_body_.deque();
-  auto prev_it = snake_deque.begin();
-  for (auto it = std::next(snake_deque.begin()); it != snake_deque.end();
+  auto prev_it = snake_body_.begin();
+  for (auto it = std::next(prev_it); it != snake_body_.end();
        ++it) {
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);

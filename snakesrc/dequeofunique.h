@@ -53,8 +53,13 @@ class DequeOfUniquePairs {
 
   std::size_t size() { return deque_.size(); };
 
-  auto front() { return deque_.front(); }
+  auto begin() { return deque_.begin(); }
+  auto begin() const { return deque_.begin(); }
 
+  auto end() { return deque_.end(); }
+  auto end() const { return deque_.end(); }
+
+  auto front() { return deque_.front(); }
   auto front() const { return deque_.front(); }
 
   void popBack() {
