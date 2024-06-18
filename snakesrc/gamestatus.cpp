@@ -29,13 +29,13 @@ bool Snake::outOfRange(const std::pair<int, int> element) const {
 }
 
 bool Snake::discontinuous() const noexcept {
-  auto prev_it = snake_body_.begin();
-  for (auto it = std::next(prev_it); it != snake_body_.end();
+  auto prev_it = snake_body_.cbegin();
+  for (auto it = std::next(snake_body_.cbegin()); it != snake_body_.cend();
        ++it) {
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
 
-    if ((diff_x != 0 || diff_y != 1) && (diff_x != 1 || diff_y != 0)) {
+    if (!(diff_x == 0 && diff_y == 1) && !(diff_x == 1 && diff_y == 0)) {
       return true;
     }
     ++prev_it;
