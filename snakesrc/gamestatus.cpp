@@ -68,6 +68,10 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   }
 }
 
+Snake::Snake(const int map_width_, const int map_height_)
+      : Snake(internal::initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
+              map_height_) {};
+
 std::pair<int, int> Snake::getNextHead() {
   std::pair<int, int> head = snake_body_.front();
 
