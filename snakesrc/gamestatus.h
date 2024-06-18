@@ -14,7 +14,9 @@ namespace gamestatus {
 enum class Direction : std::uint8_t { UP, DOWN, RIGHT, LEFT };
 enum class SnakeState : std::uint8_t { MOVE, EAT, DIE };
 
-DequeOfUniquePairs<int, int> initBody(int width, int height);
+namespace internal {
+  DequeOfUniquePairs<int, int> initBody(int width, int height);
+}
 
 class Snake {
   DequeOfUniquePairs<int, int> snake_body_;
@@ -32,7 +34,7 @@ class Snake {
         const int map_height_ = 50);
 
   Snake(const int map_width_ = 50, const int map_height_ = 50)
-      : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
+      : Snake(internal::initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
               map_height_) {};
 
   std::size_t size() const noexcept { return snake_body_.deque().size(); }

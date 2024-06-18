@@ -10,6 +10,7 @@
 
 namespace gamestatus {
 
+namespace internal {
 DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   int mid_x = width / 2;
   int mid_y = height / 2;
@@ -18,10 +19,11 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   auto e2 = std::make_pair(mid_x - 1, mid_y);
   auto e3 = std::make_pair(mid_x - 2, mid_y);
   std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
-  return DequeOfUniquePairs<int, int>(initial_deque);
+  return DequeOfUniquePairs<int, int>(std::move(initial_deque));
+}
 }
 
-bool Snake::outOfRange(std::pair<int, int> element) const {
+bool Snake::outOfRange(const std::pair<int, int> element) const {
   auto x = element.first;
   auto y = element.second;
   return (x >= map_width_ || x <= 0 || y >= map_height_ || y <= 0);
@@ -67,7 +69,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 }
 
 std::pair<int, int> Snake::getNextHead() {
-  auto head = snake_body_.deque().front();
+  std::pair<int, int> head = snake_body_.front();
 
   switch (head_dir_) {
     case Direction::UP:
