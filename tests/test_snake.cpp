@@ -207,10 +207,10 @@ TEST(SnakeTest, MoveOneStep) {
 
   std::pair<int, int> food = {100, 100};
 
-  EXPECT_EQ(snake_up_9.moveOrEat(food), gamestatus::SnakeState::MOVE);
-  EXPECT_EQ(snake_down_9.moveOrEat(food), gamestatus::SnakeState::MOVE);
-  EXPECT_EQ(snake_right_9.moveOrEat(food), gamestatus::SnakeState::MOVE);
-  EXPECT_EQ(snake_left_7.moveOrEat(food), gamestatus::SnakeState::MOVE);
+  EXPECT_EQ(snake_up_9.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_down_9.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_right_9.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_left_7.moveOrEat(food), gamestatus::MoveState::MOVE);
 
   EXPECT_EQ(snake_up_9.getBody(), expected_up_9);
   EXPECT_EQ(snake_down_9.getBody(), expected_down_9);
@@ -240,10 +240,10 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
   gamestatus::Snake snake_right(body_right, gamestatus::Direction::RIGHT, 500,
                                 500);
 
-  EXPECT_EQ(snake_up.moveOrEat(food), gamestatus::SnakeState::DIE);
-  EXPECT_EQ(snake_down.moveOrEat(food), gamestatus::SnakeState::DIE);
-  EXPECT_EQ(snake_left.moveOrEat(food), gamestatus::SnakeState::DIE);
-  EXPECT_EQ(snake_right.moveOrEat(food), gamestatus::SnakeState::DIE);
+  EXPECT_EQ(snake_up.moveOrEat(food), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_down.moveOrEat(food), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_left.moveOrEat(food), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_right.moveOrEat(food), gamestatus::MoveState::DIE);
 }
 
 TEST(SnakeTest, EatFood) {
@@ -272,7 +272,7 @@ TEST(SnakeTest, EatFood) {
 
   gamestatus::Snake snake9(body9);
 
-  EXPECT_EQ(snake9.moveOrEat(food), gamestatus::SnakeState::EAT);
+  EXPECT_EQ(snake9.moveOrEat(food), gamestatus::MoveState::EAT);
   EXPECT_EQ(snake9.getBody(), expected9);
 }
 
@@ -288,7 +288,7 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
                                                    {17, 30},
                                                    {16, 30}});
   gamestatus::Snake snake10(body10, gamestatus::Direction::UP);
-  EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
+  EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
 }
 
 TEST(ToolsTest, UpdateDirection) {
@@ -362,5 +362,5 @@ TEST(CycleTest, FromBirthToDeath) {
       snake.updateDirection(gamestatus::Direction::UP);
     }
   }
-  EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::SnakeState::DIE);
+  EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
 }
