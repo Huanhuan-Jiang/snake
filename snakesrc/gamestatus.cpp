@@ -44,7 +44,7 @@ bool Snake::discontinuous() const noexcept {
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
-             const Direction head_direction, int map_w, int map_h)
+             Direction head_direction, int map_w, int map_h)
     : snake_body_(std::move(initial_body)),
       head_dir_(head_direction),
       map_width_(map_w),
@@ -106,9 +106,8 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
     return MoveState::DIE;  // Snake hits the body and dies;
   }
 
-  if (snake_body_.insertFront(next_head)) {
-    return MoveState::MOVE;
-  }  // Snake moves one step alive.
+  snake_body_.insertFront(next_head);
+  return MoveState::MOVE;  // Snake moves one step alive
 }
 
 Direction Snake::updateDirection(Direction new_direction) {

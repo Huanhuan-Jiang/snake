@@ -26,7 +26,7 @@ class Snake {
 
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,
-        const Direction head_dir_ = Direction::RIGHT, int map_width_ = 50,
+        Direction head_dir_ = Direction::RIGHT, int map_width_ = 50,
         int map_height_ = 50);
 
   Snake(const int map_width_ = 50, const int map_height_ = 50);
