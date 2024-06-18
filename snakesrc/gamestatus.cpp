@@ -35,7 +35,7 @@ bool Snake::discontinuous() const noexcept {
     auto diff_x = std::abs(it->first - prev_it->first);
     auto diff_y = std::abs(it->second - prev_it->second);
 
-    if (!(diff_x == 0 && diff_y == 1) && !(diff_x == 1 && diff_y == 0)) {
+    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
       return true;
     }
     ++prev_it;
