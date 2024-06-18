@@ -106,7 +106,9 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
     return SnakeState::DIE;  // Snake hits the body and dies;
   }
 
-  if(snake_body_.insertFront(next_head)) {return SnakeState::MOVE;}; // Snake moves one step alive.
+  if (snake_body_.insertFront(next_head)) {
+    return SnakeState::MOVE;
+  }  // Snake moves one step alive.
 }
 
 Direction Snake::updateDirection(const Direction new_direction) {
