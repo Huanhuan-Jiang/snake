@@ -31,7 +31,7 @@ class Snake {
 
   Snake(const int map_width_ = 50, const int map_height_ = 50);
 
-  std::size_t size() const noexcept { return snake_body_.deque().size(); }
+  std::size_t size() const noexcept { return snake_body_.size(); }
 
   const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
 
