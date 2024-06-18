@@ -52,6 +52,7 @@ class DequeOfUniquePairs {
   };
 
   std::size_t size() { return deque_.size(); };
+  std::size_t size() const { return deque_.size(); };
 
   auto begin() { return deque_.begin(); }
   auto cbegin() const { return deque_.cbegin(); }
