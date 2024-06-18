@@ -54,7 +54,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     throw std::runtime_error("Snake body is empty!");
   }
 
-  for (auto element : snake_body_.deque()) {
+  for (auto element : snake_body_) {
     if (outOfRange(element)) {
       throw std::runtime_error("Snake body is beyond the map!");
     }
@@ -106,8 +106,7 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
     return SnakeState::DIE;  // Snake hits the body and dies;
   }
 
-  snake_body_.insertFront(next_head);
-  return SnakeState::MOVE;  // Snake moves one step alive.
+  if(snake_body_.insertFront(next_head)) {return SnakeState::MOVE;}; // Snake moves one step alive.
 }
 
 Direction Snake::updateDirection(const Direction new_direction) {
