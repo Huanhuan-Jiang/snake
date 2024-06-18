@@ -111,7 +111,7 @@ SnakeState Snake::moveOrEat(const std::pair<int, int>& food) {
   }  // Snake moves one step alive.
 }
 
-Direction Snake::updateDirection(const Direction new_direction) {
+Direction Snake::updateDirection(Direction new_direction) {
   switch (head_dir_) {
     case Direction::UP:
     case Direction::DOWN:
