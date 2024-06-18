@@ -10,7 +10,7 @@
 
 namespace gamestatus {
 
-namespace internal {
+namespace {
 DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   int mid_x = width / 2;
   int mid_y = height / 2;
@@ -21,7 +21,7 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
   std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
   return DequeOfUniquePairs<int, int>(std::move(initial_deque));
 }
-}
+}  // namespace
 
 bool Snake::outOfRange(const std::pair<int, int> element) const {
   auto x = element.first;
@@ -51,7 +51,6 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
       head_dir_(head_direction),
       map_width_(map_w),
       map_height_(map_h) {
-
   // Check if the snake body is valid
   if (snake_body_.empty()) {
     throw std::runtime_error("Snake body is empty!");
@@ -69,8 +68,8 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 }
 
 Snake::Snake(const int map_width_, const int map_height_)
-      : Snake(internal::initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
-              map_height_) {};
+    : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
+            map_height_) {};
 
 std::pair<int, int> Snake::getNextHead() {
   std::pair<int, int> head = snake_body_.front();

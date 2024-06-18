@@ -53,7 +53,7 @@ class DequeOfUniquePairs {
 
   std::size_t size() { return deque_.size(); };
 
-  auto front()  { return deque_.front(); }
+  auto front() { return deque_.front(); }
 
   auto front() const { return deque_.front(); }
 
