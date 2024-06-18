@@ -24,8 +24,7 @@ DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
 }  // namespace
 
 bool Snake::outOfRange(const std::pair<int, int> element) const {
-  auto x = element.first;
-  auto y = element.second;
+  auto [x, y] = element;
   return (x >= map_width_ || x <= 0 || y >= map_height_ || y <= 0);
 }
 
