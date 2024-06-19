@@ -69,7 +69,7 @@ class DequeOfUniquePairs {
     set_.erase(last);
   };
 
-  bool has(std::pair<T1, T2>& element) const {
+  bool has(const std::pair<T1, T2>& element) const {
     return set_.find(element) != set_.end();
   }
 };

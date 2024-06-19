@@ -20,7 +20,7 @@ class Snake {
   int map_height_;
   std::pair<int, int> getNextHead();
 
-  bool outOfRange(std::pair<int, int>) const;
+  bool outOfRange(const std::pair<int, int>&) const;
   bool discontinuous() const noexcept;
 
  public:
