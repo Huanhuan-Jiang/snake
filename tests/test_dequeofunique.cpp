@@ -86,7 +86,7 @@ TEST(DequeOfUniqueTest, InsertFrontAndCheckDequeAndSet) {
   EXPECT_EQ(deque_unique2.insertFront(head), false);
 }
 
-TEST(DequeOfUniqueTest, RemoveBackAndCheckDequeAndSet) {
+TEST(DequeOfUniqueTest, PopBackAndCheckDequeAndSet) {
   std::deque<std::pair<int, int>> deque1 = {
       {20, 30}, {19, 30}, {19, 29}, {18, 28}};
   std::deque<std::pair<int, int>> deque2 = {
@@ -103,12 +103,12 @@ TEST(DequeOfUniqueTest, RemoveBackAndCheckDequeAndSet) {
       {19, 29}, {19, 30}, {19, 31}};
 
   gamestatus::DequeOfUniquePairs<int, int> deque_unique1(deque1);
-  deque_unique1.removeBack();
+  deque_unique1.popBack();
   EXPECT_EQ(deque_unique1.deque(), expect_deque1);
   EXPECT_EQ(deque_unique1.set(), expect_set1);
 
   gamestatus::DequeOfUniquePairs<int, int> deque_unique2(deque2);
-  deque_unique2.removeBack();
+  deque_unique2.popBack();
   EXPECT_EQ(deque_unique2.deque(), expect_deque2);
   EXPECT_EQ(deque_unique2.set(), expect_set2);
 }

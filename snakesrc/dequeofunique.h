@@ -31,6 +31,12 @@ class DequeOfUniquePairs {
     }
   };
 
+  bool operator==(const DequeOfUniquePairs<T1, T2>& other) const {
+    return (deque_ == other.deque());
+  }
+
+  bool empty() const noexcept { return deque_.empty(); }
+
   const std::deque<std::pair<T1, T2>> deque() const { return deque_; };
 
   const std::unordered_set<std::pair<T1, T2>, pair_hash> set() const {
@@ -45,10 +51,27 @@ class DequeOfUniquePairs {
     return false;
   };
 
-  void removeBack() {
+  std::size_t size() { return deque_.size(); };
+  std::size_t size() const { return deque_.size(); };
+
+  auto begin() { return deque_.begin(); }
+  auto cbegin() const { return deque_.cbegin(); }
+
+  auto end() { return deque_.end(); }
+  auto cend() const { return deque_.cend(); }
+
+  auto front() { return deque_.front(); }
+  auto front() const { return deque_.front(); }
+
+  void popBack() {
     auto last = deque_.back();
     deque_.pop_back();
     set_.erase(last);
   };
+
+  bool has(const std::pair<T1, T2>& element) const {
+    return set_.find(element) != set_.end();
+  }
 };
+
 }  // namespace gamestatus
