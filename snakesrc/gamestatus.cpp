@@ -73,10 +73,10 @@ std::pair<int, int> Snake::getNextHead() {
 
   switch (head_dir_) {
     case Direction::UP:
-      head.second++;
+      head.second--;
       break;
     case Direction::DOWN:
-      head.second--;
+      head.second++;
       break;
     case Direction::RIGHT:
       head.first++;
