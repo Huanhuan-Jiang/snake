@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iterator>
 #include <stdexcept>
-#include <unordered_set>
 #include <utility>
 
 #include "dequeofunique.h"
@@ -11,7 +10,7 @@
 namespace gamestatus {
 
 namespace {
-DequeOfUniquePairs<int, int> initBody(const int width, const int height) {
+DequeOfUniquePairs<int, int> initBody(int width, int height) {
   int mid_x = width / 2;
   int mid_y = height / 2;
 
@@ -65,7 +64,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   }
 }
 
-Snake::Snake(const int map_width_, const int map_height_)
+Snake::Snake(int map_width_, int map_height_)
     : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
             map_height_) {};
 
@@ -127,7 +126,7 @@ Direction Snake::updateDirection(Direction new_direction) {
     default:
       break;
   }
-  return (head_dir_);
+  return head_dir_;
 }
 
 }  // namespace gamestatus

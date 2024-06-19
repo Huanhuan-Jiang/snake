@@ -3,7 +3,6 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <cstdlib>
 #include <deque>
 #include <utility>
 
@@ -29,7 +28,7 @@ class Snake {
         Direction head_dir_ = Direction::RIGHT, int map_width_ = 50,
         int map_height_ = 50);
 
-  Snake(const int map_width_ = 50, const int map_height_ = 50);
+  Snake(int map_width_ = 50, int map_height_ = 50);
 
   std::size_t size() const noexcept { return snake_body_.size(); }
 
