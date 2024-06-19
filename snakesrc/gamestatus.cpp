@@ -102,11 +102,10 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
   }
 
   snake_body_.popBack();
-  if (snake_body_.has(next_head)) {
+  if (!snake_body_.insertFront(next_head)) {
     return MoveState::DIE;  // Snake hits the body and dies;
   }
 
-  snake_body_.insertFront(next_head);
   return MoveState::MOVE;  // Snake moves one step alive
 }
 

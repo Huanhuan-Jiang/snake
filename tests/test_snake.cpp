@@ -157,65 +157,49 @@ TEST(SnakeTest, GetDefaultBody) {
 }
 
 TEST(SnakeTest, MoveOneStep) {
-  gamestatus::DequeOfUniquePairs<int, int> body7(
-      {{18, 30}, {18, 29}, {17, 29}, {17, 28}, {17, 27}, {16, 27}, {15, 27}});
+  gamestatus::DequeOfUniquePairs<int, int> body4(
+      {{18, 27}, {18, 28}, {18, 29}, {19, 29}});
+  gamestatus::DequeOfUniquePairs<int, int> body8(
+      {{18, 28},
+       {18, 27},
+       {19, 27},
+       {20, 27},
+       {20, 28},
+       {20, 29},
+       {19, 29},
+       {18, 29}});  // Snake almost hit the body;
 
-  gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
-                                                  {19, 30},
-                                                  {19, 29},
-                                                  {18, 29},
-                                                  {17, 29},
-                                                  {17, 28},
-                                                  {17, 27},
-                                                  {16, 27},
-                                                  {15, 27}});
+  gamestatus::Snake snake_left_4(body4, gamestatus::Direction::LEFT);
+  gamestatus::Snake snake_right_4(body4, gamestatus::Direction::RIGHT);
+  gamestatus::Snake snake_down_4(body4, gamestatus::Direction::DOWN);
+  gamestatus::Snake snake_up_8(body8, gamestatus::Direction::UP);
 
-  gamestatus::Snake snake_up_9(body9, gamestatus::Direction::UP);
-  gamestatus::Snake snake_down_9(body9, gamestatus::Direction::DOWN);
-  gamestatus::Snake snake_right_9(body9, gamestatus::Direction::RIGHT);
-  gamestatus::Snake snake_left_7(body7, gamestatus::Direction::LEFT);
-
-  gamestatus::DequeOfUniquePairs<int, int> expected_up_9({{20, 31},
-                                                          {20, 30},
-                                                          {19, 30},
-                                                          {19, 29},
-                                                          {18, 29},
-                                                          {17, 29},
-                                                          {17, 28},
-                                                          {17, 27},
-                                                          {16, 27}});
-  gamestatus::DequeOfUniquePairs<int, int> expected_down_9({{20, 29},
-                                                            {20, 30},
-                                                            {19, 30},
-                                                            {19, 29},
-                                                            {18, 29},
-                                                            {17, 29},
-                                                            {17, 28},
-                                                            {17, 27},
-                                                            {16, 27}});
-  gamestatus::DequeOfUniquePairs<int, int> expected_right_9({{21, 30},
-                                                             {20, 30},
-                                                             {19, 30},
-                                                             {19, 29},
-                                                             {18, 29},
-                                                             {17, 29},
-                                                             {17, 28},
-                                                             {17, 27},
-                                                             {16, 27}});
-  gamestatus::DequeOfUniquePairs<int, int> expected_left_7(
-      {{17, 30}, {18, 30}, {18, 29}, {17, 29}, {17, 28}, {17, 27}, {16, 27}});
+  gamestatus::DequeOfUniquePairs<int, int> expected_left_4(
+      {{17, 27}, {18, 27}, {18, 28}, {18, 29}});
+  gamestatus::DequeOfUniquePairs<int, int> expected_right_4(
+      {{19, 27}, {18, 27}, {18, 28}, {18, 29}});
+  gamestatus::DequeOfUniquePairs<int, int> expected_down_4(
+      {{18, 26}, {18, 27}, {18, 28}, {18, 29}});
+  gamestatus::DequeOfUniquePairs<int, int> expected_up_8({{18, 29},
+                                                          {18, 28},
+                                                          {18, 27},
+                                                          {19, 27},
+                                                          {20, 27},
+                                                          {20, 28},
+                                                          {20, 29},
+                                                          {19, 29}});
 
   std::pair<int, int> food = {100, 100};
 
-  EXPECT_EQ(snake_up_9.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_down_9.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_right_9.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_left_7.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_left_4.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_right_4.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_down_4.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_up_8.moveOrEat(food), gamestatus::MoveState::MOVE);
 
-  EXPECT_EQ(snake_up_9.getBody(), expected_up_9);
-  EXPECT_EQ(snake_down_9.getBody(), expected_down_9);
-  EXPECT_EQ(snake_right_9.getBody(), expected_right_9);
-  EXPECT_EQ(snake_left_7.getBody(), expected_left_7);
+  EXPECT_EQ(snake_left_4.getBody(), expected_left_4);
+  EXPECT_EQ(snake_right_4.getBody(), expected_right_4);
+  EXPECT_EQ(snake_down_4.getBody(), expected_down_4);
+  EXPECT_EQ(snake_up_8.getBody(), expected_up_8);
 }
 
 TEST(SnakeTest, MoveOneStepThenHitWall) {
@@ -277,18 +261,18 @@ TEST(SnakeTest, EatFood) {
 }
 
 TEST(SnakeTest, MoveOneStepThenHitBody) {
-  gamestatus::DequeOfUniquePairs<int, int> body10({{18, 29},
-                                                   {18, 28},
-                                                   {19, 28},
-                                                   {20, 28},
-                                                   {20, 29},
-                                                   {20, 30},
-                                                   {19, 30},
-                                                   {18, 30},
-                                                   {17, 30},
-                                                   {16, 30}});
-  gamestatus::Snake snake10(body10, gamestatus::Direction::UP);
-  EXPECT_EQ(snake10.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
+  gamestatus::DequeOfUniquePairs<int, int> body1({{18, 29},
+                                                  {18, 28},
+                                                  {19, 28},
+                                                  {20, 28},
+                                                  {20, 29},
+                                                  {20, 30},
+                                                  {19, 30},
+                                                  {18, 30},
+                                                  {17, 30},
+                                                  {16, 30}});
+  gamestatus::Snake snake1(body1, gamestatus::Direction::UP);
+  EXPECT_EQ(snake1.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
 }
 
 TEST(ToolsTest, UpdateDirection) {
