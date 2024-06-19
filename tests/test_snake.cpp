@@ -30,9 +30,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       {499, 499},
       {499, 498}};  // first element x >= 500, beyond the map
   std::deque<std::pair<int, int>> illegaldeque6 = {
-      {0, 1}, {1, 1}, {1, 2}};  // first element y <= 0, beyond the map
+      {-1, 0}, {0, 0}, {0, 1}};  // first element x < 0, beyond the map
   std::deque<std::pair<int, int>> illegaldeque7 = {
-      {0, 0}, {1, 1}, {1, 2}};  // first x <= 0, beyond the map
+      {0, -1}, {0, 0}, {0, 1}};  // first y < 0, beyond the map
   std::deque<std::pair<int, int>> illegaldeque8 = {
       {499, 499},
       {499, 500},
@@ -42,9 +42,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       {500, 499},
       {500, 498}};  // intermediate element x >= 500, beyond the map
   std::deque<std::pair<int, int>> illegaldeque10 = {
-      {1, 1}, {1, 0}, {2, 0}};  // intermediate element y <= 0, beyond the map
+      {0, 0}, {-1, 0}, {-1, 1}};  // intermediate element x < 0, beyond the map
   std::deque<std::pair<int, int>> illegaldeque11 = {
-      {1, 1}, {0, 1}, {0, 2}};  // intermediate x <= 0, beyond the map
+      {0, 0}, {0, -1}, {1, -1}};  // intermediate y < 0, beyond the map
 
   std::vector<std::pair<gamestatus::DequeOfUniquePairs<int, int>, std::string>>
       illegal_cases = {
@@ -210,12 +210,12 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
   gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500, 500);
 
   gamestatus::DequeOfUniquePairs<int, int> body_down(
-      {{1, 1}, {1, 2}, {2, 2}, {2, 3}});
+      {{1, 0}, {1, 1}, {1, 2}, {2, 2}, {2, 3}});
   gamestatus::Snake snake_down(body_down, gamestatus::Direction::DOWN, 500,
                                500);
 
   gamestatus::DequeOfUniquePairs<int, int> body_left(
-      {{1, 3}, {1, 4}, {2, 4}, {3, 4}});
+      {{0, 2}, {1, 2}, {2, 2}, {3, 2}});
   gamestatus::Snake snake_left(body_left, gamestatus::Direction::LEFT, 500,
                                500);
 
