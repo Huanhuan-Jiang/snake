@@ -20,6 +20,13 @@ DequeOfUniquePairs<int, int> initBody(int width, int height) {
   std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
   return DequeOfUniquePairs<int, int>(std::move(initial_deque));
 }
+
+bool isOpposite(Direction dir1, Direction dir2) {
+  return ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
+          (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
+          (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
+          (dir1 == Direction::LEFT && dir2 == Direction::RIGHT));
+}
 }  // namespace
 
 bool Snake::outOfRange(const std::pair<int, int>& element) const {
@@ -69,13 +76,6 @@ Direction Snake::deducedDirection() {
     throw std::invalid_argument("Invalid direction values");
   }
   return head_dir_;
-}
-
-bool Snake::isOpposite(Direction dir1, Direction dir2) {
-  return ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
-          (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
-          (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
-          (dir1 == Direction::LEFT && dir2 == Direction::RIGHT));
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,

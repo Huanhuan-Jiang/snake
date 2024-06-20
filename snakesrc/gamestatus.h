@@ -23,7 +23,6 @@ class Snake {
   bool outOfRange(const std::pair<int, int>&) const;
   bool discontinuous() const noexcept;
   Direction deducedDirection();
-  bool isOpposite(Direction dir1, Direction dir2);
 
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,
