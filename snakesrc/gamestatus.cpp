@@ -99,7 +99,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     throw std::runtime_error("Snake body is not continuous!");
   }
 
-  if (snake_body_.size() >= 2u && isOpposite(deducedDirection(), head_dir_)) {
+  if (isOpposite(deducedDirection(), head_dir_)) {
     throw std::runtime_error("The head direction is invalid!");
   }
 }
