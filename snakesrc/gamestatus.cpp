@@ -42,7 +42,7 @@ bool Snake::discontinuous() const noexcept {
   return false;
 }
 
-Direction deduceDirectin(){
+Direction deducedDirectin(){
   auto last_it = snake_body_.end();
   auto prev_last_it = std::prev(snake_body_.end());
 
@@ -85,6 +85,10 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 
   if (discontinuous()) {
     throw std::runtime_error("Snake body is not continuous!");
+  }
+
+  if(deducedDirection){
+
   }
 }
 
@@ -133,7 +137,7 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
 }
 
 Direction Snake::updateDirection(Direction new_direction) {
-  Direction deduced_dir = deduceDirectin();
+  Direction deduced_dir = deducedDirectin();
   switch (deduced_dir) {
     case Direction::UP:
     case Direction::DOWN:
