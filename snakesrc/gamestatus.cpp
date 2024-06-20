@@ -86,10 +86,6 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   if (discontinuous()) {
     throw std::runtime_error("Snake body is not continuous!");
   }
-
-  if(deducedDirection){
-
-  }
 }
 
 Snake::Snake(int map_width_, int map_height_)
