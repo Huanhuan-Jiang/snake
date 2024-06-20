@@ -45,7 +45,7 @@ bool Snake::discontinuous() const noexcept {
 Direction Snake::deducedDirection() {
   if (snake_body_.size() >= 2u) {
     auto head_it = snake_body_.begin();
-    auto next_it = std::next(snake_body_.begin());
+    auto next_it = std::next(head_it);
 
     auto diff_x = head_it->first - next_it->first;
     auto diff_y = head_it->second - next_it->second;
@@ -71,27 +71,19 @@ Direction Snake::deducedDirection() {
   return head_dir_;
 }
 
+bool Snake::isOpposite(Direction dir1, Direction dir2) {
+  if ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
+      (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
+      (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
+      (dir1 == Direction::LEFT && dir2 == Direction::RIGHT)) {
+    return true;
+  }
+  return false;
+}
+
 bool Snake::isDirectionValid(Direction new_direction) {
-  Direction deduced_dir = Snake::deducedDirection();
-  if (deducedDirection() != new_direction) {
-    switch (deduced_dir) {
-      case Direction::UP:
-      case Direction::DOWN:
-        if (new_direction == Direction::DOWN ||
-            new_direction == Direction::UP) {
-          return false;  // use deduced_dir as head_dir_;
-        }
-        break;
-      case Direction::LEFT:
-      case Direction::RIGHT:
-        if (new_direction == Direction::RIGHT ||
-            new_direction == Direction::LEFT) {
-          return false;  // use deduced_dir as head_dir_;
-        }
-        break;
-      default:
-        break;
-    }
+  if (isOpposite(deducedDirection(), new_direction)) {
+    return false;
   }
   return true;  // use new_direction as head_dir_;
 }
@@ -167,7 +159,7 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
 }
 
 Direction Snake::newDirection(Direction new_direction) {
-  if (Snake::isDirectionValid(new_direction)) {
+  if (isDirectionValid(new_direction)) {
     head_dir_ = new_direction;
   }
   return head_dir_;
