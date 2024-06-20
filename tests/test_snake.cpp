@@ -83,13 +83,6 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
 
   gamestatus::DequeOfUniquePairs<int, int> illegalbody12(
       {{20, 19}, {20, 20}, {20, 21}});  // deduced_dir = up
-  gamestatus::DequeOfUniquePairs<int, int> illegalbody13(
-      {{20, 19}, {20, 18}, {20, 17}});  // deduced_dir = down
-  gamestatus::DequeOfUniquePairs<int, int> illegalbody14(
-      {{20, 19}, {21, 19}, {22, 19}});  // deduced_dir = left
-  gamestatus::DequeOfUniquePairs<int, int> illegalbody15(
-      {{20, 19}, {19, 19}, {18, 19}});  // deduced_dir = right
-
   EXPECT_THAT(
       [&illegalbody12]() {
         gamestatus::Snake illegalsnake12(illegalbody12,
@@ -98,6 +91,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       Throws<std::runtime_error>(
           Property(&std::runtime_error::what,
                    HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody13(
+      {{20, 19}, {20, 18}, {20, 17}});  // deduced_dir = down
   EXPECT_THAT(
       [&illegalbody13]() {
         gamestatus::Snake illegalsnake13(illegalbody13,
@@ -106,6 +102,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       Throws<std::runtime_error>(
           Property(&std::runtime_error::what,
                    HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody14(
+      {{20, 19}, {21, 19}, {22, 19}});  // deduced_dir = left
   EXPECT_THAT(
       [&illegalbody14]() {
         gamestatus::Snake illegalsnake14(
@@ -114,6 +113,9 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
       Throws<std::runtime_error>(
           Property(&std::runtime_error::what,
                    HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody15(
+      {{20, 19}, {19, 19}, {18, 19}});  // deduced_dir = right
   EXPECT_THAT(
       [&illegalbody15]() {
         gamestatus::Snake illegalsnake15(illegalbody15,
