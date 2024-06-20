@@ -1,9 +1,6 @@
 #pragma once
 
-#include <SDL3/SDL.h>
-
 #include <cmath>
-#include <cstddef>
 #include <cstdint>
 #include <deque>
 #include <utility>
