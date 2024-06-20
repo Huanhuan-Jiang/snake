@@ -72,20 +72,10 @@ Direction Snake::deducedDirection() {
 }
 
 bool Snake::isOpposite(Direction dir1, Direction dir2) {
-  if ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
-      (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
-      (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
-      (dir1 == Direction::LEFT && dir2 == Direction::RIGHT)) {
-    return true;
-  }
-  return false;
-}
-
-bool Snake::isDirectionValid(Direction new_direction) {
-  if (isOpposite(deducedDirection(), new_direction)) {
-    return false;
-  }
-  return true;  // use new_direction as head_dir_;
+  return ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
+          (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
+          (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
+          (dir1 == Direction::LEFT && dir2 == Direction::RIGHT));
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
@@ -109,7 +99,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
     throw std::runtime_error("Snake body is not continuous!");
   }
 
-  if (!isDirectionValid(head_dir_)) {
+  if (snake_body_.size() >= 2u && isOpposite(deducedDirection(), head_dir_)) {
     throw std::runtime_error("The head direction is invalid!");
   }
 }
@@ -159,7 +149,7 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
 }
 
 Direction Snake::newDirection(Direction new_direction) {
-  if (isDirectionValid(new_direction)) {
+  if (!isOpposite(deducedDirection(), new_direction)) {
     head_dir_ = new_direction;
   }
   return head_dir_;

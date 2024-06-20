@@ -24,7 +24,6 @@ class Snake {
   bool discontinuous() const noexcept;
   Direction deducedDirection();
   bool isOpposite(Direction dir1, Direction dir2);
-  bool isDirectionValid(Direction new_direction);
 
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,
