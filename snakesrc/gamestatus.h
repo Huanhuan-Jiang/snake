@@ -38,6 +38,8 @@ class Snake {
 
   MoveState moveOrEat(const std::pair<int, int>& food);
 
+  Direction deduceDirection();
+
   Direction updateDirection(const Direction new_direction);
 };
 }  // namespace gamestatus

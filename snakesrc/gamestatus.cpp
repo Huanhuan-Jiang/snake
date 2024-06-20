@@ -42,6 +42,11 @@ bool Snake::discontinuous() const noexcept {
   return false;
 }
 
+Direction deduceDirectin(){
+  auto last_it = snake_body_.end();
+  auto prev_last_it = std::prev(snake_body_.end());
+}
+
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
              Direction head_direction, int map_w, int map_h)
     : snake_body_(std::move(initial_body)),
