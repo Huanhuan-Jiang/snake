@@ -42,28 +42,58 @@ bool Snake::discontinuous() const noexcept {
   return false;
 }
 
-Direction deducedDirectin(){
-  auto last_it = snake_body_.end();
-  auto prev_last_it = std::prev(snake_body_.end());
+Direction Snake::deducedDirection() {
+  if (snake_body_.size() >= 2u) {
+    auto head_it = snake_body_.begin();
+    auto next_it = std::next(snake_body_.begin());
 
-  auto diff_x = last_it.first-prev_last_it.first;
-  auto diff_y = last_it.second-prev_last_it.second;
+    auto diff_x = head_it->first - next_it->first;
+    auto diff_y = head_it->second - next_it->second;
 
-  if(diff_x == 0 && diff_y == 1) {
-    return Direction::DOWN;
+    if (diff_x == 0 && diff_y == 1) {
+      return Direction::DOWN;
+    }
+
+    if (diff_x == 0 && diff_y == -1) {
+      return Direction::UP;
+    }
+
+    if (diff_x == 1 && diff_y == 0) {
+      return Direction::RIGHT;
+    }
+
+    if (diff_x == -1 && diff_y == 0) {
+      return Direction::LEFT;
+    }
+
+    throw std::invalid_argument("Invalid direction values");
   }
+  return head_dir_;
+}
 
-  if(diff_x == 0 && diff_y == -1) {
-    return Direction::UP;
+bool Snake::isDirectionValid(Direction new_direction) {
+  Direction deduced_dir = Snake::deducedDirection();
+  if (deducedDirection() != new_direction) {
+    switch (deduced_dir) {
+      case Direction::UP:
+      case Direction::DOWN:
+        if (new_direction == Direction::DOWN ||
+            new_direction == Direction::UP) {
+          return false;  // use deduced_dir as head_dir_;
+        }
+        break;
+      case Direction::LEFT:
+      case Direction::RIGHT:
+        if (new_direction == Direction::RIGHT ||
+            new_direction == Direction::LEFT) {
+          return false;  // use deduced_dir as head_dir_;
+        }
+        break;
+      default:
+        break;
+    }
   }
-
-  if(diff_x == 1 && diff_y == 0) {
-    return Direction::RIGHT;
-  }
-
-  if(diff_x == -1 && diff_y == 0) {
-    return Direction::LEFT;
-  }
+  return true;  // use new_direction as head_dir_;
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
@@ -85,6 +115,10 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 
   if (discontinuous()) {
     throw std::runtime_error("Snake body is not continuous!");
+  }
+
+  if (!isDirectionValid(head_dir_)) {
+    throw std::runtime_error("The head direction is invalid!");
   }
 }
 
@@ -132,24 +166,9 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
   return MoveState::MOVE;  // Snake moves one step alive
 }
 
-Direction Snake::updateDirection(Direction new_direction) {
-  Direction deduced_dir = deducedDirectin();
-  switch (deduced_dir) {
-    case Direction::UP:
-    case Direction::DOWN:
-      if (new_direction != Direction::DOWN && new_direction != Direction::UP) {
-        head_dir_ = new_direction;
-      }
-      break;
-    case Direction::LEFT:
-    case Direction::RIGHT:
-      if (new_direction != Direction::RIGHT &&
-          new_direction != Direction::LEFT) {
-        head_dir_ = new_direction;
-      }
-      break;
-    default:
-      break;
+Direction Snake::newDirection(Direction new_direction) {
+  if (Snake::isDirectionValid(new_direction)) {
+    head_dir_ = new_direction;
   }
   return head_dir_;
 }
