@@ -80,6 +80,50 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
         Throws<std::runtime_error>(
             Property(&std::runtime_error::what, HasSubstr(error_message))));
   }
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody12(
+      {{20, 19}, {20, 20}, {20, 21}});  // deduced_dir = up
+  EXPECT_THAT(
+      [&illegalbody12]() {
+        gamestatus::Snake illegalsnake12(illegalbody12,
+                                         gamestatus::Direction::DOWN, 500, 500);
+      },
+      Throws<std::runtime_error>(
+          Property(&std::runtime_error::what,
+                   HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody13(
+      {{20, 19}, {20, 18}, {20, 17}});  // deduced_dir = down
+  EXPECT_THAT(
+      [&illegalbody13]() {
+        gamestatus::Snake illegalsnake13(illegalbody13,
+                                         gamestatus::Direction::UP, 500, 500);
+      },
+      Throws<std::runtime_error>(
+          Property(&std::runtime_error::what,
+                   HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody14(
+      {{20, 19}, {21, 19}, {22, 19}});  // deduced_dir = left
+  EXPECT_THAT(
+      [&illegalbody14]() {
+        gamestatus::Snake illegalsnake14(
+            illegalbody14, gamestatus::Direction::RIGHT, 500, 500);
+      },
+      Throws<std::runtime_error>(
+          Property(&std::runtime_error::what,
+                   HasSubstr("The head direction is invalid!"))));
+
+  gamestatus::DequeOfUniquePairs<int, int> illegalbody15(
+      {{20, 19}, {19, 19}, {18, 19}});  // deduced_dir = right
+  EXPECT_THAT(
+      [&illegalbody15]() {
+        gamestatus::Snake illegalsnake15(illegalbody15,
+                                         gamestatus::Direction::LEFT, 500, 500);
+      },
+      Throws<std::runtime_error>(
+          Property(&std::runtime_error::what,
+                   HasSubstr("The head direction is invalid!"))));
 }
 
 TEST(SnakeTest, SnakeSize) {
@@ -101,18 +145,29 @@ TEST(SnakeTest, SnakeSize) {
 }
 
 TEST(SnakeTest, GetDirection) {
-  gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
-                                                  {19, 30},
-                                                  {19, 29},
-                                                  {18, 29},
-                                                  {17, 29},
-                                                  {17, 28},
-                                                  {17, 27},
-                                                  {16, 27},
-                                                  {15, 27}});
+  gamestatus::DequeOfUniquePairs<int, int> body8(
+      {{19, 30},
+       {19, 29},
+       {18, 29},
+       {17, 29},
+       {17, 28},
+       {17, 27},
+       {16, 27},
+       {15, 27}});  // deduced_dir = down
 
-  gamestatus::Snake snake9_right(body9, gamestatus::Direction::RIGHT);
-  gamestatus::Snake snake9_left(body9, gamestatus::Direction::LEFT);
+  gamestatus::DequeOfUniquePairs<int, int> body9(
+      {{20, 30},
+       {19, 30},
+       {19, 29},
+       {18, 29},
+       {17, 29},
+       {17, 28},
+       {17, 27},
+       {16, 27},
+       {15, 27}});  // deduced_dir = right
+
+  gamestatus::Snake snake9_right(body9);
+  gamestatus::Snake snake9_left(body8, gamestatus::Direction::LEFT);
   gamestatus::Snake snake9_up(body9, gamestatus::Direction::UP);
   gamestatus::Snake snake9_down(body9, gamestatus::Direction::DOWN);
 
@@ -181,13 +236,13 @@ TEST(SnakeTest, MoveOneStep) {
   gamestatus::DequeOfUniquePairs<int, int> expected_up_4(
       {{18, 26}, {18, 27}, {18, 28}, {18, 29}});
   gamestatus::DequeOfUniquePairs<int, int> expected_down_8({{18, 29},
-                                                          {18, 28},
-                                                          {18, 27},
-                                                          {19, 27},
-                                                          {20, 27},
-                                                          {20, 28},
-                                                          {20, 29},
-                                                          {19, 29}});
+                                                            {18, 28},
+                                                            {18, 27},
+                                                            {19, 27},
+                                                            {20, 27},
+                                                            {20, 28},
+                                                            {20, 29},
+                                                            {19, 29}});
 
   std::pair<int, int> food = {100, 100};
 
@@ -207,12 +262,12 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
 
   gamestatus::DequeOfUniquePairs<int, int> body_up(
       {{1, 0}, {1, 1}, {1, 2}, {2, 2}, {2, 3}});
-  gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500,
-                               500);
+  gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500, 500);
 
   gamestatus::DequeOfUniquePairs<int, int> body_down(
       {{499, 499}, {499, 498}, {498, 498}, {498, 497}});
-  gamestatus::Snake snake_down(body_down, gamestatus::Direction::DOWN, 500, 500);
+  gamestatus::Snake snake_down(body_down, gamestatus::Direction::DOWN, 500,
+                               500);
 
   gamestatus::DequeOfUniquePairs<int, int> body_left(
       {{0, 2}, {1, 2}, {2, 2}, {3, 2}});
@@ -275,53 +330,58 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
   EXPECT_EQ(snake1.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
 }
 
-TEST(ToolsTest, UpdateDirection) {
-  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}, {16, 30}});
-  gamestatus::Snake snake(initial_body);
-
-  // From RIGHT
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT),
-            gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT),
-            gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP),
+TEST(ToolsTest, newDirection) {
+  // From UP
+  gamestatus::DequeOfUniquePairs<int, int> body1(
+      {{17, 30}, {17, 31}});  // deduced_dir is up
+  gamestatus::Snake snake1(body1, gamestatus::Direction::UP);
+  EXPECT_EQ(snake1.newDirection(gamestatus::Direction::UP),
             gamestatus::Direction::UP);
-  snake.updateDirection(gamestatus::Direction::RIGHT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN),
-            gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake1.newDirection(gamestatus::Direction::DOWN),
+            gamestatus::Direction::UP);
+  EXPECT_EQ(snake1.newDirection(gamestatus::Direction::LEFT),
+            gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake1.newDirection(gamestatus::Direction::RIGHT),
+            gamestatus::Direction::RIGHT);
 
   // From DOWN
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN),
+  gamestatus::DequeOfUniquePairs<int, int> body2(
+      {{17, 30}, {17, 29}});  // deduced_dir is down
+  gamestatus::Snake snake2(body2, gamestatus::Direction::DOWN);
+  EXPECT_EQ(snake2.newDirection(gamestatus::Direction::DOWN),
             gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP),
+  EXPECT_EQ(snake2.newDirection(gamestatus::Direction::UP),
             gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT),
+  EXPECT_EQ(snake2.newDirection(gamestatus::Direction::RIGHT),
             gamestatus::Direction::RIGHT);
-  snake.updateDirection(gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT),
+  EXPECT_EQ(snake2.newDirection(gamestatus::Direction::LEFT),
             gamestatus::Direction::LEFT);
 
   // From LEFT
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT),
+  gamestatus::DequeOfUniquePairs<int, int> body3(
+      {{17, 30}, {18, 30}});  // deduced_dir is left
+  gamestatus::Snake snake3(body3, gamestatus::Direction::LEFT);
+  EXPECT_EQ(snake3.newDirection(gamestatus::Direction::LEFT),
             gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT),
+  EXPECT_EQ(snake3.newDirection(gamestatus::Direction::RIGHT),
             gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN),
+  EXPECT_EQ(snake3.newDirection(gamestatus::Direction::DOWN),
             gamestatus::Direction::DOWN);
-  snake.updateDirection(gamestatus::Direction::LEFT);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP),
+  EXPECT_EQ(snake3.newDirection(gamestatus::Direction::UP),
             gamestatus::Direction::UP);
 
-  // From UP
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::UP),
-            gamestatus::Direction::UP);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::DOWN),
-            gamestatus::Direction::UP);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::LEFT),
-            gamestatus::Direction::LEFT);
-  snake.updateDirection(gamestatus::Direction::UP);
-  EXPECT_EQ(snake.updateDirection(gamestatus::Direction::RIGHT),
+  // From RIGHT
+  gamestatus::DequeOfUniquePairs<int, int> body4(
+      {{17, 30}, {16, 30}});  // deduced_dir = right
+  gamestatus::Snake snake4(body4);
+  EXPECT_EQ(snake4.newDirection(gamestatus::Direction::RIGHT),
             gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake4.newDirection(gamestatus::Direction::LEFT),
+            gamestatus::Direction::RIGHT);
+  EXPECT_EQ(snake4.newDirection(gamestatus::Direction::UP),
+            gamestatus::Direction::UP);
+  EXPECT_EQ(snake4.newDirection(gamestatus::Direction::DOWN),
+            gamestatus::Direction::DOWN);
 }
 
 TEST(CycleTest, FromBirthToDeath) {
@@ -337,13 +397,13 @@ TEST(CycleTest, FromBirthToDeath) {
     snake.moveOrEat(food);
 
     if (i == 2) {
-      snake.updateDirection(gamestatus::Direction::UP);
+      snake.newDirection(gamestatus::Direction::UP);
     }
     if (i == 4) {
-      snake.updateDirection(gamestatus::Direction::LEFT);
+      snake.newDirection(gamestatus::Direction::LEFT);
     }
     if (i == 6) {
-      snake.updateDirection(gamestatus::Direction::DOWN);
+      snake.newDirection(gamestatus::Direction::DOWN);
     }
   }
   EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);

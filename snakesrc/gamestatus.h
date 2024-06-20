@@ -22,6 +22,7 @@ class Snake {
 
   bool outOfRange(const std::pair<int, int>&) const;
   bool discontinuous() const noexcept;
+  Direction deducedDirection();
 
  public:
   Snake(const DequeOfUniquePairs<int, int> initial_body,
@@ -38,6 +39,6 @@ class Snake {
 
   MoveState moveOrEat(const std::pair<int, int>& food);
 
-  Direction updateDirection(const Direction new_direction);
+  Direction newDirection(Direction new_direction);
 };
 }  // namespace gamestatus

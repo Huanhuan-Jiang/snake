@@ -20,6 +20,13 @@ DequeOfUniquePairs<int, int> initBody(int width, int height) {
   std::deque<std::pair<int, int>> initial_deque = {e1, e2, e3};
   return DequeOfUniquePairs<int, int>(std::move(initial_deque));
 }
+
+bool isOpposite(Direction dir1, Direction dir2) {
+  return ((dir1 == Direction::UP && dir2 == Direction::DOWN) ||
+          (dir1 == Direction::DOWN && dir2 == Direction::UP) ||
+          (dir1 == Direction::RIGHT && dir2 == Direction::LEFT) ||
+          (dir1 == Direction::LEFT && dir2 == Direction::RIGHT));
+}
 }  // namespace
 
 bool Snake::outOfRange(const std::pair<int, int>& element) const {
@@ -42,6 +49,35 @@ bool Snake::discontinuous() const noexcept {
   return false;
 }
 
+Direction Snake::deducedDirection() {
+  if (snake_body_.size() >= 2u) {
+    auto head_it = snake_body_.begin();
+    auto next_it = std::next(head_it);
+
+    auto diff_x = head_it->first - next_it->first;
+    auto diff_y = head_it->second - next_it->second;
+
+    if (diff_x == 0 && diff_y == 1) {
+      return Direction::DOWN;
+    }
+
+    if (diff_x == 0 && diff_y == -1) {
+      return Direction::UP;
+    }
+
+    if (diff_x == 1 && diff_y == 0) {
+      return Direction::RIGHT;
+    }
+
+    if (diff_x == -1 && diff_y == 0) {
+      return Direction::LEFT;
+    }
+
+    throw std::invalid_argument("Invalid direction values");
+  }
+  return head_dir_;
+}
+
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
              Direction head_direction, int map_w, int map_h)
     : snake_body_(std::move(initial_body)),
@@ -61,6 +97,10 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 
   if (discontinuous()) {
     throw std::runtime_error("Snake body is not continuous!");
+  }
+
+  if (isOpposite(deducedDirection(), head_dir_)) {
+    throw std::runtime_error("The head direction is invalid!");
   }
 }
 
@@ -108,23 +148,9 @@ MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
   return MoveState::MOVE;  // Snake moves one step alive
 }
 
-Direction Snake::updateDirection(Direction new_direction) {
-  switch (head_dir_) {
-    case Direction::UP:
-    case Direction::DOWN:
-      if (new_direction != Direction::DOWN && new_direction != Direction::UP) {
-        head_dir_ = new_direction;
-      }
-      break;
-    case Direction::LEFT:
-    case Direction::RIGHT:
-      if (new_direction != Direction::RIGHT &&
-          new_direction != Direction::LEFT) {
-        head_dir_ = new_direction;
-      }
-      break;
-    default:
-      break;
+Direction Snake::newDirection(Direction new_direction) {
+  if (!isOpposite(deducedDirection(), new_direction)) {
+    head_dir_ = new_direction;
   }
   return head_dir_;
 }
