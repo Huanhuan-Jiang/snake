@@ -8,6 +8,9 @@
 #include <iostream>
 #include <utility>
 
+#include "dequeofunique.h"
+#include "gamestatus.h"
+
 namespace gamewindow {
 class Window {
   SDL_Window* window_;
@@ -44,38 +47,38 @@ class Renderer {
   ~Renderer() { SDL_DestroyRenderer(renderer_); }
 
  private:
-  SDL_Window* window_;
+  Window window_;
   SDL_Renderer* renderer_;
+};
+
+void drawObjectAt(SDL_Renderer* renderer,
+                  std::deque<std::pair<int, int>> obj, int pixel_size) {
+  for (auto& element : obj) {
+    auto logicalX = element.first;
+    auto logicalY = element.second;
+
+    SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
+                      static_cast<float>(logicalY * pixel_size),
+                      static_cast<float>(pixel_size),
+                      static_cast<float>(pixel_size)};
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Red
+    SDL_RenderFillRect(renderer, &rect);
+  }
 }
 
-void render(SDL_Renderer* renderer, std::deque<std::pair<int, int>> object, int delay=100) {
+void render(SDL_Renderer* renderer, std::deque<std::pair<int, int>> object, int pixel_size=12, int delay=100) {
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   SDL_RenderClear(renderer);
-  drawObjectAt(renderer, object);
+  drawObjectAt(renderer, object, pixel_size);
   SDL_RenderPresent(renderer);
   SDL_Delay(delay);
 }
 
-void drawObjectAt(SDL_Renderer* renderer_,
-                  std::deque<std::pair<int, int>> obj) {
-  for (auto& element : obj) {
-    logicalX = element.first;
-    logicalY = element.second;
-
-    SDL_FRect rect = {static_cast<float>(logicalX * pixel_size_),
-                      static_cast<float>(logicalY * pixel_size_),
-                      static_cast<float>(pixel_size_),
-                      static_cast<float>(pixel_size_)};
-    SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 255);  // Red
-    SDL_RenderFillRect(renderer_, &rect);
-  }
-}
-
 class Game {
  public:
-  Game(int width = default_window_width, int height = default_window_height,
-       int pixel_size = default_pixel_size) noexcept
-      : window_width_(width), window_height_(height), pixel_size_(pixel_size) {
+  Game(gamestatus::Snake snake, int width = 50, int height = 50,
+       int pixel_size = 12) noexcept
+      : snake_(snake), window_width_(width), window_height_(height), pixel_size_(pixel_size) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
                 << "\n";
@@ -83,22 +86,18 @@ class Game {
       return;
     }
 
-    Window game_window;
+    Window game_window(window_width_, window_height_, pixel_size_);
     window_ = game_window.getWindow();
-    Renderer game_renderer;
-    rederer = renderer
-    // Todo: initialize snake
-    gamestatus::Snake snake_();
+    Renderer game_renderer(game_window);
+    renderer_ = game_renderer.getRenderer();
+    snake_(window_width_, window_height_);
+    
   }
   
   void run() {
     while (is_running_) {
       handleEvents();
-
-      // Todo: moveOrEat() return 0 if moves, return 1 if eats, return 2 if dies
-      snake_.generateFood();
-      snake_.moveOrEat();
-      render();
+      render(renderer_, );
     }
   };
 
@@ -106,13 +105,8 @@ class Game {
   SDL_Window* window_ = nullptr;
   SDL_Renderer* renderer_ = nullptr;
 
-  static constexpr int default_pixel_size = 12;
-  static constexpr int default_window_width = 100;
-  static constexpr int default_window_height = 100;
-
   // Todo Check if initialized is necessary.
   bool initialized_;
-
   const int pixel_size_;
   const int window_width_;
   const int window_height_;
@@ -128,18 +122,10 @@ class Game {
         case SDL_EVENT_QUIT:
           is_running_ = false;
           break;
-        case SDL_KEYDOWN:
-          snake.updateDirection(gamestatus::Direction DOWN);
-        case SDL_KEYUP:
-          snake.updateDirection(gamestatus::Direction UP);
-        case SDL_KEYRIGHT:
-          snake.updateDirection(gamestatus::Direction RIGHT);
-        case SDL_KEYLEFT:
-          snake.updateDirection(gamestatus::Direction LEFT);
         default:
           break;
       }
     }
   }
-}
+};
 }  // namespace gamewindow
