@@ -66,19 +66,13 @@ void drawObjectAt(SDL_Renderer* renderer,
   }
 }
 
-void render(SDL_Renderer* renderer, std::deque<std::pair<int, int>> object, int pixel_size=12, int delay=100) {
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  SDL_RenderClear(renderer);
-  drawObjectAt(renderer, object, pixel_size);
-  SDL_RenderPresent(renderer);
-  SDL_Delay(delay);
-}
+
 
 class Game {
  public:
-  Game(gamestatus::Snake snake, int width = 50, int height = 50,
+  Game(int width = 50, int height = 50,
        int pixel_size = 12) noexcept
-      : snake_(snake), window_width_(width), window_height_(height), pixel_size_(pixel_size) {
+      : window_width_(width), window_height_(height), pixel_size_(pixel_size) , initialized_(true){
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
                 << "\n";
@@ -90,16 +84,42 @@ class Game {
     window_ = game_window.getWindow();
     Renderer game_renderer(game_window);
     renderer_ = game_renderer.getRenderer();
-    snake_(window_width_, window_height_);
-    
+    gamestatus::Snake snake_(window_width_, window_height_);
+  }
+
+  bool isInitialized() {return initialized_;}
+
+  void render() {
+  SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+  SDL_RenderClear(renderer_);
+  drawObjectAt(renderer_, snake_.getBody().deque(), pixel_size_);
+  SDL_RenderPresent(renderer_);
+  SDL_Delay(1000);
+
+  //debug render, delete later
+  //std::cerr << "Rendered " << snake_.getBody().size() << " objects with pixel size " << pixel_size_ << std::endl;
   }
   
   void run() {
     while (is_running_) {
       handleEvents();
-      render(renderer_, );
+      auto snake_deque = snake_.getBody().deque();
+      render();
     }
   };
+
+    void handleEvents() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      switch (event.type) {
+        case SDL_EVENT_QUIT:
+          is_running_ = false;
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
  private:
   SDL_Window* window_ = nullptr;
@@ -115,17 +135,6 @@ class Game {
 
   gamestatus::Snake snake_;
 
-  void handleEvents() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_EVENT_QUIT:
-          is_running_ = false;
-          break;
-        default:
-          break;
-      }
-    }
-  }
+
 };
 }  // namespace gamewindow
