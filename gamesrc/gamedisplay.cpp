@@ -64,6 +64,19 @@ void Game::handleEvents(SDL_Event& event) {
           case SDL_SCANCODE_UP:
             //std::cout<<"new direction: UP \n";
             snake_.newDirection(gamestatus::Direction::UP);
+            break;
+          case SDL_SCANCODE_DOWN:
+            //std::cout<<"new direction: DOWN \n";
+            snake_.newDirection(gamestatus::Direction::DOWN);
+            break;
+          case SDL_SCANCODE_LEFT:
+            //std::cout<<"new direction: LEFT \n";
+            snake_.newDirection(gamestatus::Direction::LEFT);
+            break;
+          case SDL_SCANCODE_RIGHT:
+            //std::cout<<"new direction: RIGHT \n";
+            snake_.newDirection(gamestatus::Direction::RIGHT);
+            break;
         }
       default:
         break;
