@@ -26,9 +26,12 @@ class Window {
                          window_height_ * pixel_size_, SDL_WINDOW_RESIZABLE);
   }
 
-  SDL_Window* getWindow() { return window_; };
+  SDL_Window* getWindow() { return window_; }
+  int getWindowWidth() { return window_width_; }
+  int getWindowHeight() { return window_height_; }
+  int getPixelSize() { return pixel_size_; }
 
-  //~Window() { SDL_DestroyWindow(window_); }
+ // ~Window() {   if (window_ != nullptr) {SDL_DestroyWindow(window_); } }
 };
 
 class Renderer {
@@ -40,11 +43,14 @@ class Renderer {
                 << SDL_GetError() << "\n";
       return;
     }
+    std::cout << "renderer width: " << window_.getWindowWidth() << "\n";
+    std::cout << "renderer height: " << window_.getWindowHeight() << "\n";
   };
 
   SDL_Renderer* getRenderer() { return renderer_; }
+  
 
- // ~Renderer() { SDL_DestroyRenderer(renderer_); }
+  ~Renderer() { if(renderer_!=nullptr) {SDL_DestroyRenderer(renderer_); }}
 
  private:
   Window window_;
@@ -68,11 +74,13 @@ void drawObjectAt(SDL_Renderer* renderer, std::deque<std::pair<int, int>> obj,
 
 class Game {
  public:
-  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept
+  Game(int width = 100, int height = 100, int pixel_size = 12) noexcept
       : window_width_(width),
         window_height_(height),
         pixel_size_(pixel_size),
-        initialized_(true) {
+        initialized_(true),
+        game_window_(width, height, pixel_size),
+        game_renderer_(game_window_)  {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
                 << "\n";
@@ -80,11 +88,15 @@ class Game {
       return;
     }
 
-    Window game_window(window_width_, window_height_, pixel_size_);
-    window_ = game_window.getWindow();
-    Renderer game_renderer(game_window);
-    renderer_ = game_renderer.getRenderer();
+   // Window game_window_(window_width_, window_height_, pixel_size_);
+    window_ = game_window_.getWindow();
+   // Renderer game_renderer_(game_window_);
+    renderer_ = game_renderer_.getRenderer();
     gamestatus::Snake snake_(window_width_, window_height_);
+
+    //std::cout << "Window width:" << game_window_.getWindowWidth() << ".\n";
+    //std::cout << "Window height:" << game_window_.getWindowHeight() << ".\n";
+    //std::cout << "Window pixel size:" << game_window_.getPixelSize() << ".\n";
   }
 
   bool isInitialized() { return initialized_; }
@@ -103,10 +115,17 @@ class Game {
       handleEvents(event);
       render();
       std::cout << "The game is running.\n";
+      std::cout << "Window width:" << game_window_.getWindowWidth() << ".\n";
+      //SDL_Window* windowPtr = game_window_.getWindow();
+      if(window_ != nullptr) {
+        std::cout << "window_ still exists.\n";
+      } else {
+        std::cout << "window_ doesn't exist anymore. \n";
+      }
     }
   };
 
-  void handleEvents( SDL_Event event) {
+  void handleEvents( SDL_Event& event) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
         case SDL_EVENT_QUIT:
@@ -118,7 +137,13 @@ class Game {
     }
   }
 
+  ~Game() {
+    SDL_Quit();
+  }
+
  private:
+  Window game_window_;
+  Renderer game_renderer_;
   SDL_Window* window_ = nullptr;
   SDL_Renderer* renderer_ = nullptr;
 

@@ -9,8 +9,6 @@ int main() {
     return 1;
   }
 
-  if(game.isInitialized()) {std::cout << "Game is initialized!" << ". \n";}
-
   game.run();
 
   return 0;
