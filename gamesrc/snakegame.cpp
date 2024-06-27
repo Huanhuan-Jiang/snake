@@ -1,5 +1,4 @@
 #include "gamedisplay.h"
-#include "gamestatus.h"
 
 int main() {
   gamedisplay::Game game;

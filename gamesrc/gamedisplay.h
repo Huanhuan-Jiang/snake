@@ -8,7 +8,6 @@
 #include <iostream>
 #include <utility>
 
-#include "dequeofunique.h"
 #include "gamestatus.h"
 
 namespace gamedisplay {
@@ -56,70 +55,17 @@ class GameRenderer {
 };
 
 void drawObjectAt(SDL_Renderer* sdl_renderer,
-                  std::deque<std::pair<int, int>> obj, int pixel_size) {
-  for (auto& element : obj) {
-    auto logicalX = element.first;
-    auto logicalY = element.second;
-
-    SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
-                      static_cast<float>(logicalY * pixel_size),
-                      static_cast<float>(pixel_size),
-                      static_cast<float>(pixel_size)};
-    SDL_SetRenderDrawColor(sdl_renderer, 255, 0, 0, 255);  // Red
-    SDL_RenderFillRect(sdl_renderer, &rect);
-  }
-}
+                  std::deque<std::pair<int, int>> obj, int pixel_size);
 
 class Game {
  public:
-  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept
-      : window_width_(width),
-        window_height_(height),
-        pixel_size_(pixel_size),
-        game_window_(width, height, pixel_size),
-        game_renderer_(game_window_),
-        snake_(width, height) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-      std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
-                << "\n";
-      initialized_ = false;
-      return;
-    }
-
-    sdl_window_ = game_window_.getWindow();
-    sdl_renderer_ = game_renderer_.getRenderer();
-  }
+  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept;
 
   bool isInitialized() const { return initialized_; }
 
-  void render() {
-    SDL_SetRenderDrawColor(sdl_renderer_, 255, 255, 255, 255);
-    SDL_RenderClear(sdl_renderer_);
-    drawObjectAt(sdl_renderer_, snake_.getBody().deque(), pixel_size_);
-    SDL_RenderPresent(sdl_renderer_);
-    SDL_Delay(1000);
-  }
-
-  void run() {
-    while (is_running_) {
-      SDL_Event event;
-      handleEvents(event);
-      render();
-      std::cout << "The game is running.\n";
-    }
-  };
-
-  void handleEvents(SDL_Event& event) {
-    while (SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_EVENT_QUIT:
-          is_running_ = false;
-          break;
-        default:
-          break;
-      }
-    }
-  }
+  void render();
+  void handleEvents(SDL_Event& event);
+  void run();
 
   ~Game() { SDL_Quit(); }
 
