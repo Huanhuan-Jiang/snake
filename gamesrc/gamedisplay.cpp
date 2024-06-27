@@ -59,9 +59,16 @@ void Game::handleEvents(SDL_Event& event) {
       case SDL_EVENT_QUIT:
         is_running_ = false;
         break;
+      case SDL_EVENT_KEY_DOWN:
+        switch ((event.key.keysym.scancode)) {
+          case SDL_SCANCODE_UP:
+            //std::cout<<"new direction: UP \n";
+            snake_.newDirection(gamestatus::Direction::UP);
+        }
       default:
         break;
     }
+    snake_.moveOrEat({40,40});
   }
 }
 
