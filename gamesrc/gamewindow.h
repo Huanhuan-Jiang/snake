@@ -28,7 +28,7 @@ class Window {
 
   SDL_Window* getWindow() { return window_; };
 
-  ~Window() { SDL_DestroyWindow(window_); }
+  //~Window() { SDL_DestroyWindow(window_); }
 };
 
 class Renderer {
@@ -42,17 +42,17 @@ class Renderer {
     }
   };
 
-  SDL_Renderer* getRenderer(){return renderer_;}
+  SDL_Renderer* getRenderer() { return renderer_; }
 
-  ~Renderer() { SDL_DestroyRenderer(renderer_); }
+ // ~Renderer() { SDL_DestroyRenderer(renderer_); }
 
  private:
   Window window_;
   SDL_Renderer* renderer_;
 };
 
-void drawObjectAt(SDL_Renderer* renderer,
-                  std::deque<std::pair<int, int>> obj, int pixel_size) {
+void drawObjectAt(SDL_Renderer* renderer, std::deque<std::pair<int, int>> obj,
+                  int pixel_size) {
   for (auto& element : obj) {
     auto logicalX = element.first;
     auto logicalY = element.second;
@@ -66,13 +66,13 @@ void drawObjectAt(SDL_Renderer* renderer,
   }
 }
 
-
-
 class Game {
  public:
-  Game(int width = 50, int height = 50,
-       int pixel_size = 12) noexcept
-      : window_width_(width), window_height_(height), pixel_size_(pixel_size) , initialized_(true){
+  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept
+      : window_width_(width),
+        window_height_(height),
+        pixel_size_(pixel_size),
+        initialized_(true) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
                 << "\n";
@@ -87,29 +87,26 @@ class Game {
     gamestatus::Snake snake_(window_width_, window_height_);
   }
 
-  bool isInitialized() {return initialized_;}
+  bool isInitialized() { return initialized_; }
 
   void render() {
-  SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
-  SDL_RenderClear(renderer_);
-  drawObjectAt(renderer_, snake_.getBody().deque(), pixel_size_);
-  SDL_RenderPresent(renderer_);
-  SDL_Delay(1000);
-
-  //debug render, delete later
-  //std::cerr << "Rendered " << snake_.getBody().size() << " objects with pixel size " << pixel_size_ << std::endl;
+    SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+    SDL_RenderClear(renderer_);
+    drawObjectAt(renderer_, snake_.getBody().deque(), pixel_size_);
+    SDL_RenderPresent(renderer_);
+    SDL_Delay(1000);
   }
-  
+
   void run() {
     while (is_running_) {
-      handleEvents();
-      auto snake_deque = snake_.getBody().deque();
+      SDL_Event event;
+      handleEvents(event);
       render();
+      std::cout << "The game is running.\n";
     }
   };
 
-    void handleEvents() {
-    SDL_Event event;
+  void handleEvents( SDL_Event event) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
         case SDL_EVENT_QUIT:
@@ -125,7 +122,6 @@ class Game {
   SDL_Window* window_ = nullptr;
   SDL_Renderer* renderer_ = nullptr;
 
-  // Todo Check if initialized is necessary.
   bool initialized_;
   const int pixel_size_;
   const int window_width_;
@@ -134,7 +130,5 @@ class Game {
   bool is_running_ = true;
 
   gamestatus::Snake snake_;
-
-
 };
 }  // namespace gamewindow
