@@ -8,6 +8,8 @@ cmake_policy(SET CMP0135 NEW)
 
 set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 add_subdirectory(snakesrc)
 add_subdirectory(thirdparty/googletest)
 
