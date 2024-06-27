@@ -19,12 +19,18 @@ class GameWindow {
   int pixel_size_;
 
  public:
-  GameWindow(int w, int h, int pixel_size);
+  GameWindow(int w, int h, int pixel_size)
+      : window_width_(w), window_height_(h), pixel_size_(pixel_size) {
+    sdl_window_ =
+        SDL_CreateWindow("Snake", window_width_ * pixel_size_,
+                         window_height_ * pixel_size_, SDL_WINDOW_RESIZABLE);
+  }
+
   SDL_Window* getWindow() { return sdl_window_; }
   int getWindowWidth() const { return window_width_; }
   int getWindowHeight() const { return window_height_; }
   int getPixelSize() const { return pixel_size_; }
-}
+};
 
 class GameRenderer {
   GameWindow game_window_;
@@ -132,4 +138,4 @@ class Game {
 
   gamestatus::Snake snake_;
 };
-}  // namespace gamewindow
+}  // namespace gamedisplay

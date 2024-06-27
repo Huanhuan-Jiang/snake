@@ -37,8 +37,6 @@ add_executable(snakegame ${SOURCE_FILES})
 target_include_directories(snakegame INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(snakegame PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc)
 
-#target_include_directories(snakegame PRIVATE ${SDL_INCLUDE_DIR})
-
 target_link_libraries(snakegame PRIVATE gamestatus)
 target_link_libraries(snakegame PRIVATE SDL3::SDL3-shared)
 
