@@ -464,3 +464,26 @@ TEST(CycleTest, FromBirthToDeath) {
   }
   EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
 }
+
+TEST(CycleTest, EatRandomFoodAndDie) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40, 44}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+  int seed = 12345;
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
+
+  auto food = snake.generateFood();
+
+  snake.moveOrEat(food);
+  snake.newDirection(gamestatus::Direction::DOWN);
+  snake.moveOrEat(food);
+  snake.moveOrEat(food);
+  snake.newDirection(gamestatus::Direction::LEFT);
+  snake.moveOrEat(food);
+  snake.newDirection(gamestatus::Direction::UP);
+  snake.moveOrEat(food);
+  EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
+}
