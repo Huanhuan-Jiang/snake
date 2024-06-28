@@ -10,6 +10,7 @@ set(GOOGLETEST_VERSION "1.14.0" CACHE STRING "Version of Google Test")
 
 add_subdirectory(snakesrc)
 add_subdirectory(thirdparty/googletest)
+add_subdirectory(thirdparty/yaml-cpp)
 
 add_executable(snaketest tests/test_snake.cpp)
 add_executable(dequeofuniquetest tests/test_dequeofunique.cpp)
@@ -26,6 +27,7 @@ target_link_libraries(dequeofuniquetest PRIVATE
 
 target_link_libraries(snaketest PRIVATE gamestatus)
 target_link_libraries(dequeofuniquetest PRIVATE gamestatus)
+target_link_libraries(snaketest PRIVATE yaml-cpp)
 
 enable_testing()
 
