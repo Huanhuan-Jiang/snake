@@ -7,7 +7,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <deque>
-#include <iostream>  // delete later
 #include <random>
 #include <utility>
 

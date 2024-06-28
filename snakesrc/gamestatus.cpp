@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iterator>
 #include <stdexcept>
-#include <unordered_set>  //check later
 #include <utility>
 
 #include "dequeofunique.h"
