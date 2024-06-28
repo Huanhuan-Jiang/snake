@@ -521,3 +521,36 @@ TEST(CycleTest, MimicASimpleGame) {
   }
   EXPECT_EQ(snake_state, gamestatus::MoveState::DIE);
 }
+
+TEST(CycleTest, MimicASimpleGameWithDefaultBody) {
+  auto map_w = 50;
+  auto map_h = 50;
+  gamestatus::DequeOfUniquePairs<int, int> default_init_body(
+      {{25, 25}, {24, 25}, {23, 25}});
+
+  std::string filename = "../tests/a_simple_input_with_default_body.yml";
+  YAML::Node user_input = YAML::LoadFile(filename);
+
+  auto seed = user_input["seed"]["value"].as<int>();
+  gamestatus::Snake snake(default_init_body, gamestatus::Direction::RIGHT,
+                          map_w, map_h, seed);
+
+  auto food = snake.generateFood();
+  auto move_state = gamestatus::MoveState::MOVE;
+
+  for (const auto& key_node : user_input["keys"]) {
+    auto value = key_node["value"].as<std::string>();
+
+    if (value == "up") {
+      snake.newDirection(gamestatus::Direction::UP);
+    } else if (value == "down") {
+      snake.newDirection(gamestatus::Direction::DOWN);
+    } else if (value == "left") {
+      snake.newDirection(gamestatus::Direction::LEFT);
+    } else if (value == "right") {
+      snake.newDirection(gamestatus::Direction::RIGHT);
+    }
+    move_state = snake.moveOrEat(food);
+  }
+  EXPECT_EQ(move_state, gamestatus::MoveState::EAT);
+}
