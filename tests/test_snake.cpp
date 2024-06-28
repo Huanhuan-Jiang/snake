@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-//#include <yaml-cpp/yaml.h>
+#include <yaml-cpp/yaml.h>
 
 #include <deque>
 #include <fstream>
@@ -486,4 +486,38 @@ TEST(CycleTest, EatRandomFoodAndDie) {
   snake.newDirection(gamestatus::Direction::UP);
   snake.moveOrEat(food);
   EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
+}
+
+TEST(CycleTest, MimicASimpleGame) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40, 44}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+
+  std::string filename = "../tests/a_simple_input.yml";
+  YAML::Node user_input = YAML::LoadFile(filename);
+
+  auto seed = user_input["seed"]["value"].as<int>();
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
+
+  auto food = snake.generateFood();
+  auto snake_state = gamestatus::MoveState::MOVE;
+
+  for (const auto& key_node : user_input["keys"]) {
+    auto value = key_node["value"].as<std::string>();
+
+    if (value == "up") {
+      snake.newDirection(gamestatus::Direction::UP);
+    } else if (value == "down") {
+      snake.newDirection(gamestatus::Direction::DOWN);
+    } else if (value == "left") {
+      snake.newDirection(gamestatus::Direction::LEFT);
+    } else if (value == "right") {
+      snake.newDirection(gamestatus::Direction::RIGHT);
+    }
+    snake_state = snake.moveOrEat(food);
+  }
+  EXPECT_EQ(snake_state, gamestatus::MoveState::DIE);
 }
