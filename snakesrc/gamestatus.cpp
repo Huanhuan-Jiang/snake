@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iterator>
 #include <stdexcept>
+#include <unordered_set>  //check later
 #include <utility>
 
 #include "dequeofunique.h"
@@ -79,11 +80,15 @@ Direction Snake::deducedDirection() {
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
-             Direction head_direction, int map_w, int map_h)
+             Direction head_direction, int map_w, int map_h, int64_t seed)
     : snake_body_(std::move(initial_body)),
       head_dir_(head_direction),
       map_width_(map_w),
-      map_height_(map_h) {
+      map_height_(map_h),
+      seed_(seed),
+      gen_(seed_),
+      dis_width_(1, map_width_ - 1),
+      dis_height_(1, map_height_ - 1) {
   // Check if the snake body is valid
   if (snake_body_.empty()) {
     throw std::runtime_error("Snake body is empty!");
@@ -106,7 +111,7 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
 
 Snake::Snake(int map_width_, int map_height_)
     : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
-            map_height_) {};
+            map_height_) {};  // Todo: do i need to initialize seed?
 
 std::pair<int, int> Snake::getNextHead() {
   std::pair<int, int> head = snake_body_.front();
