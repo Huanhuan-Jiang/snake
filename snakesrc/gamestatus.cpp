@@ -4,6 +4,7 @@
 #include <iterator>
 #include <stdexcept>
 #include <utility>
+#include <iostream> //delete later
 
 #include "dequeofunique.h"
 
@@ -79,11 +80,15 @@ Direction Snake::deducedDirection() {
 }
 
 Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
-             Direction head_direction, int map_w, int map_h)
+             Direction head_direction, int map_w, int map_h, int64_t seed)
     : snake_body_(std::move(initial_body)),
       head_dir_(head_direction),
       map_width_(map_w),
-      map_height_(map_h) {
+      map_height_(map_h),
+      seed_(seed),
+      gen_(seed_),
+      dis_width_(1, map_width_ - 1),
+      dis_height_(1, map_height_ - 1) {
   // Check if the snake body is valid
   if (snake_body_.empty()) {
     throw std::runtime_error("Snake body is empty!");
@@ -102,11 +107,14 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   if (isOpposite(deducedDirection(), head_dir_)) {
     throw std::runtime_error("The head direction is invalid!");
   }
+
+  generateFood();
+  //std::cout << "The first food is now at (" << food_.first <<", " << food_.second << ").\n"; //delete later
 }
 
 Snake::Snake(int map_width_, int map_height_)
     : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
-            map_height_) {};
+            map_height_) {};  // Todo: do i need to initialize seed?
 
 std::pair<int, int> Snake::getNextHead() {
   std::pair<int, int> head = snake_body_.front();
@@ -128,15 +136,17 @@ std::pair<int, int> Snake::getNextHead() {
   return head;
 }
 
-MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
+MoveState Snake::moveOrEat() {
   auto next_head = getNextHead();
 
   if (outOfRange(next_head)) {
     return MoveState::DIE;
   }  // Snake hits the wall and dies;
 
-  if (next_head == food) {
+  if (next_head == food_) {
     snake_body_.insertFront(next_head);
+    generateFood();
+    //std::cout << "new food is now at (" << food_.first <<", " << food_.second << ").\n"; //delete later
     return MoveState::EAT;  // Snake eats food;
   }
 

@@ -1,7 +1,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <yaml-cpp/yaml.h>
 
 #include <deque>
+#include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -244,12 +247,11 @@ TEST(SnakeTest, MoveOneStep) {
                                                             {20, 29},
                                                             {19, 29}});
 
-  std::pair<int, int> food = {100, 100};
 
-  EXPECT_EQ(snake_left_4.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_right_4.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_up_4.moveOrEat(food), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_down_8.moveOrEat(food), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_left_4.moveOrEat(), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_right_4.moveOrEat(), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_up_4.moveOrEat(), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_down_8.moveOrEat(), gamestatus::MoveState::MOVE);
 
   EXPECT_EQ(snake_left_4.getBody(), expected_left_4);
   EXPECT_EQ(snake_right_4.getBody(), expected_right_4);
@@ -258,8 +260,6 @@ TEST(SnakeTest, MoveOneStep) {
 }
 
 TEST(SnakeTest, MoveOneStepThenHitWall) {
-  std::pair<int, int> food = {100, 100};
-
   gamestatus::DequeOfUniquePairs<int, int> body_up(
       {{1, 0}, {1, 1}, {1, 2}, {2, 2}, {2, 3}});
   gamestatus::Snake snake_up(body_up, gamestatus::Direction::UP, 500, 500);
@@ -279,40 +279,31 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
   gamestatus::Snake snake_right(body_right, gamestatus::Direction::RIGHT, 500,
                                 500);
 
-  EXPECT_EQ(snake_up.moveOrEat(food), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_down.moveOrEat(food), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_left.moveOrEat(food), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_right.moveOrEat(food), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_up.moveOrEat(), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_down.moveOrEat(), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_left.moveOrEat(), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_right.moveOrEat(), gamestatus::MoveState::DIE);
 }
 
 TEST(SnakeTest, EatFood) {
-  gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
-                                                  {19, 30},
-                                                  {19, 29},
-                                                  {18, 29},
-                                                  {17, 29},
-                                                  {17, 28},
-                                                  {17, 27},
-                                                  {16, 27},
-                                                  {15, 27}});
+  gamestatus::DequeOfUniquePairs<int, int> body({{45, 44},
+                                                  {44, 44},
+                                                  {43, 44},
+                                                  {43, 43},
+                                                  {43, 42}});
 
-  std::pair<int, int> food = {21, 30};
 
-  gamestatus::DequeOfUniquePairs<int, int> expected9({{21, 30},
-                                                      {20, 30},
-                                                      {19, 30},
-                                                      {19, 29},
-                                                      {18, 29},
-                                                      {17, 29},
-                                                      {17, 28},
-                                                      {17, 27},
-                                                      {16, 27},
-                                                      {15, 27}});
+  gamestatus::DequeOfUniquePairs<int, int> expected({{46, 44},
+                                                  {45, 44},
+                                                  {44, 44},
+                                                  {43, 44},
+                                                  {43, 43},
+                                                  {43, 42}});
 
-  gamestatus::Snake snake9(body9);
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50, 50, 12345);
 
-  EXPECT_EQ(snake9.moveOrEat(food), gamestatus::MoveState::EAT);
-  EXPECT_EQ(snake9.getBody(), expected9);
+  EXPECT_EQ(snake.moveOrEat(), gamestatus::MoveState::EAT);
+  EXPECT_EQ(snake.getBody(), expected);
 }
 
 TEST(SnakeTest, MoveOneStepThenHitBody) {
@@ -327,7 +318,7 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
                                                   {17, 30},
                                                   {16, 30}});
   gamestatus::Snake snake1(body1, gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake1.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake1.moveOrEat(), gamestatus::MoveState::DIE);
 }
 
 TEST(ToolsTest, newDirection) {
@@ -384,27 +375,6 @@ TEST(ToolsTest, newDirection) {
             gamestatus::Direction::DOWN);
 }
 
-TEST(CycleTest, FromBirthToDeath) {
-  gamestatus::DequeOfUniquePairs<int, int> initial_body({{17, 30}});
-  gamestatus::Snake snake(initial_body);
 
-  std::vector<std::pair<int, int>> food_container = {
-      {18, 30}, {19, 30}, {20, 30}, {20, 29},
-      {20, 28}, {19, 28}, {18, 28}, {18, 29}};
 
-  for (auto i = 0; i < food_container.size(); ++i) {
-    std::pair<int, int> food = food_container[i];
-    snake.moveOrEat(food);
 
-    if (i == 2) {
-      snake.newDirection(gamestatus::Direction::UP);
-    }
-    if (i == 4) {
-      snake.newDirection(gamestatus::Direction::LEFT);
-    }
-    if (i == 6) {
-      snake.newDirection(gamestatus::Direction::DOWN);
-    }
-  }
-  EXPECT_EQ(snake.moveOrEat({100, 100}), gamestatus::MoveState::DIE);
-}
