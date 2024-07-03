@@ -52,9 +52,8 @@ class Snake {
     while (true) {
       int rand_x = dis_width_(gen_);
       int rand_y = dis_height_(gen_);
-      auto food = std::make_pair(rand_x, rand_y);
-      if (snake_body_.set().find(food) == snake_body_.set().end()) {
-        food_ = food;
+      food_ = std::make_pair(rand_x, rand_y);
+      if (!snake_body_.has(food_)) {
         break;
       }
     }
@@ -64,7 +63,7 @@ class Snake {
 
   Direction newDirection(Direction new_direction);
 
-  std::pair<int, int> getFood() const { return food_; }
+  std::pair<int, int>& getFood() { return food_; }
 
   int64_t getSeed() const { return seed_; }
 };
