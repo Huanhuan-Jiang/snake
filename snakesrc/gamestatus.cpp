@@ -134,25 +134,25 @@ std::pair<int, int> Snake::getNextHead() {
   return head;
 }
 
-MoveState Snake::moveOrEat() {
+NextState Snake::next() {
   auto next_head = getNextHead();
 
   if (outOfRange(next_head)) {
-    return MoveState::DIE;
+    return NextState::DIE;
   }  // Snake hits the wall and dies;
 
   if (next_head == food_) {
     snake_body_.insertFront(next_head);
     generateFood();
-    return MoveState::EAT;  // Snake eats food;
+    return NextState::EAT;  // Snake eats food;
   }
 
   snake_body_.popBack();
   if (!snake_body_.insertFront(next_head)) {
-    return MoveState::DIE;  // Snake hits the body and dies;
+    return NextState::DIE;  // Snake hits the body and dies;
   }
 
-  return MoveState::MOVE;  // Snake moves one step alive
+  return NextState::MOVE;  // Snake moves one step alive
 }
 
 Direction Snake::newDirection(Direction new_direction) {

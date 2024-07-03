@@ -245,10 +245,10 @@ TEST(SnakeTest, MoveOneStep) {
                                                             {20, 29},
                                                             {19, 29}});
 
-  EXPECT_EQ(snake_left_4.moveOrEat(), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_right_4.moveOrEat(), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_up_4.moveOrEat(), gamestatus::MoveState::MOVE);
-  EXPECT_EQ(snake_down_8.moveOrEat(), gamestatus::MoveState::MOVE);
+  EXPECT_EQ(snake_left_4.next(), gamestatus::NextState::MOVE);
+  EXPECT_EQ(snake_right_4.next(), gamestatus::NextState::MOVE);
+  EXPECT_EQ(snake_up_4.next(), gamestatus::NextState::MOVE);
+  EXPECT_EQ(snake_down_8.next(), gamestatus::NextState::MOVE);
 
   EXPECT_EQ(snake_left_4.getBody(), expected_left_4);
   EXPECT_EQ(snake_right_4.getBody(), expected_right_4);
@@ -276,10 +276,10 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
   gamestatus::Snake snake_right(body_right, gamestatus::Direction::RIGHT, 500,
                                 500);
 
-  EXPECT_EQ(snake_up.moveOrEat(), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_down.moveOrEat(), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_left.moveOrEat(), gamestatus::MoveState::DIE);
-  EXPECT_EQ(snake_right.moveOrEat(), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake_up.next(), gamestatus::NextState::DIE);
+  EXPECT_EQ(snake_down.next(), gamestatus::NextState::DIE);
+  EXPECT_EQ(snake_left.next(), gamestatus::NextState::DIE);
+  EXPECT_EQ(snake_right.next(), gamestatus::NextState::DIE);
 }
 
 TEST(SnakeTest, EatFood) {
@@ -291,7 +291,7 @@ TEST(SnakeTest, EatFood) {
 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50, 50, 12345);
 
-  EXPECT_EQ(snake.moveOrEat(), gamestatus::MoveState::EAT);
+  EXPECT_EQ(snake.next(), gamestatus::NextState::EAT);
   EXPECT_EQ(snake.getBody(), expected);
 }
 
@@ -305,15 +305,15 @@ TEST(CycleTest, EatFoodThenDie) {
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
                           seed);
 
-  snake.moveOrEat();
+  snake.next();
   snake.newDirection(gamestatus::Direction::DOWN);
-  snake.moveOrEat();
-  snake.moveOrEat();
+  snake.next();
+  snake.next();
   snake.newDirection(gamestatus::Direction::LEFT);
-  snake.moveOrEat();
+  snake.next();
   snake.newDirection(gamestatus::Direction::UP);
-  snake.moveOrEat();
-  EXPECT_EQ(snake.moveOrEat(), gamestatus::MoveState::DIE);
+  snake.next();
+  EXPECT_EQ(snake.next(), gamestatus::NextState::DIE);
 }
 
 TEST(SnakeTest, MoveOneStepThenHitBody) {
@@ -328,7 +328,7 @@ TEST(SnakeTest, MoveOneStepThenHitBody) {
                                                   {17, 30},
                                                   {16, 30}});
   gamestatus::Snake snake1(body1, gamestatus::Direction::DOWN);
-  EXPECT_EQ(snake1.moveOrEat(), gamestatus::MoveState::DIE);
+  EXPECT_EQ(snake1.next(), gamestatus::NextState::DIE);
 }
 
 TEST(ToolsTest, newDirection) {
