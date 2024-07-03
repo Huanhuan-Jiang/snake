@@ -1,3 +1,5 @@
+#define DEBUG_MODE
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -127,11 +129,11 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
                    HasSubstr("The head direction is invalid!"))));
 }
 
-TEST(SnakeTest, GetSeed) {
+TEST(SnakeTest, GetSameFood) {
   gamestatus::DequeOfUniquePairs<int, int> body({{20, 30}});
   gamestatus::Snake snake1(body);
   gamestatus::Snake snake2(body);
-  EXPECT_NE(snake1.getSeed(), snake2.getSeed());
+  EXPECT_NE(snake1.getFood(), snake2.getFood());
 }
 
 TEST(SnakeTest, SnakeSize) {

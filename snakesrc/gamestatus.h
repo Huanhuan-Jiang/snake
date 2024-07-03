@@ -23,24 +23,22 @@ class Snake {
   int map_width_;
   int map_height_;
   std::pair<int, int> food_;
-  int64_t seed_;
   std::mt19937 gen_;
-  std::uniform_int_distribution<int> dis_width_;
-  std::uniform_int_distribution<int> dis_height_;
   std::pair<int, int> getNextHead();
 
   bool outOfRange(const std::pair<int, int>&) const;
   bool discontinuous() const noexcept;
   Direction deducedDirection();
 
+ protected:
+#ifdef DEBUG_MODE
  public:
+#endif
   Snake(const DequeOfUniquePairs<int, int> initial_body,
         Direction head_dir_ = Direction::RIGHT, int map_width_ = 50,
         int map_height_ = 50,
-        const int64_t seed_ =
+        std::mt19937::result_type seed =
             std::chrono::system_clock::now().time_since_epoch().count());
-
-  Snake(int map_width_ = 50, int map_height_ = 50);
 
   std::size_t size() const noexcept { return snake_body_.size(); }
 
@@ -49,6 +47,8 @@ class Snake {
   Direction getDirection() const { return head_dir_; };
 
   void generateFood() {
+    std::uniform_int_distribution<int> dis_width_(1, map_width_ - 1);
+    std::uniform_int_distribution<int> dis_height_(1, map_height_ - 1);
     while (true) {
       int rand_x = dis_width_(gen_);
       int rand_y = dis_height_(gen_);
@@ -59,12 +59,13 @@ class Snake {
     }
   }
 
-  NextState next();
-
   Direction newDirection(Direction new_direction);
 
   std::pair<int, int>& getFood() { return food_; }
 
-  int64_t getSeed() const { return seed_; }
+ public:
+  Snake(int map_width_ = 50, int map_height_ = 50);
+
+  NextState next();
 };
 }  // namespace gamestatus
