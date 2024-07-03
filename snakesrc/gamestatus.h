@@ -64,6 +64,8 @@ class Snake {
 
   Direction newDirection(Direction new_direction);
 
-  std::pair<int, int> getFood() { return food_; }
+  std::pair<int, int> getFood() const { return food_; }
+
+  int64_t getSeed() const { return seed_; }
 };
 }  // namespace gamestatus

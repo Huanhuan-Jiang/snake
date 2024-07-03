@@ -127,6 +127,13 @@ TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
                    HasSubstr("The head direction is invalid!"))));
 }
 
+TEST(SnakeTest, GetSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body({{20, 30}});
+  gamestatus::Snake snake1(body);
+  gamestatus::Snake snake2(body);
+  EXPECT_NE(snake1.getSeed(), snake2.getSeed());
+}
+
 TEST(SnakeTest, SnakeSize) {
   gamestatus::DequeOfUniquePairs<int, int> body1({{20, 30}});  // one unit long
   gamestatus::DequeOfUniquePairs<int, int> body9({{20, 30},
