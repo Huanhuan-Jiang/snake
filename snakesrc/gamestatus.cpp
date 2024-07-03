@@ -4,7 +4,6 @@
 #include <iterator>
 #include <stdexcept>
 #include <utility>
-#include <iostream> //delete later
 
 #include "dequeofunique.h"
 
@@ -109,7 +108,6 @@ Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
   }
 
   generateFood();
-  //std::cout << "The first food is now at (" << food_.first <<", " << food_.second << ").\n"; //delete later
 }
 
 Snake::Snake(int map_width_, int map_height_)
@@ -146,7 +144,6 @@ MoveState Snake::moveOrEat() {
   if (next_head == food_) {
     snake_body_.insertFront(next_head);
     generateFood();
-    //std::cout << "new food is now at (" << food_.first <<", " << food_.second << ").\n"; //delete later
     return MoveState::EAT;  // Snake eats food;
   }
 

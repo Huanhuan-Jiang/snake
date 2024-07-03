@@ -1,10 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <yaml-cpp/yaml.h>
 
 #include <deque>
 #include <fstream>
-#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -247,7 +245,6 @@ TEST(SnakeTest, MoveOneStep) {
                                                             {20, 29},
                                                             {19, 29}});
 
-
   EXPECT_EQ(snake_left_4.moveOrEat(), gamestatus::MoveState::MOVE);
   EXPECT_EQ(snake_right_4.moveOrEat(), gamestatus::MoveState::MOVE);
   EXPECT_EQ(snake_up_4.moveOrEat(), gamestatus::MoveState::MOVE);
@@ -286,24 +283,37 @@ TEST(SnakeTest, MoveOneStepThenHitWall) {
 }
 
 TEST(SnakeTest, EatFood) {
-  gamestatus::DequeOfUniquePairs<int, int> body({{45, 44},
-                                                  {44, 44},
-                                                  {43, 44},
-                                                  {43, 43},
-                                                  {43, 42}});
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{45, 44}, {44, 44}, {43, 44}, {43, 43}, {43, 42}});
 
-
-  gamestatus::DequeOfUniquePairs<int, int> expected({{46, 44},
-                                                  {45, 44},
-                                                  {44, 44},
-                                                  {43, 44},
-                                                  {43, 43},
-                                                  {43, 42}});
+  gamestatus::DequeOfUniquePairs<int, int> expected(
+      {{46, 44}, {45, 44}, {44, 44}, {43, 44}, {43, 43}, {43, 42}});
 
   gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, 50, 50, 12345);
 
   EXPECT_EQ(snake.moveOrEat(), gamestatus::MoveState::EAT);
   EXPECT_EQ(snake.getBody(), expected);
+}
+
+TEST(CycleTest, EatFoodThenDie) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{45, 44}, {44, 44}, {43, 44}, {42, 44}, {41, 44}, {40, 44}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+  int seed = 12345;
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
+
+  snake.moveOrEat();
+  snake.newDirection(gamestatus::Direction::DOWN);
+  snake.moveOrEat();
+  snake.moveOrEat();
+  snake.newDirection(gamestatus::Direction::LEFT);
+  snake.moveOrEat();
+  snake.newDirection(gamestatus::Direction::UP);
+  snake.moveOrEat();
+  EXPECT_EQ(snake.moveOrEat(), gamestatus::MoveState::DIE);
 }
 
 TEST(SnakeTest, MoveOneStepThenHitBody) {
@@ -375,6 +385,76 @@ TEST(ToolsTest, newDirection) {
             gamestatus::Direction::DOWN);
 }
 
+TEST(ToolsTest, GenerateFoodWithCustomizedSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
 
+  auto map_w = 50;
+  auto map_h = 50;
+  int seed = 12345;
 
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
+  auto food = snake.getFood();
 
+  EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+}
+
+TEST(ToolsTest, GenerateFoodWithDefaultSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
+  auto food = snake.getFood();
+
+  EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(food.second, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+  EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+}
+
+TEST(ToolsTest, GenerateMultipleFoodWithCustomizedSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+  auto seed = 12345;
+
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h,
+                          seed);
+
+  for (auto i = 0; i < 10; ++i) {
+    snake.generateFood();
+    auto food = snake.getFood();
+
+    EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+    EXPECT_THAT(food.second,
+                testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+    EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+  }
+}
+
+TEST(ToolsTest, GenerateMultipleFoodWithDefaultSeed) {
+  gamestatus::DequeOfUniquePairs<int, int> body(
+      {{18, 29}, {18, 28}, {19, 28}, {20, 28}, {20, 29}, {20, 30}});
+
+  auto map_w = 50;
+  auto map_h = 50;
+
+  gamestatus::Snake snake(body, gamestatus::Direction::RIGHT, map_w, map_h);
+
+  for (auto i = 0; i < 10; ++i) {
+    snake.generateFood();
+    auto food = snake.getFood();
+
+    EXPECT_THAT(food.first, testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+    EXPECT_THAT(food.second,
+                testing::AllOf(testing::Gt(0), testing::Lt(map_w)));
+    EXPECT_THAT(snake.getBody().set().find(food), snake.getBody().set().end());
+  }
+}
