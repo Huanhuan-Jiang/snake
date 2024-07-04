@@ -4,7 +4,6 @@
 #include <gtest/gtest.h>
 
 #include <deque>
-#include <fstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
