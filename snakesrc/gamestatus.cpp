@@ -34,21 +34,6 @@ bool Snake::outOfRange(const std::pair<int, int>& element) const {
   return (x >= map_width_ || x < 0 || y >= map_height_ || y < 0);
 }
 
-bool Snake::discontinuous() const noexcept {
-  auto prev_it = snake_body_.cbegin();
-  for (auto it = std::next(snake_body_.cbegin()); it != snake_body_.cend();
-       ++it) {
-    auto diff_x = std::abs(it->first - prev_it->first);
-    auto diff_y = std::abs(it->second - prev_it->second);
-
-    if (!((diff_x == 0 && diff_y == 1) || (diff_x == 1 && diff_y == 0))) {
-      return true;
-    }
-    ++prev_it;
-  }
-  return false;
-}
-
 Direction Snake::deducedDirection() {
   if (snake_body_.size() >= 2u) {
     auto head_it = snake_body_.begin();
@@ -78,35 +63,15 @@ Direction Snake::deducedDirection() {
   return head_dir_;
 }
 
-Snake::Snake(DequeOfUniquePairs<int, int> initial_body,
-             Direction head_direction, int map_w, int map_h)
-    : snake_body_(std::move(initial_body)),
-      head_dir_(head_direction),
-      map_width_(map_w),
-      map_height_(map_h) {
-  // Check if the snake body is valid
-  if (snake_body_.empty()) {
-    throw std::runtime_error("Snake body is empty!");
-  }
-
-  for (auto element : snake_body_) {
-    if (outOfRange(element)) {
-      throw std::runtime_error("Snake body is beyond the map!");
-    }
-  }
-
-  if (discontinuous()) {
-    throw std::runtime_error("Snake body is not continuous!");
-  }
-
-  if (isOpposite(deducedDirection(), head_dir_)) {
-    throw std::runtime_error("The head direction is invalid!");
-  }
+Snake::Snake(int map_w, int map_h)
+    : map_width_(map_w),
+      map_height_(map_h),
+      snake_body_(initBody(map_width_, map_height_)),
+      head_dir_(Direction::RIGHT),
+      gen_(static_cast<std::mt19937::result_type>(
+          std::chrono::system_clock::now().time_since_epoch().count())) {
+  generateFood();
 }
-
-Snake::Snake(int map_width_, int map_height_)
-    : Snake(initBody(map_width_, map_height_), Direction::RIGHT, map_width_,
-            map_height_) {};
 
 std::pair<int, int> Snake::getNextHead() {
   std::pair<int, int> head = snake_body_.front();
@@ -128,24 +93,25 @@ std::pair<int, int> Snake::getNextHead() {
   return head;
 }
 
-MoveState Snake::moveOrEat(const std::pair<int, int>& food) {
+NextState Snake::next() {
   auto next_head = getNextHead();
 
   if (outOfRange(next_head)) {
-    return MoveState::DIE;
+    return NextState::DIE;
   }  // Snake hits the wall and dies;
 
-  if (next_head == food) {
+  if (next_head == food_) {
     snake_body_.insertFront(next_head);
-    return MoveState::EAT;  // Snake eats food;
+    generateFood();
+    return NextState::EAT;  // Snake eats food;
   }
 
   snake_body_.popBack();
   if (!snake_body_.insertFront(next_head)) {
-    return MoveState::DIE;  // Snake hits the body and dies;
+    return NextState::DIE;  // Snake hits the body and dies;
   }
 
-  return MoveState::MOVE;  // Snake moves one step alive
+  return NextState::MOVE;  // Snake moves one step alive
 }
 
 Direction Snake::newDirection(Direction new_direction) {

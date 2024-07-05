@@ -31,6 +31,12 @@ class DequeOfUniquePairs {
     }
   };
 
+  DequeOfUniquePairs& operator=(DequeOfUniquePairs other) {
+    std::swap(deque_, other.deque_);
+    std::swap(set_, other.set_);
+    return *this;
+  };
+
   bool operator==(const DequeOfUniquePairs<T1, T2>& other) const {
     return (deque_ == other.deque());
   }
