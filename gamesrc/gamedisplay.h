@@ -53,4 +53,7 @@ class GameRenderer {
   }
 };
 
+void drawObjectAt(SDL_Renderer* sdl_renderer,
+                  std::deque<std::pair<int, int>> obj, int pixel_size);
+
 }  // namespace gamedisplay
