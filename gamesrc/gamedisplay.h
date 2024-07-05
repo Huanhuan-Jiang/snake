@@ -30,4 +30,27 @@ class GameWindow {
   int getPixelSize() const { return pixel_size_; }
 };
 
+class GameRenderer {
+  GameWindow game_window_;
+  SDL_Renderer* sdl_renderer_ = nullptr;
+
+ public:
+  GameRenderer(GameWindow game_window) : game_window_(game_window) {
+    sdl_renderer_ = SDL_CreateRenderer(game_window_.getWindow(), nullptr);
+    if (sdl_renderer_ == nullptr) {
+      std::cerr << "Renderer could not be created! SDL_Error: "
+                << SDL_GetError() << "\n";
+      return;
+    }
+  };
+
+  SDL_Renderer* getRenderer() { return sdl_renderer_; }
+
+  ~GameRenderer() {
+    if (sdl_renderer_ != nullptr) {
+      SDL_DestroyRenderer(sdl_renderer_);
+    }
+  }
+};
+
 }  // namespace gamedisplay
