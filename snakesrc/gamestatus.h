@@ -30,7 +30,7 @@ class Snake {
 
   bool outOfRange(const std::pair<int, int>& element) const;
   Direction deducedDirection();
-  
+
   void generateFood() {
     std::uniform_int_distribution<int> dis_width_(1, map_width_ - 1);
     std::uniform_int_distribution<int> dis_height_(1, map_height_ - 1);
@@ -46,6 +46,8 @@ class Snake {
 
  public:
   Snake(int map_width_ = 50, int map_height_ = 50);
+
+  const DequeOfUniquePairs<int, int>& getBody() const { return snake_body_; }
 
   Direction newDirection(Direction new_direction);
 

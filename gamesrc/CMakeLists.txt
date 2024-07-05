@@ -17,9 +17,8 @@ add_subdirectory(../thirdparty/SDL thirdparty/SDL)
 include_directories(${SDL_INCLUDE_DIR})
 
 set(SDL_SOURCE_DIR ${CMAKE_SOURCE_DIR}/../thirdparty/SDL CACHE PATH "Path to SDL source directory")
-set(SDL_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../build CACHE PATH "Path to SDL build directory")
+set(SDL_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build CACHE PATH "Path to SDL build directory")
 set(SDL_INCLUDE_DIR ${SDL_SOURCE_DIR}/include CACHE PATH "Path to SDL include directory")
-set(SDL_LIBRARY ${SDL_BUILD_DIR}/thirdparty/SDL/SDL3.dll CACHE FILEPATH "Path to SDL library")
 
 # Build SDL libraries
 if(NOT EXISTS ${SDL_BUILD_DIR}/CMakeCache.txt)
@@ -47,4 +46,3 @@ target_link_libraries(gamedisplay PRIVATE gamestatus)
 target_link_libraries(snakegame PRIVATE gamestatus)
 target_link_libraries(snakegame PRIVATE gamedisplay)
 target_link_libraries(snakegame PRIVATE SDL3::SDL3-shared)
-target_link_libraries(snakegame PRIVATE ${SDL_LIBRARY})

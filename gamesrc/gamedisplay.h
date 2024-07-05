@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <deque>
+#include <iostream>
 #include <utility>
 
 #include "gamestatus.h"
@@ -55,5 +56,33 @@ class GameRenderer {
 
 void drawObjectAt(SDL_Renderer* sdl_renderer,
                   std::deque<std::pair<int, int>> obj, int pixel_size);
+
+class Game {
+ public:
+  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept;
+
+  bool isInitialized() const { return initialized_; }
+
+  void render();
+  void handleEvents(SDL_Event& event);
+  void run();
+
+  ~Game() { SDL_Quit(); }
+
+ private:
+  GameWindow game_window_;
+  GameRenderer game_renderer_;
+  SDL_Window* sdl_window_ = nullptr;
+  SDL_Renderer* sdl_renderer_ = nullptr;
+
+  bool initialized_ = true;
+  int pixel_size_;
+  int window_width_;
+  int window_height_;
+
+  bool is_running_ = true;
+
+  gamestatus::Snake snake_;
+};
 
 }  // namespace gamedisplay
