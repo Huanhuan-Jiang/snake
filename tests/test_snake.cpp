@@ -82,7 +82,7 @@ class SnakeTest : public gamestatus::Snake {
   };
 
   SnakeTest(int map_width_ = 50, int map_height_ = 50)
-      : Snake(map_width_, map_height_) {};
+      : Snake(map_width_, map_height_){};
 
   gamestatus::Direction getDirection() const { return head_dir_; };
   std::size_t size() const noexcept { return snake_body_.size(); }

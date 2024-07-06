@@ -1,10 +1,11 @@
+#include "gamestatus.h"
+
 #include <cmath>
 #include <iterator>
 #include <stdexcept>
 #include <utility>
 
 #include "dequeofunique.h"
-#include "gamestatus.h"
 
 namespace gamestatus {
 

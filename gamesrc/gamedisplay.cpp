@@ -30,25 +30,23 @@ Game::Game(int width, int height, int pixel_size) noexcept
     : window_width_(width),
       window_height_(height),
       pixel_size_(pixel_size),
-      game_window_(width, height, pixel_size),
-      game_renderer_(game_window_),
       snake_(width, height) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    std::cerr << "Renderer could not be created! SDL_Error:" << SDL_GetError()
-              << "\n";
+    std::cerr << "SDL_Error:" << SDL_GetError() << "\n";
     initialized_ = false;
     return;
   }
 
-  sdl_window_ = game_window_.getWindow();
-  sdl_renderer_ = game_renderer_.getRenderer();
+  GameWindow game_window(width, height, pixel_size);
+  GameRenderer game_renderer(game_window);
+  game_renderer_ = std::move(game_renderer);
 }
 
 void Game::render() {
-  SDL_SetRenderDrawColor(sdl_renderer_, 255, 255, 255, 255);
-  SDL_RenderClear(sdl_renderer_);
-  drawObjectAt(sdl_renderer_, snake_.getBody().deque(), pixel_size_);
-  SDL_RenderPresent(sdl_renderer_);
+  SDL_SetRenderDrawColor(game_renderer_.getRenderer(), 255, 255, 255, 255);
+  SDL_RenderClear(game_renderer_.getRenderer());
+  drawObjectAt(game_renderer_.getRenderer(), snake_.getBody().deque(), pixel_size_);
+  SDL_RenderPresent(game_renderer_.getRenderer());
   SDL_Delay(1000);
 }
 
