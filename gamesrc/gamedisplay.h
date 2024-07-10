@@ -6,8 +6,8 @@
 #include <cstdint>
 #include <deque>
 #include <iostream>
-#include <utility>
 #include <memory>
+#include <utility>
 
 #include "gamestatus.h"
 
@@ -24,25 +24,25 @@ class GameWindow {
     sdl_window_ =
         SDL_CreateWindow("Snake", window_width_ * pixel_size_,
                          window_height_ * pixel_size_, SDL_WINDOW_RESIZABLE);
-    if(sdl_window_ ==  nullptr) {
-      std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
+    if (sdl_window_ == nullptr) {
+      std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError()
+                << "\n";
     }
   }
 
-  GameWindow(GameWindow&& other) noexcept:
-    window_width_(other.window_width_),
-    window_height_(other.window_height_),
-    pixel_size_(other.pixel_size_) {
-      std::swap(sdl_window_, other.sdl_window_);
-      
+  GameWindow(GameWindow&& other) noexcept
+      : window_width_(other.window_width_),
+        window_height_(other.window_height_),
+        pixel_size_(other.pixel_size_) {
+    std::swap(sdl_window_, other.sdl_window_);
   }
 
   GameWindow& operator=(GameWindow&& other) noexcept {
     if (this != &other) {
       std::swap(sdl_window_, other.sdl_window_);
-      window_width_= other.window_width_;
-      window_height_= other.window_height_;
-      pixel_size_= other.pixel_size_;
+      window_width_ = other.window_width_;
+      window_height_ = other.window_height_;
+      pixel_size_ = other.pixel_size_;
     }
     return *this;
   }
@@ -63,7 +63,8 @@ class GameRenderer {
  public:
   GameRenderer() = default;
 
-  GameRenderer(GameWindow& game_window) : game_window_(std::make_unique<GameWindow>(std::move(game_window))) {
+  GameRenderer(GameWindow& game_window)
+      : game_window_(std::make_unique<GameWindow>(std::move(game_window))) {
     sdl_renderer_ = SDL_CreateRenderer(game_window_->getWindow(), nullptr);
     if (sdl_renderer_ == nullptr) {
       std::cerr << "Renderer could not be created! SDL_Error: "
@@ -76,7 +77,7 @@ class GameRenderer {
     std::swap(game_window_, other.game_window_);
   };
 
-  GameRenderer& operator = (GameRenderer&& other) noexcept {
+  GameRenderer& operator=(GameRenderer&& other) noexcept {
     if (this != &other) {
       std::swap(sdl_renderer_, other.sdl_renderer_);
       std::swap(game_window_, other.game_window_);
@@ -85,7 +86,7 @@ class GameRenderer {
   }
 
   GameRenderer(GameRenderer& other) = delete;
-  GameRenderer& operator= (GameRenderer& other) = delete;
+  GameRenderer& operator=(GameRenderer& other) = delete;
 
   SDL_Renderer* getRenderer() { return sdl_renderer_; }
 

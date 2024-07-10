@@ -20,6 +20,7 @@ class SnakeTest : public gamestatus::Snake {
   using gamestatus::Snake::gen_;
   using gamestatus::Snake::generateFood;
   using gamestatus::Snake::getBody;
+  using gamestatus::Snake::getFood;
   using gamestatus::Snake::head_dir_;
   using gamestatus::Snake::Snake;
   using gamestatus::Snake::snake_body_;
@@ -86,7 +87,6 @@ class SnakeTest : public gamestatus::Snake {
 
   gamestatus::Direction getDirection() const { return head_dir_; };
   std::size_t size() const noexcept { return snake_body_.size(); }
-  std::pair<int, int>& getFood() { return food_; }
 };
 
 TEST(SnakeTest, SnakeThrowExceptionWithCorrectMessage) {
