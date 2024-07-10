@@ -52,5 +52,7 @@ class Snake {
   Direction newDirection(Direction new_direction);
 
   NextState next();
+
+  const std::pair<int, int>& getFood() const { return food_; }
 };
 }  // namespace gamestatus

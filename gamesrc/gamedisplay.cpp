@@ -1,3 +1,5 @@
+#include "gamedisplay.h"
+
 #include <SDL3/SDL.h>
 
 #include <cstddef>
@@ -7,7 +9,6 @@
 #include <utility>
 
 #include "gamestatus.h"
-#include "gamedisplay.h"
 
 namespace gamedisplay {
 
@@ -24,6 +25,19 @@ void drawObjectAt(SDL_Renderer* sdl_renderer,
     SDL_SetRenderDrawColor(sdl_renderer, 255, 0, 0, 255);  // Red
     SDL_RenderFillRect(sdl_renderer, &rect);
   }
+}
+
+void drawFoodAt(SDL_Renderer* sdl_renderer, std::pair<int, int> obj,
+                int pixel_size) {
+  auto logicalX = obj.first;
+  auto logicalY = obj.second;
+
+  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
+                    static_cast<float>(logicalY * pixel_size),
+                    static_cast<float>(pixel_size),
+                    static_cast<float>(pixel_size)};
+  SDL_SetRenderDrawColor(sdl_renderer, 185, 87, 86, 255);
+  SDL_RenderFillRect(sdl_renderer, &rect);
 }
 
 Game::Game(int width, int height, int pixel_size) noexcept
@@ -75,7 +89,12 @@ void Game::handleEvents(SDL_Event& event) {
         break;
     }
   }
+
   snake_.next();
+  // switch (snake_.next()){
+  //   case: gamestatus::NextState::EAT:
+  //     drawObjectAt
+  // }
 }
 
 void Game::run() {

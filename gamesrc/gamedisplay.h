@@ -6,8 +6,8 @@
 #include <cstdint>
 #include <deque>
 #include <iostream>
-#include <utility>
 #include <memory>
+#include <utility>
 
 #include "gamestatus.h"
 
@@ -29,20 +29,19 @@ class GameWindow {
     }
   }
 
-  GameWindow(GameWindow&& other) noexcept:
-    window_width_(other.window_width_),
-    window_height_(other.window_height_),
-    pixel_size_(other.pixel_size_) {
-      std::swap(sdl_window_, other.sdl_window_);
-      
+  GameWindow(GameWindow&& other) noexcept
+      : window_width_(other.window_width_),
+        window_height_(other.window_height_),
+        pixel_size_(other.pixel_size_) {
+    std::swap(sdl_window_, other.sdl_window_);
   }
 
   GameWindow& operator=(GameWindow&& other) noexcept {
     if (this != &other) {
       std::swap(sdl_window_, other.sdl_window_);
-      window_width_= other.window_width_;
-      window_height_= other.window_height_;
-      pixel_size_= other.pixel_size_;
+      window_width_ = other.window_width_;
+      window_height_ = other.window_height_;
+      pixel_size_ = other.pixel_size_;
     }
     return *this;
   }
@@ -76,7 +75,7 @@ class GameRenderer {
     std::swap(game_window_, other.game_window_);
   };
 
-  GameRenderer& operator = (GameRenderer&& other) noexcept {
+  GameRenderer& operator=(GameRenderer&& other) noexcept {
     if (this != &other) {
       std::swap(sdl_renderer_, other.sdl_renderer_);
       std::swap(game_window_, other.game_window_);
