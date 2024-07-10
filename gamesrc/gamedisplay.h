@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_ttf.h>
 
 #include <cstddef>
 #include <cstdint>
@@ -99,6 +100,50 @@ class GameRenderer {
 
 void drawObjectAt(SDL_Renderer* sdl_renderer,
                   std::deque<std::pair<int, int>> obj, int pixel_size);
+
+TTF_Font* loadFont(const std::string& fontPath, int fontSize) {
+    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
+    if (font == nullptr) {
+        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+    }
+    return font;
+}
+
+SDL_Texture* renderTextToTexture(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, SDL_Color color) {
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (surface == nullptr) {
+        std::cerr << "Failed to render text surface: " << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (texture == nullptr) {
+        std::cerr << "Failed to create texture from surface: " << SDL_GetError() << std::endl;
+    }
+
+    SDL_FreeSurface(surface);
+    return texture;
+}
+
+void renderText(SDL_Renderer* renderer, const std::string& text, int x, int y) {
+
+    TTF_Font* font = loadFont("gamesrc/race-sport/Race Sport.ttf", 24);
+    SDL_Color color = (139, 127, 139, 255)
+
+    SDL_Texture* texture = renderTextToTexture(renderer, font, text, color);
+    if (texture == nullptr) {
+        return;
+    }
+
+    int texW = 0;
+    int texH = 0;
+    SDL_QueryTexture(texture, nullptr, nullptr, &texW, &texH);
+    SDL_Rect dstRect = {x, y, texW, texH};
+
+    SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+    SDL_DestroyTexture(texture);
+}
 
 class Game {
  public:

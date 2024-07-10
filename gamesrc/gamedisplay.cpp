@@ -1,6 +1,7 @@
 #include "gamedisplay.h"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_ttf.h> //?
 
 #include <cstddef>
 #include <cstdint>
@@ -49,6 +50,11 @@ Game::Game(int width, int height, int pixel_size) noexcept
     std::cerr << "SDL_Error:" << SDL_GetError() << "\n";
     initialized_ = false;
     return;
+  }
+
+  if (TTF_Init() == -1) {
+        std::cerr << "SDL_ttf initialization failed: " << TTF_GetError() << std::endl;
+        return false;
   }
 
   GameWindow game_window(width, height, pixel_size);
