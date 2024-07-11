@@ -24,8 +24,8 @@ class GameWindow {
     sdl_window_ =
         SDL_CreateWindow("Snake", window_width_ * pixel_size_,
                          window_height_ * pixel_size_, SDL_WINDOW_RESIZABLE);
-    if(sdl_window_ ==  nullptr) {
-      std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
+    if (sdl_window_ == nullptr) {
+      throw std::runtime_error(SDL_GetError());
     }
   }
 
@@ -46,8 +46,8 @@ class GameWindow {
     return *this;
   }
 
-  GameWindow(GameWindow& other) = delete;
-  GameWindow& operator=(GameWindow& other) = delete;
+  GameWindow(const GameWindow& other) = delete;
+  GameWindow& operator=(const GameWindow& other) = delete;
 
   SDL_Window* getWindow() { return sdl_window_; }
   int getWindowWidth() const { return window_width_; }
@@ -58,15 +58,16 @@ class GameWindow {
 class GameRenderer {
   std::unique_ptr<GameWindow> game_window_ = nullptr;
   SDL_Renderer* sdl_renderer_ = nullptr;
+  SDL_Color* sdl_color_ = nullptr;
 
  public:
   GameRenderer() = default;
 
-  GameRenderer(GameWindow& game_window) : game_window_(std::make_unique<GameWindow>(std::move(game_window))) {
+  GameRenderer(std::unique_ptr<GameWindow> game_window)
+      : game_window_(std::move(game_window)) {
     sdl_renderer_ = SDL_CreateRenderer(game_window_->getWindow(), nullptr);
     if (sdl_renderer_ == nullptr) {
-      std::cerr << "Renderer could not be created! SDL_Error: "
-                << SDL_GetError() << "\n";
+      throw std::runtime_error(SDL_GetError());
     }
   };
 
@@ -83,10 +84,35 @@ class GameRenderer {
     return *this;
   }
 
-  GameRenderer(GameRenderer& other) = delete;
-  GameRenderer& operator= (GameRenderer& other) = delete;
+  GameRenderer(const GameRenderer& other) = delete;
+  GameRenderer& operator=(const GameRenderer& other) = delete;
 
   SDL_Renderer* getRenderer() { return sdl_renderer_; }
+
+  void setRenderDrawColor(const SDL_Color& sdl_color) {
+    if (SDL_SetRenderDrawColor(sdl_renderer_, sdl_color.r, sdl_color.g,
+                               sdl_color.b, sdl_color.a) < 0) {
+      throw std::runtime_error(SDL_GetError());
+    }
+  };
+
+  void renderClear() {
+    if (SDL_RenderClear(sdl_renderer_) < 0) {
+      std::runtime_error(SDL_GetError());
+    }
+  }
+
+  void renderPresent() {
+    if (SDL_RenderPresent(sdl_renderer_) < 0) {
+      std::runtime_error(SDL_GetError());
+    }
+  }
+
+  void drawElement(const std::pair<int, int>& obj, int pixel_size,
+                   const SDL_Color& sdl_color);
+
+  void drawBody(const std::deque<std::pair<int, int>>& obj, int pixel_size,
+                const SDL_Color& sdl_color);
 
   ~GameRenderer() {
     if (sdl_renderer_ != nullptr) {
@@ -95,8 +121,7 @@ class GameRenderer {
   }
 };
 
-void drawObjectAt(SDL_Renderer* sdl_renderer,
-                  std::deque<std::pair<int, int>> obj, int pixel_size);
+void delay(Uint32 ms);
 
 class Game {
  public:
@@ -114,11 +139,11 @@ class Game {
   GameRenderer game_renderer_;
 
   bool initialized_ = true;
+  bool is_running_ = true;
   int pixel_size_;
   int window_width_;
   int window_height_;
-
-  bool is_running_ = true;
+  int score_ = 0;
 
   gamestatus::Snake snake_;
 };

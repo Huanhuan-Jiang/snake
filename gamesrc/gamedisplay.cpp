@@ -6,24 +6,33 @@
 #include <cstdint>
 #include <deque>
 #include <iostream>
+#include <stdexcept>
 #include <utility>
 
 #include "gamestatus.h"
 
 namespace gamedisplay {
 
-void drawObjectAt(SDL_Renderer* sdl_renderer,
-                  std::deque<std::pair<int, int>> obj, int pixel_size) {
-  for (auto& element : obj) {
-    auto logicalX = element.first;
-    auto logicalY = element.second;
+void delay(Uint32 ms) { SDL_Delay(ms); }
 
-    SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
-                      static_cast<float>(logicalY * pixel_size),
-                      static_cast<float>(pixel_size),
-                      static_cast<float>(pixel_size)};
-    SDL_SetRenderDrawColor(sdl_renderer, 255, 0, 0, 255);  // Red
-    SDL_RenderFillRect(sdl_renderer, &rect);
+void GameRenderer::drawElement(const std::pair<int, int>& obj, int pixel_size,
+                               const SDL_Color& sdl_color) {
+  auto logicalX = obj.first;
+  auto logicalY = obj.second;
+
+  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
+                    static_cast<float>(logicalY * pixel_size),
+                    static_cast<float>(pixel_size),
+                    static_cast<float>(pixel_size)};
+  SDL_SetRenderDrawColor(sdl_renderer_, sdl_color.r, sdl_color.g, sdl_color.b,
+                         sdl_color.a);
+  SDL_RenderFillRect(sdl_renderer_, &rect);
+}
+
+void GameRenderer::drawBody(const std::deque<std::pair<int, int>>& obj,
+                            int pixel_size, const SDL_Color& sdl_color) {
+  for (auto& element : obj) {
+    GameRenderer::drawElement(element, pixel_size, sdl_color);
   }
 }
 
@@ -46,22 +55,27 @@ Game::Game(int width, int height, int pixel_size) noexcept
       pixel_size_(pixel_size),
       snake_(width, height) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    std::cerr << "SDL_Error:" << SDL_GetError() << "\n";
     initialized_ = false;
-    return;
   }
 
-  GameWindow game_window(width, height, pixel_size);
-  GameRenderer game_renderer(game_window);
+  std::unique_ptr<GameWindow> game_window =
+      std::make_unique<GameWindow>(width, height, pixel_size);
+  GameRenderer game_renderer(std::move(game_window));
   game_renderer_ = std::move(game_renderer);
 }
 
 void Game::render() {
-  SDL_SetRenderDrawColor(game_renderer_.getRenderer(), 255, 255, 255, 255);
-  SDL_RenderClear(game_renderer_.getRenderer());
-  drawObjectAt(game_renderer_.getRenderer(), snake_.getBody().deque(), pixel_size_);
-  SDL_RenderPresent(game_renderer_.getRenderer());
-  SDL_Delay(1000);
+  SDL_Color bkg_color = {255, 255, 255, 255};
+  SDL_Color food_color = {185, 87, 86, 255};
+  SDL_Color body_color = {42, 76, 101, 255};
+  Uint32 time_ms = 300;
+
+  game_renderer_.setRenderDrawColor(bkg_color);
+  game_renderer_.renderClear();
+  game_renderer_.drawElement(snake_.getFood(), pixel_size_, food_color);
+  game_renderer_.drawBody(snake_.getBody().deque(), pixel_size_, body_color);
+  game_renderer_.renderPresent();
+  delay(time_ms);
 }
 
 void Game::handleEvents(SDL_Event& event) {

@@ -4,7 +4,7 @@ int main() {
   gamedisplay::Game game;
 
   if (!game.isInitialized()) {
-    std::cerr << "Failed to initialize SDL. Exiting..." << std::endl;
+    throw std::runtime_error(SDL_GetError());
     return 1;
   }
 
