@@ -11,7 +11,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(SOURCE_FILES snakegame.cpp)
 
 add_subdirectory(../snakesrc snakesrc)
-add_subdirectory(../thirdparty/googletest thirdparty/googletest)
 add_subdirectory(../thirdparty/SDL thirdparty/SDL)
 
 include_directories(${SDL_INCLUDE_DIR})
@@ -35,14 +34,20 @@ add_executable(snakegame ${SOURCE_FILES})
 
 add_library(gamedisplay gamedisplay.cpp)
 
-target_include_directories(snakegame INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(snakegame PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc)
-target_include_directories(snakegame PRIVATE ${CMAKE_SOURCE_DIR}/../gamesrc)
+target_include_directories(snakegame 
+    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc
+    PRIVATE ${CMAKE_SOURCE_DIR}/../gamesrc
+    )
 
-target_include_directories(gamedisplay PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc)
-target_include_directories(gamedisplay PRIVATE ${SDL_INCLUDE_DIR})
-target_link_libraries(gamedisplay PRIVATE gamestatus)
+target_include_directories(gamedisplay 
+    PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc
+    gamedisplay PRIVATE ${SDL_INCLUDE_DIR}
+    PRIVATE gamestatus
+    )
 
-target_link_libraries(snakegame PRIVATE gamestatus)
-target_link_libraries(snakegame PRIVATE gamedisplay)
-target_link_libraries(snakegame PRIVATE SDL3::SDL3-shared)
+target_link_libraries(snakegame 
+    PRIVATE gamestatus
+    PRIVATE gamedisplay
+    PRIVATE SDL3::SDL3-shared
+    )

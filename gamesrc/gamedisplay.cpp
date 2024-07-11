@@ -1,5 +1,3 @@
-#include "gamedisplay.h"
-
 #include <SDL3/SDL.h>
 
 #include <cstddef>
@@ -10,58 +8,43 @@
 #include <utility>
 
 #include "gamestatus.h"
+#include "gamedisplay.h"
+#include "sdl.h"
 
 namespace gamedisplay {
-
-void delay(Uint32 ms) { SDL_Delay(ms); }
-
-void GameRenderer::drawElement(const std::pair<int, int>& obj, int pixel_size,
-                               const SDL_Color& sdl_color) {
-  auto logicalX = obj.first;
-  auto logicalY = obj.second;
-
-  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
-                    static_cast<float>(logicalY * pixel_size),
-                    static_cast<float>(pixel_size),
-                    static_cast<float>(pixel_size)};
-  SDL_SetRenderDrawColor(sdl_renderer_, sdl_color.r, sdl_color.g, sdl_color.b,
-                         sdl_color.a);
-  SDL_RenderFillRect(sdl_renderer_, &rect);
-}
-
-void GameRenderer::drawBody(const std::deque<std::pair<int, int>>& obj,
-                            int pixel_size, const SDL_Color& sdl_color) {
-  for (auto& element : obj) {
-    GameRenderer::drawElement(element, pixel_size, sdl_color);
-  }
-}
-
-void drawFoodAt(SDL_Renderer* sdl_renderer, std::pair<int, int> obj,
-                int pixel_size) {
-  auto logicalX = obj.first;
-  auto logicalY = obj.second;
-
-  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
-                    static_cast<float>(logicalY * pixel_size),
-                    static_cast<float>(pixel_size),
-                    static_cast<float>(pixel_size)};
-  SDL_SetRenderDrawColor(sdl_renderer, 185, 87, 86, 255);
-  SDL_RenderFillRect(sdl_renderer, &rect);
-}
 
 Game::Game(int width, int height, int pixel_size) noexcept
     : window_width_(width),
       window_height_(height),
       pixel_size_(pixel_size),
-      snake_(width, height) {
+      snake_(width, height),
+      window_(width, height, pixel_size) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     initialized_ = false;
   }
 
-  std::unique_ptr<GameWindow> game_window =
-      std::make_unique<GameWindow>(width, height, pixel_size);
-  GameRenderer game_renderer(std::move(game_window));
-  game_renderer_ = std::move(game_renderer);
+  renderer_ = window_.createRenderer();
+}
+
+void Game::drawElement(const std::pair<int, int>& obj, int pixel_size,
+                       const SDL_Color& color) {
+  auto logicalX = obj.first;
+  auto logicalY = obj.second;
+
+  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
+                     static_cast<float>(logicalY * pixel_size),
+                     static_cast<float>(pixel_size),
+                     static_cast<float>(pixel_size)};
+
+  renderer_.setRenderDrawColor(color);
+  renderer_.renderFillRect(&rect);
+}
+
+void Game::drawBody(const std::deque<std::pair<int, int>>& obj, int pixel_size,
+                    const SDL_Color& color) {
+  for (auto& element : obj) {
+    drawElement(element, pixel_size, color);
+  }
 }
 
 void Game::render() {
@@ -70,12 +53,12 @@ void Game::render() {
   SDL_Color body_color = {42, 76, 101, 255};
   Uint32 time_ms = 300;
 
-  game_renderer_.setRenderDrawColor(bkg_color);
-  game_renderer_.renderClear();
-  game_renderer_.drawElement(snake_.getFood(), pixel_size_, food_color);
-  game_renderer_.drawBody(snake_.getBody().deque(), pixel_size_, body_color);
-  game_renderer_.renderPresent();
-  delay(time_ms);
+  renderer_.setRenderDrawColor(bkg_color);
+  renderer_.renderClear();
+  drawElement(snake_.getFood(), pixel_size_, food_color);
+  drawBody(snake_.getBody().deque(), pixel_size_, body_color);
+  renderer_.renderPresent();
+  sdl::delay(time_ms);
 }
 
 void Game::handleEvents(SDL_Event& event) {
@@ -85,7 +68,7 @@ void Game::handleEvents(SDL_Event& event) {
         is_running_ = false;
         break;
       case SDL_EVENT_KEY_DOWN:
-        switch ((event.key.keysym.scancode)) {
+        switch ((event.key.scancode)) {
           case SDL_SCANCODE_UP:
             snake_.newDirection(gamestatus::Direction::UP);
             break;
@@ -98,6 +81,8 @@ void Game::handleEvents(SDL_Event& event) {
           case SDL_SCANCODE_RIGHT:
             snake_.newDirection(gamestatus::Direction::RIGHT);
             break;
+          default:
+            break;
         }
       default:
         break;
@@ -105,10 +90,6 @@ void Game::handleEvents(SDL_Event& event) {
   }
 
   snake_.next();
-  // switch (snake_.next()){
-  //   case: gamestatus::NextState::EAT:
-  //     drawObjectAt
-  // }
 }
 
 void Game::run() {
