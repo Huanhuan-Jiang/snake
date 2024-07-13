@@ -14,16 +14,16 @@
 namespace gamedisplay {
 class Game {
  public:
-  Game(int width = 50, int height = 50, int pixel_size = 12) noexcept;
+  Game(const char* title, int width = 50, int height = 50,
+       int pixel_size = 12) noexcept;
 
   bool isInitialized() const { return initialized_; }
 
   void render();
   void handleEvents(SDL_Event& event);
   void run();
-  void drawElement(const std::pair<int, int>& obj, int pixel_size,
-                   const SDL_Color& sdl_color);
-  void drawBody(const std::deque<std::pair<int, int>>& obj, int pixel_size,
+  void drawElement(const std::pair<int, int>& obj, const SDL_Color& sdl_color);
+  void drawBody(const std::deque<std::pair<int, int>>& obj,
                 const SDL_Color& sdl_color);
 
   ~Game() { SDL_Quit(); }
@@ -31,12 +31,9 @@ class Game {
  private:
   sdl::Window window_;
   sdl::Renderer renderer_;
-
+  int pixel_size_;
   bool initialized_ = true;
   bool is_running_ = true;
-  int pixel_size_;
-  int window_width_;
-  int window_height_;
   int score_ = 0;
 
   gamestatus::Snake snake_;

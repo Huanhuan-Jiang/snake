@@ -1,7 +1,7 @@
 #include "gamedisplay.h"
 
 int main() {
-  gamedisplay::Game game;
+  gamedisplay::Game game("Snake");
 
   if (!game.isInitialized()) {
     throw std::runtime_error(SDL_GetError());

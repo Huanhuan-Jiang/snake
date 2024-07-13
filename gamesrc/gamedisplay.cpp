@@ -1,3 +1,5 @@
+#include "gamedisplay.h"
+
 #include <SDL3/SDL.h>
 
 #include <cstddef>
@@ -8,17 +10,14 @@
 #include <utility>
 
 #include "gamestatus.h"
-#include "gamedisplay.h"
 #include "sdl.h"
 
 namespace gamedisplay {
 
-Game::Game(int width, int height, int pixel_size) noexcept
-    : window_width_(width),
-      window_height_(height),
-      pixel_size_(pixel_size),
+Game::Game(const char* title, int width, int height, int pixel_size) noexcept
+    : pixel_size_(pixel_size),
       snake_(width, height),
-      window_(width, height, pixel_size) {
+      window_(title, width * pixel_size, height * pixel_size) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     initialized_ = false;
   }
@@ -26,24 +25,23 @@ Game::Game(int width, int height, int pixel_size) noexcept
   renderer_ = window_.createRenderer();
 }
 
-void Game::drawElement(const std::pair<int, int>& obj, int pixel_size,
-                       const SDL_Color& color) {
+void Game::drawElement(const std::pair<int, int>& obj, const SDL_Color& color) {
   auto logicalX = obj.first;
   auto logicalY = obj.second;
 
-  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size),
-                     static_cast<float>(logicalY * pixel_size),
-                     static_cast<float>(pixel_size),
-                     static_cast<float>(pixel_size)};
+  SDL_FRect rect = {static_cast<float>(logicalX * pixel_size_),
+                    static_cast<float>(logicalY * pixel_size_),
+                    static_cast<float>(pixel_size_),
+                    static_cast<float>(pixel_size_)};
 
-  renderer_.setRenderDrawColor(color);
-  renderer_.renderFillRect(&rect);
+  renderer_.setDrawColor(color);
+  renderer_.FillRect(&rect);
 }
 
-void Game::drawBody(const std::deque<std::pair<int, int>>& obj, int pixel_size,
+void Game::drawBody(const std::deque<std::pair<int, int>>& obj,
                     const SDL_Color& color) {
   for (auto& element : obj) {
-    drawElement(element, pixel_size, color);
+    drawElement(element, color);
   }
 }
 
@@ -53,11 +51,11 @@ void Game::render() {
   SDL_Color body_color = {42, 76, 101, 255};
   Uint32 time_ms = 300;
 
-  renderer_.setRenderDrawColor(bkg_color);
-  renderer_.renderClear();
-  drawElement(snake_.getFood(), pixel_size_, food_color);
-  drawBody(snake_.getBody().deque(), pixel_size_, body_color);
-  renderer_.renderPresent();
+  renderer_.setDrawColor(bkg_color);
+  renderer_.clear();
+  drawElement(snake_.getFood(), food_color);
+  drawBody(snake_.getBody().deque(), body_color);
+  renderer_.present();
   sdl::delay(time_ms);
 }
 

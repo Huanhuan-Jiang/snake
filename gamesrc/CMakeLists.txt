@@ -36,15 +36,16 @@ add_library(gamedisplay gamedisplay.cpp)
 
 target_include_directories(snakegame 
     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
-    PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc
-    PRIVATE ${CMAKE_SOURCE_DIR}/../gamesrc
+    PRIVATE ${CMAKE_SOURCE_DIR}/snakesrc
+    PRIVATE ${CMAKE_SOURCE_DIR}/gamesrc
     )
 
 target_include_directories(gamedisplay 
     PRIVATE ${CMAKE_SOURCE_DIR}/../snakesrc
     gamedisplay PRIVATE ${SDL_INCLUDE_DIR}
-    PRIVATE gamestatus
     )
+
+target_link_libraries(gamedisplay PRIVATE gamestatus)
 
 target_link_libraries(snakegame 
     PRIVATE gamestatus

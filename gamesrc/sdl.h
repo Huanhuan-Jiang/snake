@@ -37,26 +37,26 @@ class Renderer {
 
   SDL_Renderer* getRenderer() { return renderer_; }
 
-  void setRenderDrawColor(const SDL_Color& sdl_color) {
+  void setDrawColor(const SDL_Color& sdl_color) {
     if (SDL_SetRenderDrawColor(renderer_, sdl_color.r, sdl_color.g, sdl_color.b,
                                sdl_color.a) < 0) {
       throw std::runtime_error(SDL_GetError());
     }
   };
 
-  void renderFillRect(SDL_FRect* rect) {
+  void FillRect(SDL_FRect* rect) {
     if (SDL_RenderFillRect(renderer_, rect) < 0) {
       std::cout << "Render fills rectangle failed.\n";
     }
   }
 
-  void renderClear() {
+  void clear() {
     if (SDL_RenderClear(renderer_) < 0) {
       std::runtime_error(SDL_GetError());
     }
   }
 
-  void renderPresent() {
+  void present() {
     if (SDL_RenderPresent(renderer_) < 0) {
       std::runtime_error(SDL_GetError());
     }
@@ -71,34 +71,21 @@ class Renderer {
 
 class Window {
   SDL_Window* window_ = nullptr;
-  int window_width_ = 0;
-  int window_height_ = 0;
-  int pixel_size_ = 0;
 
  public:
-  Window(int w, int h, int pixel_size)
-      : window_width_(w), window_height_(h), pixel_size_(pixel_size) {
-    window_ =
-        SDL_CreateWindow("Snake", window_width_ * pixel_size_,
-                         window_height_ * pixel_size_, SDL_WINDOW_RESIZABLE);
+  Window(const char* title, int w, int h,
+         SDL_WindowFlags flags = SDL_WINDOW_RESIZABLE) {
+    window_ = SDL_CreateWindow(title, w, h, flags);
     if (window_ == nullptr) {
       throw std::runtime_error(SDL_GetError());
     }
   }
 
-  Window(Window&& other) noexcept
-      : window_width_(other.window_width_),
-        window_height_(other.window_height_),
-        pixel_size_(other.pixel_size_) {
-    std::swap(window_, other.window_);
-  }
+  Window(Window&& other) noexcept { std::swap(window_, other.window_); }
 
   Window& operator=(Window&& other) noexcept {
     if (this != &other) {
       std::swap(window_, other.window_);
-      window_width_ = other.window_width_;
-      window_height_ = other.window_height_;
-      pixel_size_ = other.pixel_size_;
     }
     return *this;
   }
@@ -109,9 +96,12 @@ class Window {
   Renderer createRenderer() { return Renderer(window_); }
 
   SDL_Window* getWindow() { return window_; }
-  int getWindowWidth() const { return window_width_; }
-  int getWindowHeight() const { return window_height_; }
-  int getPixelSize() const { return pixel_size_; }
+
+  ~Window() {
+    if (window_ != nullptr) {
+      SDL_DestroyWindow(window_);
+    }
+  }
 };
 
 inline void delay(Uint32 ms) { SDL_Delay(ms); }
