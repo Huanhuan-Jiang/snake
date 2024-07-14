@@ -14,14 +14,10 @@
 
 namespace gamedisplay {
 
-Game::Game(const char* title, int width, int height, int pixel_size) noexcept
-    : pixel_size_(pixel_size),
-      snake_(width, height),
-      window_(title, width * pixel_size, height * pixel_size) {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    initialized_ = false;
-  }
-
+Game::Game(const char* title, int width, int height, int pixel_size)
+    : pixel_size_(pixel_size), snake_(width, height) {
+  sdl::checkError(SDL_Init(SDL_INIT_VIDEO) == 0);
+  window_ = sdl::Window(title, width * pixel_size, height * pixel_size);
   renderer_ = window_.createRenderer();
 }
 
@@ -35,7 +31,7 @@ void Game::drawElement(const std::pair<int, int>& obj, const SDL_Color& color) {
                     static_cast<float>(pixel_size_)};
 
   renderer_.setDrawColor(color);
-  renderer_.FillRect(&rect);
+  renderer_.fillRect(&rect);
 }
 
 void Game::drawBody(const std::deque<std::pair<int, int>>& obj,
@@ -49,17 +45,16 @@ void Game::render() {
   SDL_Color bkg_color = {255, 255, 255, 255};
   SDL_Color food_color = {185, 87, 86, 255};
   SDL_Color body_color = {42, 76, 101, 255};
-  Uint32 time_ms = 300;
 
   renderer_.setDrawColor(bkg_color);
   renderer_.clear();
   drawElement(snake_.getFood(), food_color);
   drawBody(snake_.getBody().deque(), body_color);
   renderer_.present();
-  sdl::delay(time_ms);
 }
 
-void Game::handleEvents(SDL_Event& event) {
+void Game::handleEvents() {
+  SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
       case SDL_EVENT_QUIT:
@@ -91,10 +86,11 @@ void Game::handleEvents(SDL_Event& event) {
 }
 
 void Game::run() {
+  Uint32 time_ms = 300;
   while (is_running_) {
-    SDL_Event event;
-    handleEvents(event);
+    handleEvents();
     render();
+    sdl::delay(time_ms);
   }
 }
 

@@ -8,6 +8,12 @@
 #include <utility>
 
 namespace sdl {
+inline void checkError(bool value) {
+  if (!value) {
+    throw std::runtime_error(SDL_GetError());
+  }
+}
+
 class Renderer {
   SDL_Renderer* renderer_ = nullptr;
 
@@ -16,9 +22,7 @@ class Renderer {
 
   Renderer(SDL_Window* window) {
     renderer_ = SDL_CreateRenderer(window, nullptr);
-    if (renderer_ == nullptr) {
-      throw std::runtime_error(SDL_GetError());
-    }
+    checkError(renderer_ != nullptr);
   };
 
   Renderer(Renderer&& other) noexcept {
@@ -35,32 +39,18 @@ class Renderer {
   Renderer(const Renderer& other) = delete;
   Renderer& operator=(const Renderer& other) = delete;
 
-  SDL_Renderer* getRenderer() { return renderer_; }
-
   void setDrawColor(const SDL_Color& sdl_color) {
-    if (SDL_SetRenderDrawColor(renderer_, sdl_color.r, sdl_color.g, sdl_color.b,
-                               sdl_color.a) < 0) {
-      throw std::runtime_error(SDL_GetError());
-    }
+    checkError(SDL_SetRenderDrawColor(renderer_, sdl_color.r, sdl_color.g,
+                                      sdl_color.b, sdl_color.a) == 0);
   };
 
-  void FillRect(SDL_FRect* rect) {
-    if (SDL_RenderFillRect(renderer_, rect) < 0) {
-      std::cout << "Render fills rectangle failed.\n";
-    }
+  void fillRect(SDL_FRect* rect) {
+    checkError(SDL_RenderFillRect(renderer_, rect) == 0);
   }
 
-  void clear() {
-    if (SDL_RenderClear(renderer_) < 0) {
-      std::runtime_error(SDL_GetError());
-    }
-  }
+  void clear() { checkError(SDL_RenderClear(renderer_) == 0); }
 
-  void present() {
-    if (SDL_RenderPresent(renderer_) < 0) {
-      std::runtime_error(SDL_GetError());
-    }
-  }
+  void present() { checkError(SDL_RenderPresent(renderer_) == 0); }
 
   ~Renderer() {
     if (renderer_ != nullptr) {
@@ -73,12 +63,12 @@ class Window {
   SDL_Window* window_ = nullptr;
 
  public:
+  Window() = default;
+
   Window(const char* title, int w, int h,
          SDL_WindowFlags flags = SDL_WINDOW_RESIZABLE) {
     window_ = SDL_CreateWindow(title, w, h, flags);
-    if (window_ == nullptr) {
-      throw std::runtime_error(SDL_GetError());
-    }
+    checkError(window_ != nullptr);
   }
 
   Window(Window&& other) noexcept { std::swap(window_, other.window_); }
@@ -93,9 +83,12 @@ class Window {
   Window(const Window& other) = delete;
   Window& operator=(const Window& other) = delete;
 
-  Renderer createRenderer() { return Renderer(window_); }
-
-  SDL_Window* getWindow() { return window_; }
+  Renderer createRenderer() {
+    if (window_ == nullptr) {
+      throw std::runtime_error("Window is null!");
+    }
+    return Renderer(window_);
+  }
 
   ~Window() {
     if (window_ != nullptr) {
