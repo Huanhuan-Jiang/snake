@@ -22,6 +22,8 @@ class Snake {
  protected:
   int map_width_;
   int map_height_;
+  int score_ = 0;
+
   DequeOfUniquePairs<int, int> snake_body_;
   Direction head_dir_;
   std::mt19937 gen_;
@@ -54,5 +56,7 @@ class Snake {
   NextState next();
 
   const std::pair<int, int>& getFood() const { return food_; }
+
+  const int getScore() const { return score_; }
 };
 }  // namespace gamestatus

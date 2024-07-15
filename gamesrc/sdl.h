@@ -63,8 +63,6 @@ class Window {
   SDL_Window* window_ = nullptr;
 
  public:
-  Window() = default;
-
   Window(const char* title, int w, int h,
          SDL_WindowFlags flags = SDL_WINDOW_RESIZABLE) {
     window_ = SDL_CreateWindow(title, w, h, flags);

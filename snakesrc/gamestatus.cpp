@@ -103,6 +103,7 @@ NextState Snake::next() {
   if (next_head == food_) {
     snake_body_.insertFront(next_head);
     generateFood();
+    score_++;
     return NextState::EAT;  // Snake eats food;
   }
 
