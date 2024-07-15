@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <deque>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <utility>
 
@@ -17,8 +18,9 @@ namespace gamedisplay {
 Game::Game(const char* title, int width, int height, int pixel_size)
     : pixel_size_(pixel_size), snake_(width, height) {
   sdl::checkError(SDL_Init(SDL_INIT_VIDEO) == 0);
-  window_ = sdl::Window(title, width * pixel_size, height * pixel_size);
-  renderer_ = window_.createRenderer();
+  window_ = std::make_unique<sdl::Window>(title, width * pixel_size,
+                                          height * pixel_size);
+  renderer_ = std::make_unique<sdl::Renderer>(window_->createRenderer());
 }
 
 void Game::drawElement(const std::pair<int, int>& obj, const SDL_Color& color) {
@@ -30,8 +32,8 @@ void Game::drawElement(const std::pair<int, int>& obj, const SDL_Color& color) {
                     static_cast<float>(pixel_size_),
                     static_cast<float>(pixel_size_)};
 
-  renderer_.setDrawColor(color);
-  renderer_.fillRect(&rect);
+  renderer_->setDrawColor(color);
+  renderer_->fillRect(&rect);
 }
 
 void Game::drawBody(const std::deque<std::pair<int, int>>& obj,
@@ -46,11 +48,11 @@ void Game::render() {
   SDL_Color food_color = {185, 87, 86, 255};
   SDL_Color body_color = {42, 76, 101, 255};
 
-  renderer_.setDrawColor(bkg_color);
-  renderer_.clear();
+  renderer_->setDrawColor(bkg_color);
+  renderer_->clear();
   drawElement(snake_.getFood(), food_color);
   drawBody(snake_.getBody().deque(), body_color);
-  renderer_.present();
+  renderer_->present();
 }
 
 void Game::handleEvents() {
@@ -84,10 +86,22 @@ void Game::handleEvents() {
 }
 
 void Game::run() {
+  std::cout << "Game Start!\n";
   Uint32 time_ms = 300;
   while (is_running_) {
     handleEvents();
-    snake_.next();
+    switch (snake_.next()) {
+      case gamestatus::NextState::EAT:
+        std::cout << "Current Score: " << snake_.getScore() << "\n";
+        break;
+      case gamestatus::NextState::DIE:
+        is_running_ = false;
+        std::cout << "Game Over! Final Score: " << snake_.getScore() << "\n";
+        break;
+      default:
+        break;
+    }
+
     render();
     sdl::delay(time_ms);
   }

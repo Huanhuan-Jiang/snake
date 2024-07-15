@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <deque>
 #include <iostream>
+#include <memory>
 #include <utility>
 
 #include "gamestatus.h"
@@ -26,8 +27,9 @@ class Game {
   void drawBody(const std::deque<std::pair<int, int>>& obj,
                 const SDL_Color& sdl_color);
 
-  sdl::Window window_;
-  sdl::Renderer renderer_;
+  std::unique_ptr<sdl::Window> window_ = nullptr;
+  std::unique_ptr<sdl::Renderer> renderer_ = nullptr;
+
   int pixel_size_;
   bool is_running_ = true;
 
