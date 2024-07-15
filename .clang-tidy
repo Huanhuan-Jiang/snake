@@ -55,6 +55,7 @@ Checks: '
   readability-redundant-control-flow,
   readability-unused-variable,
   cert-*,
+  -cert-dcl58-cpp
 '
 WarningsAsErrors: '*'
 HeaderFilterRegex: '^(?!(.*\/)?(build|thirdparty)\/)'
