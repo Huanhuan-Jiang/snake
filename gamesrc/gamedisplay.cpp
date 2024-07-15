@@ -81,14 +81,13 @@ void Game::handleEvents() {
         break;
     }
   }
-
-  snake_.next();
 }
 
 void Game::run() {
   Uint32 time_ms = 300;
   while (is_running_) {
     handleEvents();
+    snake_.next();
     render();
     sdl::delay(time_ms);
   }

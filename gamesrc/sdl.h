@@ -17,14 +17,14 @@ inline void checkError(bool value) {
 class Renderer {
   SDL_Renderer* renderer_ = nullptr;
 
- public:
-  Renderer() = default;
+  friend class Window;
 
   Renderer(SDL_Window* window) {
     renderer_ = SDL_CreateRenderer(window, nullptr);
     checkError(renderer_ != nullptr);
   };
 
+ public:
   Renderer(Renderer&& other) noexcept {
     std::swap(renderer_, other.renderer_);
   };
